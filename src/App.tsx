@@ -1,7 +1,7 @@
-function App() {
+import Game from './pages/Game';
+
+export default function App() {
   return (
-    <h1 className="text-xl bg-pine-cone-500">Hello World!</h1>
+    <Game></Game>
   )
 }
-
-export default App

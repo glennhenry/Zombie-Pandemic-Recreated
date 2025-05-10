@@ -18,3 +18,18 @@
   --color-pine-cone-900: #473d3c;
   --color-pine-cone-950: #272221;
 }
+
+.content-container {
+  width: 92%;
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.game-container {
+  min-height: 100dvh;
+}
+
+.light-hyperlink {
+  @apply underline text-[#316FBD] hover:text-blue-800;
+}
