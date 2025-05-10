@@ -4,18 +4,7 @@ export default function Footer() {
       <div className="bg-pine-cone-200">
         <div className="content-container">
           <footer className="p-2 text-sm font-paragraph">
-            <p>
-              Original game made by Pixel Pandemic (2009-2015).{" "}
-              <span>
-                <a
-                  href="https://www.facebook.com/zombiepandemicgame"
-                  target="_blank"
-                  className="light-hyperlink"
-                >
-                  Pixel Pandemic's ZP Facebook page
-                </a>
-              </span>
-            </p>
+            <p>Original game made by Pixel Pandemic (2009-2015).</p>
             <p>
               Please join our{" "}
               <a
