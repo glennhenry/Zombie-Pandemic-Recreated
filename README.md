@@ -1,6 +1,6 @@
 # Zombie Pandemic Recreated
 
-<img src="https://github.com/user-attachments/assets/d7d1251b-b244-41b8-bc8b-6399f6ecbd85" width="400">
+<img src="https://github.com/user-attachments/assets/d7d1251b-b244-41b8-bc8b-6399f6ecbd85" width="400" alt="zombie pandemic">
 
 Zombie Pandemic is a browser-based zombie survival MMORPG. It was originally developed by [Pixel Pandemic (2009-2015)](https://www.facebook.com/zombiepandemicgame). This project attempts to recreate the classic game in simpler text-based version.
 
@@ -19,7 +19,7 @@ The lack of resources from the community development team motivates us to make t
 
 ### Preview
 
-[Game layout pic]
+<img src="https://github.com/user-attachments/assets/780b65a7-b5d9-4043-82e8-5e8d9c5c6ad0" width="500" alt="gameplay preview">
 
 The picture above shows an illustration of the new proposed looks of the game. The reason this recreation project came to be was from a brainstorming by [Replit's Agent](https://replit.com/ai) (also known as vibe coding). It was then modified and bring into perfection by the community.
 
