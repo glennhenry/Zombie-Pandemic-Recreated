@@ -4,6 +4,7 @@ export default function GameContainer() {
       <div className="content-container">
         <main className="p-4 border-1 border-solid">
           <p>Game in here</p>
+          <p>Game in here</p>
         </main>
       </div>
     </div>
