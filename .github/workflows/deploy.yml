@@ -25,6 +25,3 @@ jobs:
 
       - name: Build the app
         run: bun run build
-
-      - name: Run the app
-        run: bun run start
