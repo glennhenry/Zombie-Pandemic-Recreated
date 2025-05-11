@@ -1,5 +1,6 @@
 export default function LightHyperlink({
   href,
+  target,
   children,
   className,
   ...props
@@ -8,7 +9,12 @@ export default function LightHyperlink({
   const combinedClassName = `${addedClass} {$className || ''}`;
 
   return (
-    <a href={href} target="_blank" className={combinedClassName} {...props}>
+    <a
+      href={href}
+      target={target || "_blank"}
+      className={combinedClassName}
+      {...props}
+    >
       {children}
     </a>
   );
