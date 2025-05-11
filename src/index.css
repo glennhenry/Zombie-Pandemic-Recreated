@@ -6,7 +6,7 @@
   --font-mono: "Source Code Pro", "monospace";
   --font-paragraph: "Inter", "sans";
 
-  --color-pine-cone-50: #f4f3f2;
+  /* --color-pine-cone-50: #f4f3f2;
   --color-pine-cone-100: #e4e0dd;
   --color-pine-cone-200: #cbc3bd;
   --color-pine-cone-300: #aca198;
@@ -16,7 +16,31 @@
   --color-pine-cone-700: #5d4f4b;
   --color-pine-cone-800: #504543;
   --color-pine-cone-900: #473d3c;
-  --color-pine-cone-950: #272221;
+  --color-pine-cone-950: #272221; */
+
+  --color-base-100: oklch(30% 0.02 20);
+  --color-base-200: oklch(24% 0.015 18);
+  --color-base-300: oklch(18% 0.01 16);
+  --color-base-content: oklch(92% 0.015 250);
+  --color-primary: oklch(42% 0.13 27);
+  --color-primary-content: oklch(92% 0.015 250);
+  --color-secondary: oklch(28% 0.12 20);
+  --color-secondary-content: oklch(92% 0.015 250);
+  --color-accent: oklch(50% 0.15 350);
+  --color-accent-content: oklch(92% 0.015 250);
+  --color-neutral: oklch(10% 0.01 240);
+  --color-neutral-content: oklch(92% 0.015 250);
+  --color-info: oklch(40% 0.12 260);
+  --color-info-content: oklch(92% 0.015 250);
+  --color-success: oklch(62% 0.194 149.214);
+  --color-success-content: oklch(14% 0 0);
+  --color-warning: oklch(85% 0.199 91.936);
+  --color-warning-content: oklch(14% 0 0);
+  --color-error: oklch(0.61 0.1908 23.9);
+  --color-error-content: oklch(14% 0 0);
+
+  --color-light-content: oklch(0.85 0.0045 236.52);
+  --color-dark-content: oklch(14% 0 0);
 }
 
 .content-container {
@@ -28,8 +52,4 @@
 
 .game-container {
   min-height: 100dvh;
-}
-
-.light-hyperlink {
-  @apply underline text-[#316FBD] hover:text-blue-800;
 }

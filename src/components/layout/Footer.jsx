@@ -1,25 +1,24 @@
+import LightHyperlink from "../ui/LightHyperlink";
+
 export default function Footer() {
   return (
     <>
-      <div className="bg-pine-cone-200">
+      <div className="bg-base-300 dark:text-light-content">
         <div className="content-container">
-          <footer className="p-2 text-sm font-paragraph">
+          <footer className="font-paragraph p-2 text-sm">
             <p>Original game made by Pixel Pandemic (2009-2015).</p>
             <p>
               Please join our{" "}
-              <a
+              <LightHyperlink
                 href="https://discord.gg/Yrzsk7n6nf"
-                target="_blank"
-                className="light-hyperlink"
-              >
-                Discord
-              </a>{" "}
+                children={"Discord"}
+              />{" "}
               community for any questions or feedback.
             </p>
           </footer>
         </div>
-        <div className="bg-[#aca19863] flex justify-center">
-          <p className="p-2 text-sm font-paragraph">
+        <div className="flex justify-center bg-[#aca19863]">
+          <p className="font-paragraph p-2 text-sm">
             Copyright ©{new Date().getFullYear()}{" "}
             <span className="underline">Zombie Pandemic Recreated</span>{" "}
             contributors. This project is open-recreation and presented from the

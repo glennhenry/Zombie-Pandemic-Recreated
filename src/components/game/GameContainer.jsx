@@ -1,8 +1,8 @@
 export default function GameContainer() {
   return (
-    <div className="bg-pine-cone-800 p-2 game-container">
+    <div className="bg-base-200 game-container p-2">
       <div className="content-container">
-        <main className="p-4 border-1 border-solid">
+        <main className="dark:text-light-content border-1 border-solid p-4">
           <p>Game in here</p>
           <p>Game in here</p>
         </main>
