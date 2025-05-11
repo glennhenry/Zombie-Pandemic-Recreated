@@ -3,7 +3,7 @@ import { FaGithub } from "react-icons/fa6";
 
 export default function Header() {
   return (
-    <div className="bg-base-100">
+    <div className="bg-base-100 drop-shadow-lg">
       <div className="content-container">
         <header className="font-heading flex items-center justify-between px-3 py-2 text-2xl drop-shadow-lg">
           <h1 className="text-white drop-shadow-[0_1.1px_1.2px_rgba(0,0,0,1)]">
