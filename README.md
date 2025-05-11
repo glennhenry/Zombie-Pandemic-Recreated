@@ -13,21 +13,19 @@ Play the game in your web browser: [Zombie Pandemic Recreated](https://zombie-pa
 
 ## About this Project
 
-Due to the partially lost of the original game files and the potential of legal issues to revive the original game, the community decided to recreate the game from scratch. As a result, this recreation couldn't fully resemble the original game.
+Due to the partial loss of the original game files and potential legal issues surrounding its revival, the community decided to recreate the game from scratch. As a result, this recreation may not perfectly resemble the original.
 
-The lack of resources from the community development team motivates us to make the game utilize text and simple graphical elements. Our goal is to bring back and extend the iconic elements of Zombie Pandemic in a new atmosphere.
+Limited community resources led to the decision to utilize text and simple graphics. Our goal is to revive and expand upon the iconic elements of Zombie Pandemic within a new framework.
 
 ### Preview
 
 <img src="https://github.com/user-attachments/assets/780b65a7-b5d9-4043-82e8-5e8d9c5c6ad0" width="500" alt="gameplay preview">
 
-The picture above shows an illustration of the new proposed looks of the game. The reason this recreation project came to be was from a brainstorming by [Replit's Agent](https://replit.com/ai) (also known as vibe coding). It was then modified and bring into perfection by the community.
+The picture above shows an illustration of the new proposed looks of the game. This recreation project originated from a brainstorming session using [Replit's Agent](https://replit.com/ai) (also known as vibe coding). It was then modified and bring into perfection by the community.
 
 ### Gameplay
 
-The new recreated ZP is single-player game which is playable at web browser.
-
-The core gameplay of the recreated ZP is:
+The recreated Zombie Pandemic is a single-player browser-based game. Core gameplay includes:
 
 - Player spawns in a map
 - Player travel through blocks that contains buildings, loots, and random encounter of zombies.
@@ -41,12 +39,12 @@ The core gameplay of the recreated ZP is:
    - Document key elements necessary to recreate gameplay experience.
    - Reflect and update old game mechanics to adjust with the new gameplay.
 2. **Develop the Game**
-   - Develop the UI, create necessary resources, and implement the game's logic.
+   - Develop the UI, create necessary assets, and implement game logic.
 3. **Finalization**
    - Ensure the game playability.
    - Provide instruction for users to play the game.
 4. **Development Loop**
-   - Add more features and keep polishing the game.
+   - Add features and continue polishing the game.
 
 ### Tech Detail
 
@@ -60,7 +58,7 @@ The project uses:
 
 ## Installation
 
-Install [Bun](https://bun.sh/) if you haven't and run the following command.
+Install [Bun](https://bun.sh/) and run the following command.
 
 ```bash
 bun install
