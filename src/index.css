@@ -6,18 +6,6 @@
   --font-mono: "Source Code Pro", "monospace";
   --font-paragraph: "Inter", "sans";
 
-  /* --color-pine-cone-50: #f4f3f2;
-  --color-pine-cone-100: #e4e0dd;
-  --color-pine-cone-200: #cbc3bd;
-  --color-pine-cone-300: #aca198;
-  --color-pine-cone-400: #94857b;
-  --color-pine-cone-500: #86756c;
-  --color-pine-cone-600: #70605a;
-  --color-pine-cone-700: #5d4f4b;
-  --color-pine-cone-800: #504543;
-  --color-pine-cone-900: #473d3c;
-  --color-pine-cone-950: #272221; */
-
   --color-base-100: oklch(30% 0.02 20);
   --color-base-200: oklch(24% 0.015 18);
   --color-base-300: oklch(18% 0.01 16);
