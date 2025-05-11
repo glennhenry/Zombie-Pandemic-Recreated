@@ -1,5 +1,13 @@
-import GameLayout from "../components/layout/GameLayout";
+import Header from "../components/ui/Header";
+import GameContainer from "../components/game/GameContainer";
+import Footer from "../components/ui/Footer";
 
 export default function Game() {
-  return <GameLayout></GameLayout>;
+  return (
+    <div>
+      <Header />
+      <GameContainer />
+      <Footer />
+    </div>
+  );
 }

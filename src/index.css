@@ -41,3 +41,7 @@
 .game-container {
   min-height: 100dvh;
 }
+
+body {
+  color: var(--color-light-content);
+}

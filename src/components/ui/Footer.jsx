@@ -1,9 +1,9 @@
-import LightHyperlink from "../ui/LightHyperlink";
+import LightHyperlink from "./LightHyperlink";
 
 export default function Footer() {
   return (
     <>
-      <div className="bg-base-300 dark:text-light-content">
+      <div className="bg-base-300">
         <div className="content-container">
           <footer className="font-paragraph p-2 text-sm">
             <p>Original game made by Pixel Pandemic (2009-2015).</p>
