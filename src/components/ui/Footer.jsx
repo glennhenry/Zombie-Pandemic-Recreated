@@ -17,7 +17,8 @@ export default function Footer() {
             </p>
           </footer>
         </div>
-        <div className="flex justify-center bg-[#aca19863]">
+        <hr></hr>
+        <div className="flex justify-center bg-base-300">
           <p className="font-paragraph p-2 text-sm">
             Copyright ©{new Date().getFullYear()}{" "}
             <span className="underline">Zombie Pandemic Recreated</span>{" "}
