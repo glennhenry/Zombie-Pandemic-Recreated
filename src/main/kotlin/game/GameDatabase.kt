@@ -1,16 +1,18 @@
+package game
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import model.AppSettings
 import java.io.File
 
-class Database {
+class GameDatabase {
+    private val appDir: File
+    private val settingsFile: File
     private val json = Json {
         prettyPrint = true
         ignoreUnknownKeys = true
     }
-
-    private val appDir: File
-    private val settingsFile: File
 
     init {
         val userHome = System.getProperty("user.home")
@@ -19,8 +21,9 @@ class Database {
         }
 
         settingsFile = File(appDir, "settings.json")
-
-        if (!settingsFile.exists()) settingsFile.writeText(json.encodeToString(AppSettings()))
+        if (!settingsFile.exists()) {
+            settingsFile.writeText(json.encodeToString(AppSettings()))
+        }
     }
 
     suspend fun getSettings(): AppSettings = withContext(Dispatchers.IO) {

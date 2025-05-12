@@ -1,6 +1,6 @@
-import kotlinx.serialization.Serializable
-import java.io.File
+package model
 
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class AppSettings(

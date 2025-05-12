@@ -1,3 +1,6 @@
+package ui
+
+import game.GameDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -5,8 +8,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+data class UiState(
+    val darkMode: Boolean = false,
+    val isConverting: Boolean = false
+)
+
 class MainViewModel(
-    private val database: Database,
+    private val database: GameDatabase,
 ) {
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -31,9 +39,4 @@ class MainViewModel(
             database.saveSettings(settings.copy(darkMode = newDarkMode))
         }
     }
-
-    data class UiState(
-        val darkMode: Boolean = false,
-        val isConverting: Boolean = false
-    )
 }

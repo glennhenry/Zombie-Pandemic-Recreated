@@ -3,6 +3,8 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import java.util.UUID
 import org.jetbrains.compose.reload.ComposeHotRun 
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
+import java.util.logging.Level
+import java.util.logging.Logger
 
 plugins {
     kotlin("jvm") version "2.1.20"
@@ -25,6 +27,7 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)
+    implementation(compose.components.resources)
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
@@ -32,8 +35,6 @@ dependencies {
 
     // Koin for dependency injection
     implementation("io.insert-koin:koin-core:4.0.3")
-    // Image loading
-    implementation("io.github.qdsfdhvh:image-loader:1.7.1")
 }
 
 compose.desktop {
@@ -67,6 +68,7 @@ compose.desktop {
         }
     }
 }
+
 //https://github.com/JetBrains/compose-hot-reload
 composeCompiler {
     featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
