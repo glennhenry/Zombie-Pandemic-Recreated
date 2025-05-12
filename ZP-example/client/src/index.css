@@ -1,0 +1,234 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 60 4.8% 95.9%;
+  --secondary-foreground: 24 9.8% 10%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+/* Game-specific styles */
+:root {
+  --color-neutral-dark: #192231;
+  --color-neutral-light: #e5e5e5;
+  --color-primary: #0266cc;
+  --color-secondary: #FF8C42;
+  --color-accent: #39A9DB;
+  --color-status-health: #F25757;
+  --color-status-hunger: #629677;
+}
+
+/* Custom colors for the game UI */
+.bg-neutral-dark {
+  background-color: #192231;
+  color: #e5e5e5;
+}
+
+.bg-neutral-light {
+  background-color: #e5e5e5;
+  color: #192231;
+}
+
+.bg-primary {
+  background-color: #0266cc;
+}
+
+.bg-secondary {
+  background-color: #FF8C42;
+}
+
+.bg-accent {
+  background-color: #39A9DB;
+}
+
+.text-accent {
+  color: #39A9DB;
+}
+
+.text-secondary {
+  color: #FF8C42;
+}
+
+.text-status-health {
+  color: #F25757;
+}
+
+.text-status-hunger {
+  color: #629677;
+}
+
+.font-heading {
+  font-family: 'Russo One', sans-serif;
+}
+
+.font-mono {
+  font-family: 'Source Code Pro', monospace;
+}
+
+/* Map tile styles */
+.map-container {
+  position: relative;
+  background-color: #21374f;
+  overflow: hidden;
+}
+
+.map-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  width: 100%;
+  height: 100%;
+}
+
+.map-tile {
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.building-tile {
+  background-color: #604b3e;
+}
+
+.road-tile {
+  background-color: #4a4a4a;
+}
+
+.water-tile {
+  background-color: #467590;
+}
+
+.open-tile {
+  background-color: #3d6c55;
+}
+
+.zombie-tile {
+  position: relative;
+}
+
+.zombie-tile::after {
+  content: "🧟";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.6rem;
+  opacity: 0.6;
+}
+
+.loot-tile {
+  position: relative;
+}
+
+.loot-tile::before {
+  content: "💼";
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+.player-position {
+  background-color: rgba(255, 140, 66, 0.5) !important;
+  position: relative;
+  border: 2px solid #FF8C42;
+  box-shadow: 0 0 10px rgba(255, 140, 66, 0.5);
+  z-index: 5;
+}
+
+.player-position::after {
+  content: "🧍";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+}
+
+/* Terminal styles */
+.terminal p {
+  margin-bottom: 0.5rem;
+  color: #e5e5e5;
+}
+
+.terminal .danger {
+  color: #F25757;
+}
+
+.terminal .item {
+  color: #8bbf9f;
+}
+
+.terminal .location {
+  color: #39A9DB;
+  font-weight: bold;
+}
+
+/* Status bar styles */
+.status-bar {
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bg-status-health {
+  background-color: #F25757;
+}
+
+.bg-status-hunger {
+  background-color: #629677;
+}
