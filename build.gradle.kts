@@ -1,7 +1,7 @@
-
+import org.jetbrains.compose.ComposePlugin.CommonComponentsDependencies.resources
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import java.util.UUID
-import org.jetbrains.compose.reload.ComposeHotRun 
+import org.jetbrains.compose.reload.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -51,22 +51,28 @@ compose.desktop {
             packageName = "zombiepandemicrecreated"
             packageVersion = "1.0.0"
 
-            linux{
+            linux {
                 shortcut = true
             }
 
-            windows{
+            windows {
                 shortcut = true
                 dirChooser = true
                 menu = true
                 upgradeUuid = "run the 'generateUpgradeUuid' task and paste the generated UUID here only once"
             }
 
-            macOS{
+            macOS {
                 dockName = "Zombie Pandemic Recreated"
             }
         }
     }
+}
+
+compose.resources {
+    publicResClass = false
+    generateResClass = auto
+    packageOfResClass = "zprecreated.resources"
 }
 
 //https://github.com/JetBrains/compose-hot-reload

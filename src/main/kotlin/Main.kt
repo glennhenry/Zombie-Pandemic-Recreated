@@ -6,13 +6,13 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import di.appModule
-import io.github.glennhenry.zprecreated.zombiepandemicrecreated.generated.resources.Res
-import io.github.glennhenry.zprecreated.zombiepandemicrecreated.generated.resources.zp_icon
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.context.startKoin
 import org.koin.java.KoinJavaComponent.getKoin
 import theme.AppTheme
 import ui.MainViewModel
+import zprecreated.resources.Res
+import zprecreated.resources.zp_icon
 import java.awt.Dimension
 
 fun main() = application {
