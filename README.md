@@ -2,7 +2,7 @@
 
 Zombie Pandemic is a browser-based (PBBG) zombie survival MMORPG made by Pixel Pandemic (2009-2015) [(fb page)](https://www.facebook.com/zombiepandemicgame). The game features a survivor exploring the abandoned urban with the endgoal of escaping the city.
 
-![ZP poster](./zp-poster.jpg)
+![ZP poster](./zp-icon.jpg)
 
 # How to Play
 
@@ -38,8 +38,8 @@ The original game involve massive multiplayer play. Currently, we are not planni
 
 ## Development Guide
 
-- Client requirement: Java 21, Gradle 8.5
-- Server requirement: Node.js (v20+)
+- Client requirement: Node.js (v20+)
+- Server requirement: Java 21, Gradle 8.5
 
 ### Dev Mode
 
@@ -73,23 +73,23 @@ Server runs at `http://localhost:8080`.
 
 #### 1. Build the Client and Server
 
-Run build.bat (Windows) or build.sh (Unix). Output will be in `build/` directory.
+Run `build.bat` (Windows) or `build.sh` (Unix). Output will be in `build/` directory.
 
 #### 2. Run the Game Server
 
 Install [Java](https://www.java.com/en/download/) and add it to system PATH.
 
-In Zombie-Pandemic-Recreated directory:
+In the build directory:
 
 ```bash
-cd build
 java -jar server/build/libs/zpr-server.jar
 ```
 
-Frontend + API served on http://localhost:8080. Optionally, set port and host by:
+Frontend + API served on http://localhost:8080.
+The default port `8080` and host `0.0.0.0` can be overridden by:
 
 ```bash
-java -jar server/build/libs/zpr-server.jar -port=1234 -host=domain.com
+java -jar server/build/libs/zpr-server.jar -port=1234 -host=1.2.3.4
 ```
 
 ### Hosting
