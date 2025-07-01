@@ -1,0 +1,50 @@
+# root
+.DS_Store
+*.log
+*.tmp
+*.class
+*.jar
+*.war
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+build/
+
+# IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+!.vscode/extensions.json
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# gradle
+.gradle/
+server/.gradle/
+server/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# node
+client/node_modules/
+client/dist/
+client/build/
+client/.vite/
+client/.next/
+
+# logs
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# env
+.env
+client/.env
+server/.env

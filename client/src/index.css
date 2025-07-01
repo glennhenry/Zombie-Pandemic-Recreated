@@ -1,0 +1,75 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&family=Inter:wght@400;500;700&family=Rum+Raisin&family=Russo+One&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-heading: "Rum Raisin", "sans-serif";
+  /* TODO: RENAME */
+  --font-russo: "Russo One", "sans-serif"; 
+  --font-mono: "Source Code Pro", "monospace";
+  --font-paragraph: "Inter", "sans";
+
+  /* Backgrounds */
+  --color-b-base: #282626;
+  --color-darker: #1d1d1d;
+  --color-container-base: #373737;
+  --color-container-heading: #605f5f;
+  --color-container-heading-highlight: #7b7b7b;
+
+  /* Text */
+  --color-title: #ffffff;
+  --color-t-base: #ededed;
+
+  /* Brand Colors */
+  --color-primary: #72af55;
+  --color-secondary: #6f86e4;
+
+  /* Status Colors */
+  --color-status-good: #83e864;
+  --color-status-bad: #c74e4e;
+  --color-status-neutral: #d9b93a;
+
+  /* Game Colors */
+  --color-console-input: #4c63da;
+  --color-console-input-hover: #5d73e8;
+
+  --color-character-stats-bg: #414251;
+
+  --color-health: #d16d6a;
+  --color-hunger: #9dc284;
+  --color-thirst: #a6c4e5;
+  --color-energy: #db944b;
+  --color-wellbeing: #fffd54;
+  --color-armor: #b7b7b7;
+}
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 92%;
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-title);
+  font-family: var(--font-heading);
+  text-wrap: balance;
+}
+
+code {
+  font-family: var(--font-mono);
+}
+
+body {
+  color: var(--color-t-base);
+  font-family: var(--font-paragraph);
+}
