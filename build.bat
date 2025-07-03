@@ -3,7 +3,7 @@ setlocal
 
 echo === Cleaning build directory ===
 if exist build (
-    rmdir /s /q build
+	rmdir /s /q build || pause && exit /b
 )
 mkdir build
 
@@ -19,3 +19,4 @@ call gradlew.bat shadowJar
 cd ..
 
 echo === Build complete. Output is in build\
+exit /b 0
