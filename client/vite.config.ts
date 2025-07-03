@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
     outDir: "../build/web",
+    assetsDir: "web-assets",
     emptyOutDir: true,
   },
 });
