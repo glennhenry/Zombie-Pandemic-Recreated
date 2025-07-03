@@ -10,6 +10,7 @@
   --font-russo: "Russo One", "sans-serif";
 
   /* Backgrounds */
+  --color-app-bar: #131313;
   --color-base-container: #202020;
   --color-stroke-base-container: #a1a1a1;
   --color-home-arrow-container: #616161;
@@ -18,6 +19,7 @@
   --color-heading: #eeeeee;
   --color-paragraph: #a1abb5;
   --color-emphasized-paragraph: #c14444;
+  --color-emphasized-paragraph-hovered: #d86767;
 
   /* Brand Colors */
   --color-primary: #b31c1c;
@@ -58,4 +60,22 @@ code {
 body {
   color: white;
   font-family: var(--font-paragraph);
+}
+
+.emphasized {
+  color: var(--color-emphasized-paragraph);
+  text-decoration: underline;
+}
+
+.emphasized.link:hover {
+  color: var(--color-emphasized-paragraph-hovered);
+}
+
+.link {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: white;
 }
