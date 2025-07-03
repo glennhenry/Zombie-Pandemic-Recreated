@@ -1,13 +1,20 @@
 import Example1 from "./ui/components/ex1";
 import Example2 from "./ui/features/ex2";
+import replaceClick from "./utils/replaceClick";
 
 export default function App() {
   return (
     <div className="bg-[url(/src/resources/bg.jpg)] bg-cover">
-      <div className="">
-        <header className="container ">
-          <h1>Header</h1>
-        </header>
+      <div className="bg-app-bar p-2 text-right text-xs">
+        <p>
+          Logged in as:{' '}
+          <span
+            onClick={replaceClick}
+            className="emphasized"
+          > user
+          </span> {" | "}
+          <button onClick={replaceClick} className="emphasized link">logout</button>
+        </p>
       </div>
 
       <main className="min-h-[100vh] container">
@@ -16,7 +23,7 @@ export default function App() {
         <Example2 />
       </main>
 
-      <div className="bg-[#131313] text-gray-400 py-4">
+      <div className="bg-app-bar text-paragraph py-4">
         <footer className="container flex flex-col items-center justify-between gap-2 text-sm md:flex-row md:gap-0 px-4">
           <p className="text-center">
             <strong>ZP Recreated</strong> — Not affiliated with original developers
@@ -27,7 +34,7 @@ export default function App() {
               href="https://github.com/glennhenry/Zombie-Pandemic-Recreated"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition"
+              className="link"
             >
               GitHub
             </a>
@@ -35,7 +42,7 @@ export default function App() {
               href="https://discord.com/invite/Yrzsk7n6nf"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition"
+              className="link"
             >
               Discord
             </a>

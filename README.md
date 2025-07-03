@@ -96,7 +96,4 @@ java -jar server/build/libs/zpr-server.jar -port=1234 -host=1.2.3.4
 
 As of now, we don't have a standard on how to contribute. We also don't own a wiki or documentation on the project. Best way to contribute is by making question, feedback, suggestion on [issues](https://github.com/glennhenry/Zombie-Pandemic-Recreated/issues), or directly make a change in code and apply a pull request.
 
-We have two branches in this repo.
-
-- The `main` branch is intended for production ready code. In the future, we will set up a GitHub workflows that automatically build the game and create a GitHub releases.
-- The `dev` branch is where all development happens. You can commit and push or pull freely. Experimental and incomplete features live here before it goes to `main` branch.
+For simplicity, we will be developing on main branch directly.

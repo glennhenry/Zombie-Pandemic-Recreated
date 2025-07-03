@@ -1,45 +1,33 @@
-@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&family=Inter:wght@400;500;700&family=Rum+Raisin&family=Russo+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Just+Another+Hand&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Rum+Raisin&family=Russo+One&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
 @import "tailwindcss";
 
 @theme {
   --font-heading: "Rum Raisin", "sans-serif";
-  /* TODO: RENAME */
-  --font-russo: "Russo One", "sans-serif"; 
   --font-mono: "Source Code Pro", "monospace";
-  --font-paragraph: "Inter", "sans";
+  --font-paragraph: "Noto Serif", "sans";
+  /* --font-paragraph: "Inter", "sans"; */
+  --font-game-logo: "Just Another Hand", "sans-serif";
+  --font-russo: "Russo One", "sans-serif";
 
   /* Backgrounds */
-  --color-b-base: #282626;
-  --color-darker: #1d1d1d;
-  --color-container-base: #373737;
-  --color-container-heading: #605f5f;
-  --color-container-heading-highlight: #7b7b7b;
+  --color-app-bar: #131313;
+  --color-base-container: #202020;
+  --color-stroke-base-container: #a1a1a1;
+  --color-home-arrow-container: #616161;
 
   /* Text */
-  --color-title: #ffffff;
-  --color-t-base: #ededed;
+  --color-heading: #eeeeee;
+  --color-paragraph: #a1abb5;
+  --color-emphasized-paragraph: #c14444;
+  --color-emphasized-paragraph-hovered: #d86767;
 
   /* Brand Colors */
-  --color-primary: #72af55;
-  --color-secondary: #6f86e4;
+  --color-primary: #b31c1c;
 
   /* Status Colors */
   --color-status-good: #83e864;
   --color-status-bad: #c74e4e;
   --color-status-neutral: #d9b93a;
-
-  /* Game Colors */
-  --color-console-input: #4c63da;
-  --color-console-input-hover: #5d73e8;
-
-  --color-character-stats-bg: #414251;
-
-  --color-health: #d16d6a;
-  --color-hunger: #9dc284;
-  --color-thirst: #a6c4e5;
-  --color-energy: #db944b;
-  --color-wellbeing: #fffd54;
-  --color-armor: #b7b7b7;
 }
 
 * {
@@ -60,7 +48,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: var(--color-title);
+  color: var(--color-heading);
   font-family: var(--font-heading);
   text-wrap: balance;
 }
@@ -70,6 +58,24 @@ code {
 }
 
 body {
-  color: var(--color-t-base);
+  color: white;
   font-family: var(--font-paragraph);
+}
+
+.emphasized {
+  color: var(--color-emphasized-paragraph);
+  text-decoration: underline;
+}
+
+.emphasized.link:hover {
+  color: var(--color-emphasized-paragraph-hovered);
+}
+
+.link {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: white;
 }
