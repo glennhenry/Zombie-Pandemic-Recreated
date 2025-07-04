@@ -1,26 +1,37 @@
-import Example1 from "./ui/components/ex1";
-import Example2 from "./ui/features/ex2";
+import { useState } from "react";
+import Game from "./ui/features/game/Game";
+import Homepage from "./ui/home/Homepage";
 import replaceClick from "./utils/replaceClick";
 
 export default function App() {
+  const [account, _setAccount] = useState(true)
+
+  const renderPage = () => {
+    switch (window.location.pathname) {
+      case '/play': return <Game />
+      case '/': return <Homepage />
+      default: window.location.href = '/404.html'; return null
+    }
+  }
+
   return (
     <div className="bg-[url(/src/resources/bg.jpg)] bg-cover">
-      <div className="bg-app-bar p-2 text-right text-xs">
-        <p>
-          Logged in as:{' '}
-          <span
-            onClick={replaceClick}
-            className="emphasized"
-          > user
-          </span> {" | "}
-          <button onClick={replaceClick} className="emphasized link">logout</button>
-        </p>
+      <div className="bg-app-bar flex justify-between items-center px-4 text-right text-xs">
+        <a className="text-2xl font-game-logo" href="/" title="Home">ZP</a>
+        {account ? (
+          <p>
+            Logged in as: <span className="emphasized">user</span> {" | "}
+            <button onClick={replaceClick} className="emphasized link">
+              logout
+            </button>
+          </p>
+        ) : (
+          <p>Not logged in</p>
+        )}
       </div>
 
       <main className="min-h-[100vh] container">
-        <h1>MAIN CONTENT</h1>
-        <Example1 />
-        <Example2 />
+        {renderPage()}
       </main>
 
       <div className="bg-app-bar text-paragraph py-4">
