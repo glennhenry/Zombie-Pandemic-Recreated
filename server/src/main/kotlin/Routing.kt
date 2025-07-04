@@ -25,7 +25,9 @@ fun Application.configureRouting() {
 
         // Serve the static website only in production; the development environment will use the Vite server.
         if (!application.developmentMode) {
-            staticFiles("/", File("web"), index = "index.html")
+            singlePageApplication {
+                react("web")
+            }
         }
     }
 }
