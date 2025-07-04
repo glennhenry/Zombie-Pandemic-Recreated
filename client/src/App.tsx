@@ -9,8 +9,7 @@ export default function App() {
   const renderPage = () => {
     switch (window.location.pathname) {
       case '/play': return <Game />
-      case '/': return <Homepage />
-      default: window.location.href = '/404.html'; return null
+      default: return <Homepage />
     }
   }
 
