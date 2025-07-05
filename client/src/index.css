@@ -13,6 +13,12 @@
   --color-gradient-start: #ffffff;
   --color-gradient-end: #424242;
 
+  /* Play Button */
+  --color-play-bg-gradient-start: #d9d9d9;
+  --color-play-bg-gradient-end: #737373;
+  --color-play-btn-gradient-start: #642020;
+  --color-play-btn-gradient-end: #911c1c;
+
   /* Backgrounds */
   --color-app-bar: #131313;
   --color-base-container: #202020;
@@ -86,4 +92,13 @@ body {
 
 .font-game-logo {
   font-family: var(--font-game-logo);
+}
+
+.noselect {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.playbtn-shadow {
+  box-shadow: 0px 3px 4px 3px rgba(0, 0, 0, 0.5);
 }
