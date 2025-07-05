@@ -4,19 +4,23 @@ import Homepage from "./ui/home/Homepage";
 import replaceClick from "./utils/replaceClick";
 
 export default function App() {
-  const [account, _setAccount] = useState(true)
+  const [account, _setAccount] = useState(true);
 
   const renderPage = () => {
     switch (window.location.pathname) {
-      case '/play': return <Game />
-      default: return <Homepage />
+      case "/play":
+        return <Game />;
+      default:
+        return <Homepage />;
     }
-  }
+  };
 
   return (
     <div className="bg-[url(/src/resources/bg.jpg)] bg-cover">
-      <div className="bg-app-bar flex justify-between items-center px-4 text-right text-xs">
-        <a className="text-2xl font-game-logo" href="/" title="Home">ZP</a>
+      <div className="flex items-center justify-between bg-app-bar px-4 text-right text-xs">
+        <a className="font-game-logo text-2xl" href="/" title="Home">
+          ZP
+        </a>
         {account ? (
           <p>
             Logged in as: <span className="emphasized">user</span> {" | "}
@@ -29,14 +33,13 @@ export default function App() {
         )}
       </div>
 
-      <main className="min-h-[100vh] container">
-        {renderPage()}
-      </main>
+      <main className="container min-h-[100vh]">{renderPage()}</main>
 
-      <div className="bg-app-bar text-paragraph py-4">
-        <footer className="container flex flex-col items-center justify-between gap-2 text-sm md:flex-row md:gap-0 px-4">
+      <div className="bg-app-bar py-4 text-paragraph">
+        <footer className="container flex flex-col items-center justify-between gap-2 px-4 text-sm md:flex-row md:gap-0">
           <p className="text-center">
-            <strong>ZP Recreated</strong> — Not affiliated with original developers
+            <strong>ZP Recreated</strong> — Not affiliated with original
+            developers
           </p>
 
           <div className="flex gap-4 underline">

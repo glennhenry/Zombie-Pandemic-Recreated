@@ -3,7 +3,7 @@ export default function textLinearGradientStyle(
   fromColor: string,
   toColor: string,
   fromPercent: number = 0,
-  toPercent: number = 100
+  toPercent: number = 100,
 ): React.CSSProperties {
   return {
     backgroundImage: `linear-gradient(to ${direction}, var(${fromColor}) ${fromPercent}%, var(${toColor}) ${toPercent}%)`,

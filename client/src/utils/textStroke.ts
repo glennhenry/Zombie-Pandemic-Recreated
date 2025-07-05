@@ -1,6 +1,6 @@
 export default function textStroke(
   strokeWidth: number,
-  color: string
+  color: string,
 ): React.CSSProperties {
   const shadows = [];
   for (let dx = -strokeWidth; dx <= strokeWidth; dx++) {
