@@ -9,6 +9,10 @@
   --font-game-logo: "Just Another Hand", "sans-serif";
   --font-russo: "Russo One", "sans-serif";
 
+  /* Logo */
+  --color-gradient-start: #FFFFFF;
+  --color-gradient-end: #424242;
+
   /* Backgrounds */
   --color-app-bar: #131313;
   --color-base-container: #202020;
@@ -78,4 +82,8 @@ body {
 
 .link:hover {
   color: white;
+}
+
+.font-game-logo {
+  font-family: var(--font-game-logo);
 }
