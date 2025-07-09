@@ -4,6 +4,10 @@ import {
 } from "../../utils/linearGradient";
 import textStrokeStyle from "../../utils/textStroke";
 import { HomeCard } from "../components/Card";
+import About from "./sections/About";
+import Auth from "./sections/Auth";
+import News from "./sections/News";
+import Preview from "./sections/Preview";
 
 export default function Homepage() {
   return (
@@ -23,7 +27,9 @@ export default function Homepage() {
         </h1>
         <h1
           className="font-game-logo text-7xl"
-          style={textStrokeStyle(5, "--color-primary")}
+          style={{
+            ...textStrokeStyle(5, "--color-primary"),
+          }}
         >
           RECREATED
         </h1>
@@ -58,41 +64,18 @@ export default function Homepage() {
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           <div className="flex flex-col gap-2">
             <HomeCard className="">
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
+              <Preview />
             </HomeCard>
             <HomeCard className="mb-4 break-inside-avoid">
-              <p>News</p>
+              <News />
             </HomeCard>
           </div>
           <div className="flex flex-col gap-2">
             <HomeCard className="mb-4 break-inside-avoid">
-              <p>Login/Register</p>
+              <Auth />
             </HomeCard>
             <HomeCard className="mb-4 break-inside-avoid">
-              <p>About</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
-              <p>Preview</p>
+              <About />
             </HomeCard>
           </div>
         </div>
