@@ -1,8 +1,8 @@
 import {
   textLinearGradientStyle,
   bglinearGradientStyle,
-} from "../../utils/linearGradient";
-import textStrokeStyle from "../../utils/textStroke";
+} from "../../utils/ui/linearGradient";
+import textStrokeStyle from "../../utils/ui/textStroke";
 import { HomeCard } from "../components/Card";
 import About from "./sections/About";
 import Auth from "./sections/Auth";
