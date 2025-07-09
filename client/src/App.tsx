@@ -16,7 +16,7 @@ export default function App() {
   };
 
   return (
-    <div className="bg-[url(/src/resources/bg.jpg)] bg-cover">
+    <div className="bg-[url(/bg.jpg)] bg-cover">
       <div className="flex items-center justify-between bg-app-bar px-4 text-right text-xs">
         <a className="font-game-logo text-2xl" href="/" title="Home">
           ZP
