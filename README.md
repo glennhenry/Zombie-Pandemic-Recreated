@@ -24,8 +24,6 @@ This is purely a fan-made project created for hobby and learning purposes. ZPRec
 
 The game is separated into client and server component. The client component is the web application that you run to play the game, while the server component serves the web page (in production), game assets, and handles game requests.
 
-![Routing diagram](./routing-diagram.png)
-
 The original game involve massive multiplayer play. Currently, we are not planning to set up a central server for everyone to connect to. The game server will self-hosted by each player. In other word, although the game has multiplayer playability, people would play it as if it is a single player game. We may simulate multiplayer experience (like bots) for this purpose.
 
 ### Client (Frontend)
