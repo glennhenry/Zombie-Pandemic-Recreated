@@ -2,7 +2,7 @@ function normalizeColor(color: string): string {
   return color.startsWith("--") ? `var(${color})` : color;
 }
 
-export default function textStroke(
+export default function textStrokeStyle(
   strokeWidth: number,
   color: string,
 ): React.CSSProperties {
