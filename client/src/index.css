@@ -24,6 +24,7 @@
   --color-base-container: #202020;
   --color-stroke-base-container: #a1a1a1;
   --color-home-arrow-container: #616161;
+  --color-home-arrow-container-hovered: #6b6b6b;
 
   /* Text */
   --color-heading: #eeeeee;
