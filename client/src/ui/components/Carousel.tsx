@@ -14,10 +14,11 @@ interface CarouselProps {
 
 export const Carousel = (props: CarouselProps) => {
   const scrollRef = useRef<HTMLDivElement>(null!);
-  useDragScroll(scrollRef);
+  const isDraggingRef = useDragScroll(scrollRef);
   const thumbnailRefs = useRef<(HTMLImageElement | null)[]>([]);
 
   const changePreview = (idx: number) => {
+    if (isDraggingRef.current) return;
     props.onSelect(idx);
 
     const selectedThumbnail = thumbnailRefs.current[idx];
