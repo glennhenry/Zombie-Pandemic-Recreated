@@ -16,7 +16,7 @@ export default function App() {
   };
 
   return (
-    <div className="bg-[url(/bg.jpg)] bg-cover">
+    <div className="bg-[#050505] bg-[url(/bg.jpg)] bg-contain bg-top bg-no-repeat">
       <div className="flex items-center justify-between bg-app-bar px-4 text-right text-xs">
         <a className="font-game-logo text-2xl" href="/" title="Home">
           ZP
@@ -33,7 +33,7 @@ export default function App() {
         )}
       </div>
 
-      <main className="container min-h-[100vh]">{renderPage()}</main>
+      <main className="container min-h-[100vh] pb-20">{renderPage()}</main>
 
       <div className="bg-app-bar py-4 text-paragraph">
         <footer className="container flex flex-col items-center justify-between gap-2 px-4 text-sm md:flex-row md:gap-0">
