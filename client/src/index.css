@@ -4,7 +4,7 @@
 @theme {
   --font-heading: "Rum Raisin", "sans-serif";
   --font-mono: "Source Code Pro", "monospace";
-  --font-paragraph: "Noto Serif", "sans";
+  --font-serif: "Noto Serif", "sans";
   /* --font-paragraph: "Inter", "sans"; */
   --font-game-logo: "Just Another Hand", "sans-serif";
   --font-russo: "Russo One", "sans-serif";
@@ -60,7 +60,6 @@ h4,
 h5,
 h6 {
   color: var(--color-heading);
-  font-family: var(--font-heading);
   text-wrap: balance;
 }
 
