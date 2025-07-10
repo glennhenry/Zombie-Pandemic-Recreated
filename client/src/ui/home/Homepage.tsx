@@ -61,7 +61,7 @@ export default function Homepage() {
         </a>
       </div>
       <div className="flex justify-center">
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 font-serif">
           <div className="flex flex-col gap-2">
             <HomeCard className="">
               <Preview />
