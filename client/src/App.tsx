@@ -5,7 +5,7 @@ import replaceClick from "./utils/replaceClick";
 import { Account } from "./core/types/Account";
 
 export default function App() {
-  const [account, _setAccount] = useState(Account.createDummy());
+  const [account, setAccount] = useState<Account | null>(Account.createDummy());
 
   const renderPage = () => {
     switch (window.location.pathname) {
@@ -29,7 +29,21 @@ export default function App() {
             <span className="emphasized">{account.email}</span>
             {" | "}
             <button
-              onClick={(_) => replaceClick(undefined, "Remove account state")}
+              onClick={(_) => {
+                if (window.location.pathname === "/play") {
+                  const confirmLogout = window.confirm(
+                    "This will disconnect you from the game. Continue?",
+                  );
+                  if (!confirmLogout) return;
+                }
+
+                setAccount(null);
+                replaceClick(undefined, "Remove account state from server");
+
+                if (window.location.pathname === "/play") {
+                  window.location.pathname = "/";
+                }
+              }}
               className="emphasized link"
             >
               logout

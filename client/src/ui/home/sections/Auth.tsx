@@ -7,7 +7,7 @@ import { Checkbox } from "../../components/Checkbox";
 import type { Account } from "../../../core/types/Account";
 
 interface AuthProps {
-  account?: Account;
+  account?: Account | null;
 }
 
 export default function Auth(props: AuthProps) {
@@ -21,95 +21,110 @@ export default function Auth(props: AuthProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl">Login/Register</h1>
-      <div className="flex flex-col items-center gap-3">
-        {isRegistering ? (
-          <>
-            <TextField
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full max-w-70"
-            />
-            <TextField
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full max-w-70"
-            />
-          </>
-        ) : (
-          <TextField
-            placeholder="Username or Email"
-            value={usernameAndEmail}
-            onChange={(e) => setUsernameAndEmail(e.target.value)}
-            className="w-full max-w-70"
-          />
-        )}
-
-        <TextField
-          placeholder="Password"
-          hide={hidePassword}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onToggleHide={() => setHidePassword(!hidePassword)}
-          className="w-full max-w-70"
-        >
-          <FiEye size={18} />
-        </TextField>
-        <div className="flex w-full max-w-70 justify-between">
-          <Checkbox
-            isChecked={keepLogin}
-            onChecked={(e) => setKeepLogin(e.target.checked)}
-          >
-            <p>Keep logged in</p>
-          </Checkbox>
-          <a
-            href="#"
-            className="emphasized link"
-            onClick={(_) =>
-              replaceClick(
-                undefined,
-                "change login form to email only, create an alert, send an email",
-              )
-            }
-          >
-            Forgot password
+      <h1 className="text-xl">
+        {props.account ? "Welcome back" : "Login/Register"}
+      </h1>
+      {props.account ? (
+        <div className="flex flex-col gap-2">
+          <p>
+            <span className="emphasized">{props.account.username}</span>
+            {" - "}
+            <span className="emphasized">{props.account.email}</span>
+          </p>
+          <a href="/play" className="emphasized link">
+            Play now!
           </a>
         </div>
-        <div className="flex w-full max-w-80 flex-col justify-center gap-2">
-          <Button
-            className="flex justify-center rounded-md p-2"
-            onClick={() =>
-              replaceClick(undefined, "register/login function on server")
-            }
+      ) : (
+        <div className="flex flex-col items-center gap-3">
+          {isRegistering ? (
+            <>
+              <TextField
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full max-w-70"
+              />
+              <TextField
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full max-w-70"
+              />
+            </>
+          ) : (
+            <TextField
+              placeholder="Username or Email"
+              value={usernameAndEmail}
+              onChange={(e) => setUsernameAndEmail(e.target.value)}
+              className="w-full max-w-70"
+            />
+          )}
+
+          <TextField
+            placeholder="Password"
+            hide={hidePassword}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onToggleHide={() => setHidePassword(!hidePassword)}
+            className="w-full max-w-70"
           >
-            <p className="text-lg">{isRegistering ? "Register" : "Login"}</p>
-          </Button>
-          <p>
-            <a
-              href="#"
-              onClick={(_) => setIsRegistering(!isRegistering)}
-              className="emphasized link"
+            <FiEye size={18} />
+          </TextField>
+          <div className="flex w-full max-w-70 justify-between">
+            <Checkbox
+              isChecked={keepLogin}
+              onChecked={(e) => setKeepLogin(e.target.checked)}
             >
-              {isRegistering ? "Login" : "Register"}
-            </a>{" "}
-            or{" "}
+              <p>Keep logged in</p>
+            </Checkbox>
             <a
               href="#"
+              className="emphasized link"
               onClick={(_) =>
                 replaceClick(
                   undefined,
-                  "Skip login, go directly into game with guest account",
+                  "change login form to email only, create an alert, send an email",
                 )
               }
-              className="emphasized link"
             >
-              Play as Guest
+              Forgot password
             </a>
-          </p>
+          </div>
+          <div className="flex w-full max-w-80 flex-col justify-center gap-2">
+            <Button
+              className="flex justify-center rounded-md p-2"
+              onClick={() =>
+                replaceClick(undefined, "register/login function on server")
+              }
+            >
+              <p className="text-lg">{isRegistering ? "Register" : "Login"}</p>
+            </Button>
+            <p>
+              <a
+                href="#"
+                onClick={(_) => setIsRegistering(!isRegistering)}
+                className="emphasized link"
+              >
+                {isRegistering ? "Login" : "Register"}
+              </a>{" "}
+              or{" "}
+              <a
+                href="#"
+                onClick={(_) =>
+                  replaceClick(
+                    undefined,
+                    "Skip login, go directly into game with guest account",
+                  )
+                }
+                className="emphasized link"
+              >
+                Play as Guest
+              </a>
+            </p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

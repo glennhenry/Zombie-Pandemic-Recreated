@@ -11,7 +11,7 @@ import News from "./sections/News";
 import Preview from "./sections/Preview";
 
 interface HomepageProps {
-  account?: Account;
+  account?: Account | null;
 }
 
 export default function Homepage(props: HomepageProps) {
