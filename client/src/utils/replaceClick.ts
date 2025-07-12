@@ -1,3 +1,3 @@
-export default function replaceClick(event?: any) {
-  console.log(`To be replaced`, event);
+export default function replaceClick(event?: any, todo?: string) {
+  console.log(`TODO: ${todo}`, event);
 }

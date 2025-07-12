@@ -24,7 +24,10 @@ export default function App() {
         {account ? (
           <p>
             Logged in as: <span className="emphasized">user</span> {" | "}
-            <button onClick={replaceClick} className="emphasized link">
+            <button
+              onClick={(_) => replaceClick(undefined, "Remove account state")}
+              className="emphasized link"
+            >
               logout
             </button>
           </p>

@@ -49,14 +49,25 @@ export default function Auth() {
           >
             <p>Keep logged in</p>
           </Checkbox>
-          <a href="#" className="emphasized link" onClick={replaceClick}>
+          <a
+            href="#"
+            className="emphasized link"
+            onClick={(_) =>
+              replaceClick(
+                undefined,
+                "change login form to email only, create an alert, send an email",
+              )
+            }
+          >
             Forgot password
           </a>
         </div>
         <div className="flex w-full max-w-80 flex-col justify-center gap-2">
           <Button
             className="flex justify-center rounded-md p-2"
-            onClick={replaceClick}
+            onClick={() =>
+              replaceClick(undefined, "register/login function on server")
+            }
           >
             <p className="text-lg">{isRegistering ? "Register" : "Login"}</p>
           </Button>
@@ -69,7 +80,16 @@ export default function Auth() {
               {isRegistering ? "Login" : "Register"}
             </a>{" "}
             or{" "}
-            <a href="#" onClick={replaceClick} className="emphasized link">
+            <a
+              href="#"
+              onClick={(_) =>
+                replaceClick(
+                  undefined,
+                  "Skip login, go directly into game with guest account",
+                )
+              }
+              className="emphasized link"
+            >
               Play as Guest
             </a>
           </p>
