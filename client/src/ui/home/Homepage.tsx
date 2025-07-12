@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import type { Account } from "../../core/types/Account";
 import {
   textLinearGradientStyle,
@@ -9,12 +10,23 @@ import About from "./sections/About";
 import Auth from "./sections/Auth";
 import News from "./sections/News";
 import Preview from "./sections/Preview";
+import { Button } from "../components/Button";
 
 interface HomepageProps {
   account?: Account | null;
 }
 
 export default function Homepage(props: HomepageProps) {
+  const authFormRef = useRef<HTMLFormElement | null>(null);
+
+  const handlePlayClick = () => {
+    if (props.account) {
+      window.location.href = "/play";
+    } else if (authFormRef.current) {
+      authFormRef.current.requestSubmit();
+    }
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <div className="noselect p-3 text-center">
@@ -49,8 +61,8 @@ export default function Homepage(props: HomepageProps) {
           100,
         )}
       >
-        <a
-          href="/play"
+        <Button
+          onClick={handlePlayClick}
           className="playbtn-shadow inline-block cursor-pointer rounded-md px-10 py-2"
           style={bglinearGradientStyle(
             "bottom",
@@ -63,7 +75,7 @@ export default function Homepage(props: HomepageProps) {
           <p className="font-russo text-lg" style={textStrokeStyle(2, "black")}>
             PLAY
           </p>
-        </a>
+        </Button>
       </div>
       <div className="flex justify-center">
         <div className="grid grid-cols-1 gap-2 font-serif md:grid-cols-2">
@@ -77,7 +89,10 @@ export default function Homepage(props: HomepageProps) {
           </div>
           <div className="mx-auto flex w-full max-w-[25rem] flex-col gap-2 md:mx-0">
             <HomeCard className="mb-4 w-full break-inside-avoid">
-              <Auth account={props.account} />
+              <Auth
+                account={props.account}
+                formRef={authFormRef}
+              />
             </HomeCard>
             <HomeCard className="mb-4 w-full break-inside-avoid">
               <About />

@@ -8,6 +8,7 @@ import type { Account } from "../../../core/types/Account";
 
 interface AuthProps {
   account?: Account | null;
+  formRef?: React.RefObject<HTMLFormElement | null>;
 }
 
 export default function Auth(props: AuthProps) {
@@ -15,9 +16,25 @@ export default function Auth(props: AuthProps) {
   const [email, setEmail] = useState("");
   const [usernameAndEmail, setUsernameAndEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [hidePassword, setHidePassword] = useState(false);
+  const [hidePassword, setHidePassword] = useState(true);
   const [isRegistering, setIsRegistering] = useState(false);
   const [keepLogin, setKeepLogin] = useState(false);
+
+  const handleAuthFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (isRegistering) {
+      replaceClick(
+        undefined,
+        `validate form register: "${username}"-"${email}"-"${password}"`,
+      );
+    } else {
+      replaceClick(
+        undefined,
+        `validate form login: "${usernameAndEmail}"-"${password}"`,
+      );
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -36,18 +53,24 @@ export default function Auth(props: AuthProps) {
           </a>
         </div>
       ) : (
-        <div className="flex flex-col items-center gap-3">
+        <form
+          ref={props.formRef}
+          onSubmit={handleAuthFormSubmit}
+          className="flex flex-col items-center gap-3"
+        >
           {isRegistering ? (
             <>
               <TextField
                 placeholder="Email"
                 value={email}
+                required={true}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full max-w-70"
               />
               <TextField
                 placeholder="Username"
                 value={username}
+                required={true}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full max-w-70"
               />
@@ -56,6 +79,7 @@ export default function Auth(props: AuthProps) {
             <TextField
               placeholder="Username or Email"
               value={usernameAndEmail}
+              required={true}
               onChange={(e) => setUsernameAndEmail(e.target.value)}
               className="w-full max-w-70"
             />
@@ -65,12 +89,14 @@ export default function Auth(props: AuthProps) {
             placeholder="Password"
             hide={hidePassword}
             value={password}
+            required={true}
             onChange={(e) => setPassword(e.target.value)}
             onToggleHide={() => setHidePassword(!hidePassword)}
             className="w-full max-w-70"
           >
             <FiEye size={18} />
           </TextField>
+
           <div className="flex w-full max-w-70 justify-between">
             <Checkbox
               isChecked={keepLogin}
@@ -91,15 +117,15 @@ export default function Auth(props: AuthProps) {
               Forgot password
             </a>
           </div>
+
           <div className="flex w-full max-w-80 flex-col justify-center gap-2">
             <Button
-              className="flex justify-center rounded-md p-2"
-              onClick={() =>
-                replaceClick(undefined, "register/login function on server")
-              }
+              type="submit"
+              className="flex justify-center rounded-md bg-primary p-2 text-white hover:bg-primary/80 active:bg-primary/70"
             >
               <p className="text-lg">{isRegistering ? "Register" : "Login"}</p>
             </Button>
+
             <p>
               <a
                 href="#"
@@ -123,7 +149,7 @@ export default function Auth(props: AuthProps) {
               </a>
             </p>
           </div>
-        </div>
+        </form>
       )}
     </div>
   );
