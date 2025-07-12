@@ -2,16 +2,17 @@ import { useState } from "react";
 import Game from "./ui/features/game/Game";
 import Homepage from "./ui/home/Homepage";
 import replaceClick from "./utils/replaceClick";
+import { Account } from "./core/types/Account";
 
 export default function App() {
-  const [account, _setAccount] = useState(true);
+  const [account, _setAccount] = useState(Account.createDummy());
 
   const renderPage = () => {
     switch (window.location.pathname) {
       case "/play":
         return <Game />;
       default:
-        return <Homepage />;
+        return <Homepage account={account} />;
     }
   };
 
@@ -23,7 +24,10 @@ export default function App() {
         </a>
         {account ? (
           <p>
-            Logged in as: <span className="emphasized">user</span> {" | "}
+            Logged in as: <span className="emphasized">{account.username}</span>
+            {" - "}
+            <span className="emphasized">{account.email}</span>
+            {" | "}
             <button
               onClick={(_) => replaceClick(undefined, "Remove account state")}
               className="emphasized link"

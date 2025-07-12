@@ -4,10 +4,16 @@ import { TextField } from "../../components/TextField";
 import { FiEye } from "react-icons/fi";
 import replaceClick from "../../../utils/replaceClick";
 import { Checkbox } from "../../components/Checkbox";
+import type { Account } from "../../../core/types/Account";
 
-export default function Auth() {
+interface AuthProps {
+  account?: Account;
+}
+
+export default function Auth(props: AuthProps) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [usernameAndEmail, setUsernameAndEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
@@ -17,20 +23,29 @@ export default function Auth() {
     <div className="flex flex-col gap-4">
       <h1 className="text-xl">Login/Register</h1>
       <div className="flex flex-col items-center gap-3">
-        {isRegistering && (
+        {isRegistering ? (
+          <>
+            <TextField
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full max-w-70"
+            />
+            <TextField
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full max-w-70"
+            />
+          </>
+        ) : (
           <TextField
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Username or Email"
+            value={usernameAndEmail}
+            onChange={(e) => setUsernameAndEmail(e.target.value)}
             className="w-full max-w-70"
           />
         )}
-        <TextField
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full max-w-70"
-        />
 
         <TextField
           placeholder="Password"

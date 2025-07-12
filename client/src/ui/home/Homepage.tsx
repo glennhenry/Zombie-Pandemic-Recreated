@@ -1,3 +1,4 @@
+import type { Account } from "../../core/types/Account";
 import {
   textLinearGradientStyle,
   bglinearGradientStyle,
@@ -9,7 +10,11 @@ import Auth from "./sections/Auth";
 import News from "./sections/News";
 import Preview from "./sections/Preview";
 
-export default function Homepage() {
+interface HomepageProps {
+  account?: Account;
+}
+
+export default function Homepage(props: HomepageProps) {
   return (
     <div className="flex flex-col gap-2">
       <div className="noselect p-3 text-center">
@@ -72,7 +77,7 @@ export default function Homepage() {
           </div>
           <div className="mx-auto flex w-full max-w-[25rem] flex-col gap-2 md:mx-0">
             <HomeCard className="mb-4 w-full break-inside-avoid">
-              <Auth />
+              <Auth account={props.account} />
             </HomeCard>
             <HomeCard className="mb-4 w-full break-inside-avoid">
               <About />
