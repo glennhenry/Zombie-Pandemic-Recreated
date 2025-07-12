@@ -4,6 +4,7 @@ interface ButtonProps {
   baseColor?: string;
   hoverColor?: string;
   activeColor?: string;
+  onClick: () => void;
   children: React.ReactNode;
   className?: string;
 }
@@ -15,7 +16,8 @@ export const Button = (props: ButtonProps) => {
 
   return (
     <div
-      className={`cursor-pointer ${baseColor} ${hoverColor} ${activeColor} p-4 ${classNames(props.className)}`}
+      onClick={props.onClick}
+      className={`cursor-pointer ${baseColor} ${hoverColor} ${activeColor} ${classNames(props.className)}`}
     >
       {props.children}
     </div>
