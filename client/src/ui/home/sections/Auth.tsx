@@ -22,14 +22,14 @@ export default function Auth() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full max-w-90"
+            className="w-full max-w-70"
           />
         )}
         <TextField
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full max-w-90"
+          className="w-full max-w-70"
         />
 
         <TextField
@@ -38,24 +38,41 @@ export default function Auth() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           onToggleHide={() => setHidePassword(!hidePassword)}
-          className="w-full max-w-90"
+          className="w-full max-w-70"
         >
           <FiEye size={18} />
         </TextField>
-        <div className="flex w-full max-w-90 justify-between">
+        <div className="flex w-full max-w-70 justify-between">
           <Checkbox
             isChecked={keepLogin}
             onChecked={(e) => setKeepLogin(e.target.checked)}
           >
             <p>Keep logged in</p>
           </Checkbox>
-          <a
-            href="#"
-            className="emphasized link"
-            onClick={(e) => replaceClick(e)}
-          >
+          <a href="#" className="emphasized link" onClick={replaceClick}>
             Forgot password
           </a>
+        </div>
+        <div className="flex w-full max-w-80 flex-col justify-center gap-2">
+          <Button
+            className="flex justify-center rounded-md p-2"
+            onClick={replaceClick}
+          >
+            <p className="text-lg">{isRegistering ? "Register" : "Login"}</p>
+          </Button>
+          <p>
+            <a
+              href="#"
+              onClick={(_) => setIsRegistering(!isRegistering)}
+              className="emphasized link"
+            >
+              {isRegistering ? "Login" : "Register"}
+            </a>{" "}
+            or{" "}
+            <a href="#" onClick={replaceClick} className="emphasized link">
+              Play as Guest
+            </a>
+          </p>
         </div>
       </div>
     </div>

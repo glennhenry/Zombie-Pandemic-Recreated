@@ -61,7 +61,7 @@ export default function Homepage() {
         </a>
       </div>
       <div className="flex justify-center">
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 font-serif">
+        <div className="grid grid-cols-1 gap-2 font-serif md:grid-cols-2">
           <div className="flex flex-col gap-2">
             <HomeCard className="">
               <Preview />
@@ -70,11 +70,11 @@ export default function Homepage() {
               <News />
             </HomeCard>
           </div>
-          <div className="flex flex-col gap-2">
-            <HomeCard className="mb-4 break-inside-avoid">
+          <div className="mx-auto flex w-full max-w-[25rem] flex-col gap-2 md:mx-0">
+            <HomeCard className="mb-4 w-full break-inside-avoid">
               <Auth />
             </HomeCard>
-            <HomeCard className="mb-4 break-inside-avoid">
+            <HomeCard className="mb-4 w-full break-inside-avoid">
               <About />
             </HomeCard>
           </div>
