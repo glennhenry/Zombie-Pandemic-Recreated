@@ -59,8 +59,10 @@ export default function App() {
       <div className="bg-app-bar py-4 text-paragraph">
         <footer className="container flex flex-col items-center justify-between gap-2 px-4 text-sm md:flex-row md:gap-0">
           <p className="text-center">
-            <strong>ZP Recreated</strong> — Not affiliated with original
-            developers
+            <strong>
+              Copyright (c) {new Date().getFullYear()} ZP Recreated Devs
+            </strong>{" "}
+            — Not affiliated with original developers
           </p>
 
           <div className="flex gap-4 underline">
