@@ -5,7 +5,7 @@ import replaceClick from "./utils/replaceClick";
 import { Account } from "./core/types/Account";
 
 export default function App() {
-  const [account, setAccount] = useState<Account | null>(Account.createDummy());
+  const [account, setAccount] = useState<Account | null>(null);
 
   const renderPage = () => {
     switch (window.location.pathname) {
