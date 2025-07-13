@@ -88,13 +88,10 @@ export default function Homepage(props: HomepageProps) {
             </HomeCard>
           </div>
           <div className="mx-auto flex w-full max-w-[25rem] flex-col gap-2 md:mx-0">
-            <HomeCard className="mb-4 w-full break-inside-avoid">
-              <Auth
-                account={props.account}
-                formRef={authFormRef}
-              />
+            <HomeCard className="w-full break-inside-avoid">
+              <Auth account={props.account} formRef={authFormRef} />
             </HomeCard>
-            <HomeCard className="mb-4 w-full break-inside-avoid">
+            <HomeCard className="w-full break-inside-avoid">
               <About />
             </HomeCard>
           </div>
