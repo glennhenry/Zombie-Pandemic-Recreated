@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "../../components/Button";
 import { TextField } from "../../components/TextField";
-import { FiEye } from "react-icons/fi";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import replaceClick from "../../../utils/replaceClick";
 import { Checkbox } from "../../components/Checkbox";
 import type { Account } from "../../../core/types/Account";
@@ -94,7 +94,7 @@ export default function Auth(props: AuthProps) {
             onToggleHide={() => setHidePassword(!hidePassword)}
             className="w-full max-w-70"
           >
-            <FiEye size={18} />
+            {hidePassword ? <FiEye size={18} /> : <FiEyeOff size={18} />}
           </TextField>
 
           <div className="flex w-full max-w-70 justify-between">
