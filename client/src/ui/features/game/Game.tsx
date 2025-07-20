@@ -1,5 +1,8 @@
 export default function Game() {
-    return (
-        <h1>Game page</h1>
-    )
+  return (
+    // Game container
+    <div className="mx-auto h-[600px] w-full max-w-[1200px] min-w-[800px] bg-amber-100">
+          
+    </div>
+  );
 }

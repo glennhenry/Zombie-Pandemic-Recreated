@@ -49,11 +49,22 @@
   }
 }
 
+html, body {
+  overflow-x: auto;
+  min-width: 800px;
+}
+
 .container {
   width: 92%;
   max-width: 1200px;
   height: 100%;
   margin: 0 auto;
+}
+
+@media (max-width: 799px) {
+  .container {
+    width: 100% !important;
+  }
 }
 
 h1,
