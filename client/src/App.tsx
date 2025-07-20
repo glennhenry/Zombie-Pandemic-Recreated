@@ -1,11 +1,12 @@
-import { useState } from "react";
-import Game from "./ui/features/game/Game";
+import { useEffect, useState } from "react";
+import Game from "./ui/features/Game";
 import Homepage from "./ui/home/Homepage";
 import replaceClick from "./utils/replaceClick";
 import { Account } from "./core/types/Account";
+import { clearAccountCookie, getAccountFromCookie, saveAccountToCookie } from "./utils/accountSession";
 
 export default function App() {
-  const [account, setAccount] = useState<Account | null>(null);
+  const [account, _setAccount] = useState<Account | null>(null);
 
   const renderPage = () => {
     switch (window.location.pathname) {
@@ -20,6 +21,20 @@ export default function App() {
             }}
           />
         );
+    }
+  };
+
+  useEffect(() => {
+    const saved = getAccountFromCookie();
+    if (saved) _setAccount(saved);
+  }, []);
+
+  const setAccount = (account: Account | null) => {
+    _setAccount(account);
+    if (account) {
+      saveAccountToCookie(account);
+    } else {
+      clearAccountCookie();
     }
   };
 

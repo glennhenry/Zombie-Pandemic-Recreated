@@ -23,4 +23,24 @@ export const Account = {
       password: "123456",
     };
   },
+
+  fromJSON(data: any): Account {
+    if (
+      typeof data === "object" &&
+      data !== null &&
+      typeof data.uuid === "number" &&
+      typeof data.username === "string" &&
+      typeof data.email === "string" &&
+      typeof data.password === "string"
+    ) {
+      return {
+        uuid: data.uuid,
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      };
+    }
+
+    throw new Error("Invalid account JSON");
+  },
 };
