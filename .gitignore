@@ -11,6 +11,7 @@
 *.sln
 *.sw?
 build/
+rawAssets.ts
 
 # IDEs
 .idea/
