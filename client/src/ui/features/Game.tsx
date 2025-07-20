@@ -9,7 +9,7 @@ interface GameProps {
 export default function Game(_props: GameProps) {
   return (
     // Game container
-    <div className="mx-auto h-[800px] w-full max-w-[1200px] min-w-[800px] border-1 border-gray-500 bg-[#d4d4d4]">
+    <div className="mx-auto h-[800px] w-full max-w-[1200px] min-w-[800px] border-1 border-gray-500 bg-[#d4d4d4] noselect">
       {/* Topbar */}
       <div
         className="h-20"
