@@ -1,5 +1,6 @@
 import type { Account } from "../../core/types/Account";
 import { bglinearGradientStyle } from "../../utils/ui/linearGradient";
+import MainView from "./map/MainView";
 
 interface GameProps {
   account?: Account | null;
@@ -23,9 +24,7 @@ export default function Game(_props: GameProps) {
         <p>Top bar</p>
       </div>
       {/* Game view*/}
-      <div className="">
-        <p>Game view</p>
-      </div>
+      <MainView />
     </div>
   );
 }
