@@ -1,6 +1,6 @@
 import { PiArrowFatLeftFill, PiArrowFatRightFill } from "react-icons/pi";
 import classNames from "../../utils/ui/classNames";
-import type { Image } from "../../utils/type";
+import type { Image } from "../types/Image";
 import { useRef } from "react";
 import { Overlay } from "./Overlay";
 import { useDragScroll } from "../hooks/useDragScroll";
