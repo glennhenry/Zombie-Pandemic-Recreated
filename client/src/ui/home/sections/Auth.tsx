@@ -8,6 +8,7 @@ import type { Account } from "../../../core/types/Account";
 
 interface AuthProps {
   account?: Account | null;
+  onPlayAsGuest: () => void;
   formRef?: React.RefObject<HTMLFormElement | null>;
 }
 
@@ -137,12 +138,7 @@ export default function Auth(props: AuthProps) {
               or{" "}
               <a
                 href="#"
-                onClick={(_) =>
-                  replaceClick(
-                    undefined,
-                    "Skip login, go directly into game with guest account",
-                  )
-                }
+                onClick={(_) => props.onPlayAsGuest()}
                 className="emphasized link"
               >
                 Play as Guest

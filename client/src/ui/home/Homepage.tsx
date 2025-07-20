@@ -14,6 +14,7 @@ import { Button } from "../components/Button";
 
 interface HomepageProps {
   account?: Account | null;
+  onPlayAsGuest: () => void;
 }
 
 export default function Homepage(props: HomepageProps) {
@@ -89,7 +90,7 @@ export default function Homepage(props: HomepageProps) {
           </div>
           <div className="mx-auto flex w-full max-w-[25rem] flex-col gap-2 md:mx-0">
             <HomeCard className="w-full break-inside-avoid">
-              <Auth account={props.account} formRef={authFormRef} />
+              <Auth account={props.account} formRef={authFormRef} onPlayAsGuest={props.onPlayAsGuest} />
             </HomeCard>
             <HomeCard className="w-full break-inside-avoid">
               <About />

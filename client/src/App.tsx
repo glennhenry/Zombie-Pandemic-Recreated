@@ -12,7 +12,14 @@ export default function App() {
       case "/play":
         return <Game />;
       default:
-        return <Homepage account={account} />;
+        return (
+          <Homepage
+            account={account}
+            onPlayAsGuest={() => {
+              setAccount(Account.createGuest());
+            }}
+          />
+        );
     }
   };
 

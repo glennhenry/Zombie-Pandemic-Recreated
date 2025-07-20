@@ -14,4 +14,13 @@ export const Account = {
       password: "123456",
     };
   },
+
+  createGuest(): Account {
+    return {
+      uuid: 0,
+      username: "guestplayer",
+      email: "player@guest.com",
+      password: "123456",
+    };
+  },
 };
