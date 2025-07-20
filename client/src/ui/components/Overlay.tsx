@@ -1,5 +1,6 @@
 interface OverlayProps {
   color?: string;
+  enabled?: boolean;
   hoverEnabled?: boolean;
   onClick?: () => void;
   overlayContent?: React.ReactNode;
@@ -7,26 +8,26 @@ interface OverlayProps {
   children: React.ReactNode;
 }
 
-export const Overlay = ({
-  color = "bg-black/30",
-  hoverEnabled = false,
-  onClick,
-  overlayContent,
-  className = "",
-  children,
-}: OverlayProps) => {
-  return (
-    <div
-      className={`relative overflow-hidden ${hoverEnabled ? "group" : ""} ${className}`}
-    >
-      {children}
+export const Overlay = (props: OverlayProps) => {
+  const color = "bg-black/30";
+  const hoverEnabled = false;
 
+  if (props.enabled) {
+    return (
       <div
-        className={`absolute inset-0 flex items-center justify-center ${color} ${hoverEnabled ? "opacity-0 group-hover:opacity-100" : ""} ${hoverEnabled ? "cursor-pointer" : ""} `}
-        onClick={onClick}
+        className={`relative overflow-hidden ${hoverEnabled ? "group" : ""} ${props.className}`}
       >
-        {overlayContent}
+        {props.children}
+
+        <div
+          className={`absolute inset-0 flex items-center justify-center ${color} ${hoverEnabled ? "opacity-0 group-hover:opacity-100" : ""} ${hoverEnabled ? "cursor-pointer" : ""} `}
+          onClick={props.onClick}
+        >
+          {props.overlayContent}
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return <>{props.children}</>;
+  }
 };
