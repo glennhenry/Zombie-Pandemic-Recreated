@@ -87,7 +87,7 @@ export default function App() {
 
       <button
         onClick={() => setTopbarClosed(!topbarClosed)}
-        className={`absolute ${topbarClosed ? "top-2" : "top-10"} left-2 z-10 flex items-center justify-center rounded-md bg-white/80 p-1 text-gray-700 shadow-md hover:bg-white active:scale-95`}
+        className={`absolute ${topbarClosed ? "top-2" : "top-10"} left-2 z-10 flex items-center justify-center rounded-md bg-white/80 p-1 text-gray-700 opacity-40 shadow-md hover:bg-white hover:opacity-80 active:scale-95`}
         title={topbarClosed ? "Show topbar" : "Hide topbar"}
       >
         {topbarClosed ? <FaAngleDoubleDown /> : <FaAngleDoubleUp />}
