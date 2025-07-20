@@ -39,6 +39,11 @@
   --color-status-good: #83e864;
   --color-status-bad: #c74e4e;
   --color-status-neutral: #d9b93a;
+
+  /* Game */
+  /* Topbar */
+  --color-topbar-gradient-start: #545451;
+  --color-topbar-gradient-end: #444444;
 }
 
 @layer base {
@@ -49,7 +54,8 @@
   }
 }
 
-html, body {
+html,
+body {
   overflow-x: auto;
   min-width: 800px;
 }
