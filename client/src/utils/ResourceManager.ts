@@ -2,8 +2,12 @@ import { BASE_URL } from "./config";
 
 const ASSETS_BASE_URL = `${BASE_URL}/assets`;
 
-class ResourceManager {
-  static assetBase = ASSETS_BASE_URL
+export class ResourceManager {
+  static assetBase = ASSETS_BASE_URL;
+
+  static getAssetsFromFullURL(url: string) {
+    return `${this.assetBase}/${url}`;
+  }
 
   static getBlock(mapname: string, x: number, y: number) {
     const xStr = x.toString().padStart(3, "0");

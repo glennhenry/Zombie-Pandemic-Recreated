@@ -1,26 +1,23 @@
 import { useState } from "react";
-import { ASSETS } from "../../../utils/assets";
+import { ResourceManager } from "../../../utils/ResourceManager";
 import { MapBlock } from "./MapBlock";
 import { Overlay } from "../../components/Overlay";
+import type { Position } from "../../../core/types/Position";
 
-export default function MainView() {
-  const maps9 = [
-    ASSETS.data.maps.blocks.block_000_000,
-    ASSETS.data.maps.blocks.block_000_001,
-    ASSETS.data.maps.blocks.block_000_002,
-    ASSETS.data.maps.blocks.block_001_000,
-    ASSETS.data.maps.blocks.block_001_001,
-    ASSETS.data.maps.blocks.block_001_002,
-    ASSETS.data.maps.blocks.block_002_000,
-    ASSETS.data.maps.blocks.block_002_001,
-    ASSETS.data.maps.blocks.block_002_002,
-  ];
+interface MainViewProps {
+  map: string;
+}
+
+export default function MainView(props: MainViewProps) {
+  const [position, setPosition] = useState({ x: 1, y: 1 } as Position);
+  const maps9 = getAllSurroundingTiles(props.map, position);
+
   return (
     <div className="relative h-[calc(100%-5rem)] w-full overflow-hidden">
       <div
         className="absolute top-1/2 left-1/2 grid -translate-x-1/2 -translate-y-1/2 grid-cols-3 grid-rows-3"
         style={{
-          width: `${3 * 500}px`, // Assuming each tile is 512x512
+          width: `${3 * 500}px`, // Assuming each tile is 500x500
           height: `${3 * 500}px`,
         }}
       >
@@ -32,4 +29,21 @@ export default function MainView() {
       </div>
     </div>
   );
+}
+
+function getAllSurroundingTiles(map: string, pos: Position): string[] {
+  const tiles: string[] = [];
+
+  for (let dy = -1; dy <= 1; dy++) {
+    for (let dx = -1; dx <= 1; dx++) {
+      const tilePos = { x: pos.x + dx, y: pos.y + dy };
+      tiles.push(getMapTileOnPosition(map, tilePos));
+    }
+  }
+
+  return tiles;
+}
+
+function getMapTileOnPosition(map: string, pos: Position): string {
+  return ResourceManager.getBlock(map, pos.x, pos.y);
 }

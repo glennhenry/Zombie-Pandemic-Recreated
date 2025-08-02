@@ -24,7 +24,7 @@ export default function Game(_props: GameProps) {
         <p>Top bar</p>
       </div>
       {/* Game view*/}
-      <MainView />
+      <MainView map={"main_city"} />
     </div>
   );
 }
