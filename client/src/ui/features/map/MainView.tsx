@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ASSETS } from "../../../utils/assets";
 import { MapBlock } from "./MapBlock";
+import { Overlay } from "../../components/Overlay";
 
 export default function MainView() {
   const maps9 = [
@@ -14,8 +15,6 @@ export default function MainView() {
     ASSETS.data.maps.blocks.block_002_001,
     ASSETS.data.maps.blocks.block_002_002,
   ];
-  const [currentBlock, _setCurrentBlock] = useState<Number>(4);
-
   return (
     <div className="relative h-[calc(100%-5rem)] w-full overflow-hidden">
       <div
@@ -26,11 +25,9 @@ export default function MainView() {
         }}
       >
         {maps9.map((block, i) => (
-          <MapBlock
-            key={i}
-            blockImagePath={block}
-            currentBlock={i == currentBlock}
-          />
+          <Overlay enabled={i != 4}>
+            <MapBlock key={i} blockImagePath={block} />
+          </Overlay>
         ))}
       </div>
     </div>
