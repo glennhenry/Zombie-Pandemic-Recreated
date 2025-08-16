@@ -41,16 +41,19 @@ export const Carousel = (props: CarouselProps) => {
         {props.images.map((image, idx) => (
           <div key={idx} className="flex-none">
             <Overlay
+              enabled={idx === props.selected}
               hoverEnabled={idx !== props.selected}
               onClick={() => changePreview(idx)}
             >
               <img
+                draggable={false}
                 ref={(el: HTMLImageElement | null) => {
                   thumbnailRefs.current[idx] = el;
                 }}
                 src={image.path}
                 alt={image.alt}
-                className="noselect max-h-25 object-contain"
+                className="noselect max-h-25 object-contain cursor-pointer"
+                onClick={() => changePreview(idx)}
               />
             </Overlay>
           </div>

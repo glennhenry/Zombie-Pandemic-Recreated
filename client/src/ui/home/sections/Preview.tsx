@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Carousel } from "../../components/Carousel";
-import type { Image } from "../../../utils/type";
+import type { Image } from "../../../ui/types/Image";
 
 const previewImagePaths = [
   "/gameplays/gameplay-1.jpg",

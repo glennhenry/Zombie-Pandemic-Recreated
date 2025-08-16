@@ -9,8 +9,8 @@ interface OverlayProps {
 }
 
 export const Overlay = (props: OverlayProps) => {
-  const color = "bg-black/30";
-  const hoverEnabled = false;
+  const color = props.color ?? "bg-black/30";
+  const hoverEnabled = props.hoverEnabled ?? false;
 
   if (props.enabled) {
     return (
