@@ -1,7 +1,7 @@
 import type { Position } from "./Position";
 
 export interface MapMetadata {
-  id: string;
+  mapId: string;
   name: string;
   width: number;
   height: number;

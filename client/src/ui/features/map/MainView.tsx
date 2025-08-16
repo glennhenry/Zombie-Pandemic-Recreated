@@ -13,7 +13,7 @@ interface MainViewProps {
 
 export default function MainView(props: MainViewProps) {
   const [position, setPosition] = useState({ x: 1, y: 1 } as Position);
-  const maps9 = getAllSurroundingTiles(props.metadata.id, position);
+  const maps9 = getAllSurroundingTiles(props.metadata, position);
 
   return (
     <div className="relative h-[calc(100%-5rem)] w-full overflow-hidden">
@@ -36,11 +36,12 @@ export default function MainView(props: MainViewProps) {
                     const x = position.x + dir.dx;
                     const y = position.y + dir.dy;
 
+                    // out of bounds check before updating state
                     if (
                       x < 0 ||
-                      x > props.metadata.width ||
                       y < 0 ||
-                      y > props.metadata.height
+                      x >= props.metadata.width ||
+                      y >= props.metadata.height
                     ) {
                       return;
                     }
@@ -49,7 +50,6 @@ export default function MainView(props: MainViewProps) {
                       x: x,
                       y: y,
                     });
-                    console.log("moving to d:", d);
                   }}
                 />
               )
@@ -63,19 +63,28 @@ export default function MainView(props: MainViewProps) {
   );
 }
 
-function getAllSurroundingTiles(map: string, pos: Position): string[] {
+function getAllSurroundingTiles(
+  metadata: MapMetadata,
+  pos: Position,
+): string[] {
   const tiles: string[] = [];
 
   for (let dy = -1; dy <= 1; dy++) {
     for (let dx = -1; dx <= 1; dx++) {
       const tilePos = { x: pos.x + dx, y: pos.y + dy };
-      tiles.push(getMapTileOnPosition(map, tilePos));
+      tiles.push(getMapTileOnPosition(metadata, tilePos));
     }
   }
 
   return tiles;
 }
 
-function getMapTileOnPosition(map: string, pos: Position): string {
-  return ResourceManager.getBlock(map, pos.x, pos.y);
+function getMapTileOnPosition(metadata: MapMetadata, pos: Position): string {
+  return ResourceManager.getBlockSafe(
+    metadata.mapId,
+    metadata.width,
+    metadata.height,
+    pos.x,
+    pos.y,
+  );
 }

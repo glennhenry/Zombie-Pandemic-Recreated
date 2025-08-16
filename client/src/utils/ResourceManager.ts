@@ -9,13 +9,27 @@ export class ResourceManager {
     return `${this.assetBase}/${url}`;
   }
 
-  static getBlock(mapname: string, x: number, y: number) {
+  static getBlock(mapId: string, x: number, y: number) {
     const xStr = x.toString().padStart(3, "0");
     const yStr = y.toString().padStart(3, "0");
-    return `${this.assetBase}/data/maps/${mapname}/blocks/${mapname}-${xStr}_${yStr}.jpg`;
+    return `${this.assetBase}/data/maps/${mapId}/blocks/${mapId}-${xStr}_${yStr}.jpg`;
   }
 
-  static getMapJson(map: string) {
-    return `${this.assetBase}/data/maps/${map}/${map}.json`;
+  static getBlockSafe(
+    mapId: string,
+    width: number,
+    height: number,
+    x: number,
+    y: number,
+  ) {
+    if (x < 0 || y < 0 || x >= width || y >= height) {
+      // out of bounds
+      return `${this.assetBase}/data/maps/bounds.png`;
+    }
+    return this.getBlock(mapId, x, y);
+  }
+
+  static getMapJson(mapId: string) {
+    return `${this.assetBase}/data/maps/${mapId}/${mapId}.json`;
   }
 }
