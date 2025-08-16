@@ -9,7 +9,7 @@ object MapParser {
      * Parse a game map at [path], returning [MapMetadata].
      */
     fun parse(path: String): MapMetadata {
-        val mapJson = File(path) // TO-DO
+//        val mapJson = File(path) // TO-DO
         return MapMetadata(
             mapId = "main_city",
             name = "Main City",
@@ -17,9 +17,5 @@ object MapParser {
             height = 6,
             startPos = Position(1, 1)
         )
-    }
-
-    private fun normalizeP(): String {
-        return "server/"
     }
 }
