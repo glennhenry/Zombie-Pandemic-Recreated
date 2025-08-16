@@ -27,7 +27,15 @@ export default function MainView(props: MainViewProps) {
           <Overlay
             key={i}
             enabled
-            overlayContent={i === 4 && <MapArrowOverlay onMove={(d) => {}} />}
+            overlayContent={
+              i === 4 && (
+                <MapArrowOverlay
+                  onMove={(d) => {
+                    console.log("moving to d:", d);
+                  }}
+                />
+              )
+            }
           >
             <MapBlock blockImagePath={block} />
           </Overlay>
