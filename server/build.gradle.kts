@@ -27,6 +27,10 @@ tasks.withType<ShadowJar> {
     }
 }
 
+tasks.processResources {
+    exclude("dev.marker")
+}
+
 repositories {
     mavenCentral()
 }
