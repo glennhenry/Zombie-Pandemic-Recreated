@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Account } from "../../core/model/account/Account";
+import type { PlayerAccount } from "../../core/model/account/Account";
 import { Network } from "../../network/Network";
 import { bglinearGradientStyle } from "../../utils/ui/linearGradient";
 import MainView from "./map/MainView";
@@ -7,7 +7,7 @@ import type { MapMetadata } from "../../core/model/map/MapMetadata";
 import type { GameMetadata } from "../../core/model/GameMetadata";
 
 interface GameProps {
-  account?: Account | null;
+  account?: PlayerAccount | null;
 }
 
 export default function Game(_props: GameProps) {

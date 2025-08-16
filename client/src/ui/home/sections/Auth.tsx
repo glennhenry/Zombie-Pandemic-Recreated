@@ -4,10 +4,10 @@ import { TextField } from "../../components/TextField";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import replaceClick from "../../../utils/replaceClick";
 import { Checkbox } from "../../components/Checkbox";
-import type { Account } from "../../../core/model/account/Account";
+import type { PlayerAccount } from "../../../core/model/account/Account";
 
 interface AuthProps {
-  account?: Account | null;
+  account?: PlayerAccount | null;
   onPlayAsGuest: () => void;
   formRef?: React.RefObject<HTMLFormElement | null>;
 }

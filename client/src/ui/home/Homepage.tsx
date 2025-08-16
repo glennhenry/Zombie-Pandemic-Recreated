@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import type { Account } from "../../core/model/account/Account";
+import type { PlayerAccount } from "../../core/model/account/Account";
 import {
   textLinearGradientStyle,
   bglinearGradientStyle,
@@ -13,7 +13,7 @@ import Preview from "./sections/Preview";
 import { Button } from "../components/Button";
 
 interface HomepageProps {
-  account?: Account | null;
+  account?: PlayerAccount | null;
   onPlayAsGuest: () => void;
 }
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Game from "./ui/features/Game";
 import Homepage from "./ui/home/Homepage";
 import replaceClick from "./utils/replaceClick";
-import { Account } from "./core/model/account/Account";
+import { PlayerAccount } from "./core/model/account/Account";
 import {
   clearAccountCookie,
   getAccountFromCookie,
@@ -11,7 +11,7 @@ import {
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 
 export default function App() {
-  const [account, _setAccount] = useState<Account | null>(null);
+  const [account, _setAccount] = useState<PlayerAccount | null>(null);
   const [topbarClosed, setTopbarClosed] = useState<boolean>(false);
 
   const renderPage = () => {
@@ -23,7 +23,7 @@ export default function App() {
           <Homepage
             account={account}
             onPlayAsGuest={() => {
-              setAccount(Account.createGuest());
+              setAccount(PlayerAccount.createGuest());
             }}
           />
         );
@@ -35,7 +35,7 @@ export default function App() {
     if (saved) _setAccount(saved);
   }, []);
 
-  const setAccount = (account: Account | null) => {
+  const setAccount = (account: PlayerAccount | null) => {
     _setAccount(account);
     if (account) {
       saveAccountToCookie(account);
