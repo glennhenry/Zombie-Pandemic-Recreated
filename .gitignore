@@ -28,6 +28,7 @@ out/
 server/.gradle/
 server/build/
 !gradle/wrapper/gradle-wrapper.jar
+server/.kotlin
 
 # node
 client/node_modules/
