@@ -5,6 +5,7 @@ import { Overlay } from "../../components/Overlay";
 import type { Position } from "../../../core/types/Position";
 import { MapArrowOverlay } from "./MapArrowOverlay";
 import type { Direction } from "../../../core/types/Direction";
+import { directionChange } from "../../../core/types/Direction";
 
 interface MainViewProps {
   map: string;
@@ -31,6 +32,11 @@ export default function MainView(props: MainViewProps) {
               i === 4 && (
                 <MapArrowOverlay
                   onMove={(d) => {
+                    const dir = directionChange[d];
+                    setPosition({
+                      x: position.x + dir.dx,
+                      y: position.y + dir.dy,
+                    });
                     console.log("moving to d:", d);
                   }}
                 />
