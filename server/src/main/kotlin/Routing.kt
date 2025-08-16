@@ -9,7 +9,11 @@ import java.io.File
 
 fun Application.configureRouting() {
     routing {
-        staticFiles("assets", File("server/game-assets"))
+        if (application.developmentMode) {
+            staticFiles("assets", File("server/game-assets"))
+        } else {
+            staticFiles("assets", File("game-assets"))
+        }
         gameMetadataRoutes()
         mapRoutes()
 
