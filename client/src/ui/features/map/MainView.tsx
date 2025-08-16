@@ -3,6 +3,8 @@ import { ResourceManager } from "../../../utils/ResourceManager";
 import { MapBlock } from "./MapBlock";
 import { Overlay } from "../../components/Overlay";
 import type { Position } from "../../../core/types/Position";
+import { MapArrowOverlay } from "./MapArrowOverlay";
+import type { Direction } from "../../../core/types/Direction";
 
 interface MainViewProps {
   map: string;
@@ -22,8 +24,12 @@ export default function MainView(props: MainViewProps) {
         }}
       >
         {maps9.map((block, i) => (
-          <Overlay enabled={i != 4}>
-            <MapBlock key={i} blockImagePath={block} />
+          <Overlay
+            key={i}
+            enabled
+            overlayContent={i === 4 && <MapArrowOverlay onMove={(d) => {}} />}
+          >
+            <MapBlock blockImagePath={block} />
           </Overlay>
         ))}
       </div>
