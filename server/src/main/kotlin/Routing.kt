@@ -21,7 +21,7 @@ fun Application.configureRouting() {
             call.respond(HttpStatusCode.OK, ZPResponse(Data.x))
         }
 
-        staticResources("/assets", "game-assets")
+        staticFiles("assets", File("server/game-assets"))
 
         // Serve the static website only in production; the development environment will use the Vite server.
         if (!application.developmentMode) {
