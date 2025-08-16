@@ -12,8 +12,6 @@ interface MainViewProps {
   metadata: MapMetadata;
 }
 
-const TILE_SIZE = 500;
-
 export default function MainView(props: MainViewProps) {
   const [position, setPosition] = useState<Position>({ x: 1, y: 1 });
   const [tiles, setTiles] = useState(() =>
@@ -38,7 +36,7 @@ export default function MainView(props: MainViewProps) {
 
     const animationPromises = [
       new Promise<void>((resolve) =>
-        animate(xMv, -dx * TILE_SIZE, {
+        animate(xMv, -dx * props.metadata.blockSizePixels, {
           type: "spring",
           stiffness: 400,
           damping: 40,
@@ -46,7 +44,7 @@ export default function MainView(props: MainViewProps) {
         }),
       ),
       new Promise<void>((resolve) =>
-        animate(yMv, -dy * TILE_SIZE, {
+        animate(yMv, -dy * props.metadata.blockSizePixels, {
           type: "spring",
           stiffness: 400,
           damping: 40,
@@ -81,8 +79,8 @@ export default function MainView(props: MainViewProps) {
       <motion.div
         className="absolute top-1/2 left-1/2 grid -translate-x-1/2 -translate-y-1/2 grid-cols-5 grid-rows-5"
         style={{
-          width: `${5 * TILE_SIZE}px`,
-          height: `${5 * TILE_SIZE}px`,
+          width: `${5 * props.metadata.blockSizePixels}px`,
+          height: `${5 * props.metadata.blockSizePixels}px`,
           x: xMv,
           y: yMv,
         }}

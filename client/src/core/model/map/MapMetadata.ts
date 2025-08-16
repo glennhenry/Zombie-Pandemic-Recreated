@@ -5,5 +5,6 @@ export interface MapMetadata {
   name: string;
   width: number;
   height: number;
+  blockSizePixels: number;
   startPos: Position;
 }

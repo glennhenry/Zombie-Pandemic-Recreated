@@ -15,6 +15,7 @@ object MapParser {
             name = "Main City",
             width = 6,
             height = 6,
+            blockSizePixels = 500,
             startPos = Position(1, 1)
         )
     }

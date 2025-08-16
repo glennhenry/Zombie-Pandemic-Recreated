@@ -9,6 +9,7 @@ data class MapMetadata(
     val name: String,
     val width: Int,
     val height: Int,
+    val blockSizePixels: Int,
     val startPos: Position
 ) {
     companion object {
