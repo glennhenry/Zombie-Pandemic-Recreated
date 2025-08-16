@@ -8,13 +8,12 @@ import { directionChange } from "../../../core/model/map/Direction";
 import type { MapMetadata } from "../../../core/model/map/MapMetadata";
 
 interface MainViewProps {
-  map: string;
   metadata: MapMetadata;
 }
 
 export default function MainView(props: MainViewProps) {
   const [position, setPosition] = useState({ x: 1, y: 1 } as Position);
-  const maps9 = getAllSurroundingTiles(props.map, position);
+  const maps9 = getAllSurroundingTiles(props.metadata.id, position);
 
   return (
     <div className="relative h-[calc(100%-5rem)] w-full overflow-hidden">
@@ -36,6 +35,15 @@ export default function MainView(props: MainViewProps) {
                     const dir = directionChange[d];
                     const x = position.x + dir.dx;
                     const y = position.y + dir.dy;
+
+                    if (
+                      x < 0 ||
+                      x > props.metadata.width ||
+                      y < 0 ||
+                      y > props.metadata.height
+                    ) {
+                      return;
+                    }
 
                     setPosition({
                       x: x,
