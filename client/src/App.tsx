@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Game from "./ui/features/Game";
 import Homepage from "./ui/home/Homepage";
 import replaceClick from "./utils/replaceClick";
-import { Account } from "./core/types/Account";
+import { Account } from "./core/model/account/Account";
 import {
   clearAccountCookie,
   getAccountFromCookie,

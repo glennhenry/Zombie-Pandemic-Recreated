@@ -1,5 +1,5 @@
 import { CiLocationArrow1 } from "react-icons/ci";
-import type { Direction } from "../../../core/types/Direction";
+import type { Direction } from "../../../core/model/map/Direction";
 
 const order: Direction[] = ["nw", "n", "ne", "w", "c", "e", "sw", "s", "se"];
 

@@ -1,5 +1,5 @@
 // utils/accountSession.ts
-import { Account } from "../core/types/Account";
+import { Account } from "../core/model/account/Account";
 
 const COOKIE_KEY = "zp_account";
 

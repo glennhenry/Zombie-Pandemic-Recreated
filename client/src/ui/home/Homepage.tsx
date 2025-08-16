@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import type { Account } from "../../core/types/Account";
+import type { Account } from "../../core/model/account/Account";
 import {
   textLinearGradientStyle,
   bglinearGradientStyle,

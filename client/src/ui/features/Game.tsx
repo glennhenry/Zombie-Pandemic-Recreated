@@ -1,4 +1,4 @@
-import type { Account } from "../../core/types/Account";
+import type { Account } from "../../core/model/account/Account";
 import { bglinearGradientStyle } from "../../utils/ui/linearGradient";
 import MainView from "./map/MainView";
 

@@ -4,7 +4,7 @@ import { TextField } from "../../components/TextField";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import replaceClick from "../../../utils/replaceClick";
 import { Checkbox } from "../../components/Checkbox";
-import type { Account } from "../../../core/types/Account";
+import type { Account } from "../../../core/model/account/Account";
 
 interface AuthProps {
   account?: Account | null;

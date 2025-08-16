@@ -2,13 +2,14 @@ import { useState } from "react";
 import { ResourceManager } from "../../../utils/ResourceManager";
 import { MapBlock } from "./MapBlock";
 import { Overlay } from "../../components/Overlay";
-import type { Position } from "../../../core/types/Position";
+import type { Position } from "../../../core/model/map/Position";
 import { MapArrowOverlay } from "./MapArrowOverlay";
-import type { Direction } from "../../../core/types/Direction";
-import { directionChange } from "../../../core/types/Direction";
+import { directionChange } from "../../../core/model/map/Direction";
+import type { MapMetadata } from "../../../core/model/map/MapMetadata";
 
 interface MainViewProps {
   map: string;
+  metadata: MapMetadata;
 }
 
 export default function MainView(props: MainViewProps) {
@@ -33,9 +34,12 @@ export default function MainView(props: MainViewProps) {
                 <MapArrowOverlay
                   onMove={(d) => {
                     const dir = directionChange[d];
+                    const x = position.x + dir.dx;
+                    const y = position.y + dir.dy;
+
                     setPosition({
-                      x: position.x + dir.dx,
-                      y: position.y + dir.dy,
+                      x: x,
+                      y: y,
                     });
                     console.log("moving to d:", d);
                   }}
