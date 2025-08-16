@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ResourceManager } from "../../../utils/ResourceManager";
 import { MapBlock } from "./MapBlock";
 import { Overlay } from "../../components/Overlay";
@@ -6,50 +6,97 @@ import type { Position } from "../../../core/model/map/Position";
 import { MapArrowOverlay } from "./MapArrowOverlay";
 import { directionChange } from "../../../core/model/map/Direction";
 import type { MapMetadata } from "../../../core/model/map/MapMetadata";
+import { motion, useMotionValue, animate } from "framer-motion";
 
 interface MainViewProps {
   metadata: MapMetadata;
 }
 
+const TILE_SIZE = 500;
+
 export default function MainView(props: MainViewProps) {
-  const [position, setPosition] = useState({ x: 1, y: 1 } as Position);
-  const maps9 = getAllSurroundingTiles(props.metadata, position);
+  const [position, setPosition] = useState<Position>({ x: 1, y: 1 });
+  const [tiles, setTiles] = useState(() =>
+    getAllSurroundingTiles(props.metadata, position),
+  );
+
+  const xMv = useMotionValue(0);
+  const yMv = useMotionValue(0);
+
+  const move = (dx: number, dy: number) => {
+    const nx = position.x + dx;
+    const ny = position.y + dy;
+
+    if (
+      nx < 0 ||
+      ny < 0 ||
+      nx >= props.metadata.width ||
+      ny >= props.metadata.height
+    ) {
+      return;
+    }
+
+    const animationPromises = [
+      new Promise<void>((resolve) =>
+        animate(xMv, -dx * TILE_SIZE, {
+          type: "spring",
+          stiffness: 400,
+          damping: 40,
+          onComplete: resolve,
+        }),
+      ),
+      new Promise<void>((resolve) =>
+        animate(yMv, -dy * TILE_SIZE, {
+          type: "spring",
+          stiffness: 400,
+          damping: 40,
+          onComplete: resolve,
+        }),
+      ),
+    ];
+
+    Promise.all(animationPromises).then(() => {
+      setPosition({ x: nx, y: ny });
+      setTiles(getAllSurroundingTiles(props.metadata, { x: nx, y: ny }));
+
+      xMv.set(0);
+      yMv.set(0);
+    });
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const dir = getDirectionFromKey(e);
+      if (!dir) return;
+      move(dir.dx, dir.dy);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [position]);
 
   return (
     <div className="relative h-[calc(100%-5rem)] w-full overflow-hidden">
-      <div
-        className="absolute top-1/2 left-1/2 grid -translate-x-1/2 -translate-y-1/2 grid-cols-3 grid-rows-3"
+      {/* 5x5 grid so that there will be never blank tiles during animation */}
+      <motion.div
+        className="absolute top-1/2 left-1/2 grid -translate-x-1/2 -translate-y-1/2 grid-cols-5 grid-rows-5"
         style={{
-          width: `${3 * 500}px`, // Assuming each tile is 500x500
-          height: `${3 * 500}px`,
+          width: `${5 * TILE_SIZE}px`,
+          height: `${5 * TILE_SIZE}px`,
+          x: xMv,
+          y: yMv,
         }}
       >
-        {maps9.map((block, i) => (
+        {tiles.map((block, i) => (
           <Overlay
             key={i}
             enabled
             overlayContent={
-              i === 4 && (
+              i === 12 && (
                 <MapArrowOverlay
                   onMove={(d) => {
                     const dir = directionChange[d];
-                    const x = position.x + dir.dx;
-                    const y = position.y + dir.dy;
-
-                    // out of bounds check before updating state
-                    if (
-                      x < 0 ||
-                      y < 0 ||
-                      x >= props.metadata.width ||
-                      y >= props.metadata.height
-                    ) {
-                      return;
-                    }
-
-                    setPosition({
-                      x: x,
-                      y: y,
-                    });
+                    move(dir.dx, dir.dy);
                   }}
                 />
               )
@@ -58,7 +105,7 @@ export default function MainView(props: MainViewProps) {
             <MapBlock blockImagePath={block} />
           </Overlay>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -69,8 +116,8 @@ function getAllSurroundingTiles(
 ): string[] {
   const tiles: string[] = [];
 
-  for (let dy = -1; dy <= 1; dy++) {
-    for (let dx = -1; dx <= 1; dx++) {
+  for (let dy = -2; dy <= 2; dy++) {
+    for (let dx = -2; dx <= 2; dx++) {
       const tilePos = { x: pos.x + dx, y: pos.y + dy };
       tiles.push(getMapTileOnPosition(metadata, tilePos));
     }
@@ -87,4 +134,21 @@ function getMapTileOnPosition(metadata: MapMetadata, pos: Position): string {
     pos.x,
     pos.y,
   );
+}
+
+function getDirectionFromKey(
+  e: KeyboardEvent,
+): { dx: number; dy: number } | null {
+  switch (e.key.toLowerCase()) {
+    case "w":
+      return { dx: 0, dy: -1 };
+    case "a":
+      return { dx: -1, dy: 0 };
+    case "s":
+      return { dx: 0, dy: 1 };
+    case "d":
+      return { dx: 1, dy: 0 };
+    default:
+      return null;
+  }
 }
