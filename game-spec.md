@@ -38,14 +38,20 @@ data/
 │           ├── main_city-001_000.jpg
 │           ├── main_city-002_000.jpg
 │           └── ...
-├── items.json
-├── buildings.json
-├── zombies.json
-├── events.json
-├── missions.json
 ├── zones.json
+├── containers.json
+├── buildings.json
+├── events.json
+├── dialogues.json
+├── event_rewards.json
+├── event_hazards.json
+├── notice.json
+├── shops.json
+├── missions.json
+├── items.json
+├── zombies.json
 ├── strings.json
-├── misc.json (for uncategorized entities)
+└── misc.json (for uncategorized entities)
 ```
 
 ### Maps
@@ -98,6 +104,40 @@ They may also encounter shops, NPC that gives them mission, and random events.
 
 We will use this type for those uncategorized entities.
 
+### Events
+
+They are random encounter during gameplay, which can be met inside buildings, when entering a block, or after certain conditions.
+
+They are typically associated with story and lore as cosmetics.
+
+For example, it could be a dialog to bridge before zombie fight, random encounters when entering building that harms the player, or something random like encountering a survivor that steals your item.
+
+#### Dialogues
+
+Subset of event which is used to deliver story, world-building, or choices to the player. It's an important aspect of an event, which regularly available during events.
+
+It consists of lines with the speaker and text, which could serve as bridge between setting context such as mission and building or block entrance. Furthermore, it may include choices, where player could respond and receives a positive or negative outcome.
+
+### Missions
+
+Missions are objectives for player to complete.
+
+Types of missions:
+
+1. Main missions: necessary to complete for game ending.
+2. Sub missions: optional objectives to earn rewards for game progression or lore purposes.
+3. Daily missions: sub missions which are available daily.
+
+Objectives types:
+
+1. Reach: reach a particular block, zone, or building.
+2. Defeat: defeat some amount of a particular zombie.
+3. Obtain: obtain an item, either by looting, crafting, or buying (expandable to a more specific goal).
+4. Deliver: deliver an item to particular NPC, which may be inside building.
+5. Trigger: trigger specific condition (e.g., survive zombie fight for particular time, use melee attacks 10 times in a battle, etc.).
+
+Should be expandable easily.
+
 ### Items
 
 Some items can be looted in container or bought from the shop inside buildings.
@@ -140,36 +180,8 @@ It can be thought like this:
 
 - Zombies have speed, describing how fast they approach the P.
 - P could act: move forward or backward, attack close, attack far, or even try escaping from the fight.
-- When moving forward, P could dash (just move) or strike (move with attack) the zombies, increasing risk but is necessary to avoid zombies grouping or cornering the P.
+- When moving forward, P is not able to bypass zombie, and will instead take hit from them. There is no limit for moving backward.
 - Zombies would have mechanics that spice up the gameplay, such as range-based zombies. For example, a spitter has a long-range attack, so you would need to be close to deal with it easier; though, there may be boomer zombie, which causes damage upon dying on close contact.
-
-### Events
-
-They are random encounter during gameplay, which can be met inside buildings, when entering a block, or after certain conditions.
-
-They are typically associated with story and lore as cosmetics.
-
-For example, it could be a dialog to bridge before zombie fight, random encounters when entering building that harms the player, or something random like encountering a survivor that steals your item.
-
-### Missions
-
-Missions are objectives for player to complete.
-
-Types of missions:
-
-1. Main missions: necessary to complete for game ending.
-2. Sub missions: optional objectives to earn rewards for game progression or lore purposes.
-3. Daily missions: sub missions which are available daily.
-
-Objectives types:
-
-1. Reach: reach a particular block, zone, or building.
-2. Defeat: defeat some amount of a particular zombie.
-3. Obtain: obtain an item, either by looting, crafting, or buying.
-4. Deliver: deliver an item to particular NPC, which may be inside building.
-5. Trigger: trigger specific condition (e.g., survive zombie fight for particular time, use melee attacks 10 times in a battle, etc.).
-
-Should be expandable easily.
 
 ### Strings
 
@@ -177,13 +189,13 @@ Should be expandable easily.
 
 ## Technical Data Structure
 
-JSON contains all game data. The schema is identical to the game runtime data model. This allows for direct transformation of deserialized JSON data into data models. However, this results in a significant amount of redundant data in the JSON, which can be minimized using gzip compression.
+JSON contains all game data. The schema is identical to the game runtime data model. This allows for direct transformation of deserialized JSON data into data models. However, this results in a significant amount of redundant data in the JSON, which can be minimized using GZIP compression.
 
 Below are examples of the JSON data along with the corresponding data model definitions in Kotlin and TypeScript.
 
 ### Map
 
-`map.json`:
+`map.json`
 
 ```json
 {
@@ -251,12 +263,12 @@ The blocks are organized in 2D arrays for simple access by coordinates.
 
 ```kt
 data class GameMap(
-	val mapId: String,
-	val name: String,
-	val width: Int,
-	val height: Int,
-	val blockSizePixels: Int,
-	val blocks: List<List<Block>>
+    val mapId: String,
+    val name: String,
+    val width: Int,
+    val height: Int,
+    val blockSizePixels: Int,
+    val blocks: List<List<Block>>
 )
 ```
 
@@ -265,14 +277,14 @@ data class GameMap(
 
 ```kt
 data class Block(
-	val blockId: String,
-	val name: String,
-	val x: Int,
-	val y: Int,
-	val uri: String,
-	val entities: List<Entity>,
-	val exits: List<Direction>
-	val zoneId: String,
+    val blockId: String,
+    val name: String,
+    val x: Int,
+    val y: Int,
+    val uri: String,
+    val entities: List<Entity>,
+    val exits: List<Direction>
+    val zoneId: String
 )
 ```
 
@@ -283,17 +295,17 @@ data class Block(
 
 ```kt
 enum class Direction {
-	NW, N, NE, W, C, E, SW, S, SE
+    NW, N, NE, W, C, E, SW, S, SE
 }
 ```
 
 ```kt
 data class Entity(
-	val entId: String,
-	val name: String,
-	val bbox: BBox,
-	val type: EntityType,
-	val refId: String,
+    val entId: String,
+    val name: String,
+    val bbox: BBox,
+    val type: EntityType,
+    val refId: String
 )
 ```
 
@@ -303,10 +315,10 @@ data class Entity(
 
 ```kt
 data class BBox(
-	val x: Int,
-	val y: Int,
-	val width: Int,
-	val height: Int
+    val x: Int,
+    val y: Int,
+    val width: Int,
+    val height: Int
 )
 ```
 
@@ -314,28 +326,230 @@ data class BBox(
 
 ```kt
 enum class EntityType {
-	Container, Building, Misc,
+    Container, Building, Misc
 }
 ```
 
 - `refId`: reference to specific entity table. There isn't universal naming scheme, each follows their own entity table. For container, the ID is just snake cased container name.
 
-@Serializable
-data class Container(
-val containerId: String,
-val name: String,
-val locations: List<String>,
-val cooldown: Long,
-val findChance: Double,
-val table: List<ContainerEntry>
-)
+#### Zones
 
-@Serializable
-data class ContainerEntry(
-val itemId: String,
-val rarity: Int,
-val minimumLevelToLoot: Int,
+`zones.json`
+
+```json
+[
+  {
+    "zoneId": "goldfish-residence",
+    "name": "Goldfish Residence",
+    "dangerLevel": "Safe",
+    "level": 6
+  },
+  {
+    "zoneId": "stadium",
+    "name": "Stadium",
+    "dangerLevel": "Risky",
+    "level": 17
+  }
+]
+```
+
+- `dangerLevel` to control the game's difficulty and loot.
+- `level` is the minimum level to enter.
+
+```kt
+data class Zone(
+    val zoneId: String,
+    val name: String,
+    val dangerLevel: ZoneDanger,
+    val level: Int,
 )
+```
+
+```kt
+enum class ZoneDanger {
+    None, Safe, Calm, Risky, Hostile, Dangerous, Deadly, Hell
+}
+```
+
+#### Entities
+
+`containers.json`
+
+```json
+[
+  {
+    "containerId": "broken-trunk-01",
+    "name": "Broken Trunk",
+    "cooldown": 8,
+    "findChance": 0.97,
+    "entries": [
+      {
+        "itemId": "pipe",
+        "rarity": 25,
+        "lootableInZones": ["stadium", "newtown"]
+      },
+      {
+        "itemId": "stale-bread",
+        "rarity": 5,
+        "lootableInZones": ["stadium", "uptown"]
+      },
+      {
+        "itemId": "bandage",
+        "rarity": 20,
+        "lootableInZones": ["stadium", "uptown", "military"]
+      }
+    ]
+  }
+]
+```
+
+- `containerId` naming scheme is the container name in snake-case with optional number as variant identifier.
+- `cooldown` to loot in hours.
+- `rarity` is weight attribute of a loot.
+- `lootableInZones` is a set of zones where the loot can be obtained. This means that even if a container is found in lower-level zones, players won't be able to loot high-end items.
+
+```kt
+data class Container(
+    val containerId: String,
+    val name: String,
+    val cooldown: Long,
+    val findChance: Double,
+    val entries: List<ContainerEntry>
+)
+```
+
+```kt
+data class ContainerEntry(
+    val itemId: String,
+    val rarity: Int,
+    val lootableInZones: Set<String>
+)
+```
+
+`buildings.json`
+
+```json
+[
+  {
+    "buildingId": "gym-01",
+    "name": "Training Gym",
+    "requirement": {
+      "type": "Level",
+      "value": "10"
+    },
+    "eventId": "gym-zombie-01"
+  },
+  {
+    "buildingId": "store-01",
+    "name": "Max's Store",
+    "requirement": {
+      "type": "CompleteQuest",
+      "value": "main-quest-04"
+    },
+    "eventId": "main-quest-05-intro"
+  }
+]
+```
+
+- `buildingId` naming scheme is building name with a number as variant identifier.
+
+```kt
+data class Building(
+    val buildingId: String,
+    val name: String,
+    val requirement: BuildingRequirement,
+    val eventId: String,
+)
+```
+
+```kt
+data class BuildingRequirement(
+    val type: BuildingRequirementType,
+    val value: String
+)
+```
+
+```kt
+enum class BuildingRequirementType {
+    None, Level, ItemNeeded, CompleteQuest
+}
+```
+
+### Events
+
+```json
+[
+  {
+    "eventId": "shop-gun-store-01",
+    "name": "Gun Store",
+    "type": "Shop",
+    "trigger": {
+      "condition": "OnEnterBuilding",
+      "value": "gun-store-01"
+    },
+    "dialogueId": "gun-store-01",
+    "contentRefId": "shop-gun-store-01"
+  }
+]
+```
+
+- `eventId` should describe location or context, the trigger condition, short description, and number as variant or sequence identifier. For example:
+  - dialogue: `orchard-street-rescue-npc`
+  - zombie: `stadium-zombiewave-01`, `stadium-spitter-boss-04`
+  - reward: `downtown-reward-cache-11`, `downtown-reward-ammo-01`
+  - hazard: `uptown-survivor-trap`, `uptown-bat-waste`
+  - notice: `zombie-spawn-increase`, `night-has-come`
+  - shop: `shop-gun-store-01`.
+- Event may or may not have dialogue.
+- `contentRefId` refers to event's content, such as shop to `shops.json`, reward and hazard to `event_rewards.json` and `event_hazards.json`.
+
+```kt
+data class GameEvent(
+    val eventId: String,
+    val name: String,
+    val type: GameEventType,
+    val trigger: EventTrigger,
+    val dialogueId: String?,
+    val contentRefId: String
+)
+```
+
+```kt
+enum class GameEventType {
+    Dialogue, Zombie, Reward, Hazard, Notice, Shop
+}
+```
+
+```kt
+data class EventTrigger(
+    val condition: EventTriggerCondition,
+    val value: String
+)
+```
+
+```kt
+enum class EventTriggerCondition {
+    OnEnterBlock, OnEnterBuilding, OnLootContainer, OnMissionProgress, Always
+}
+```
+
+#### Dialogues
+
+#### Event Rewards
+
+#### Event Hazards
+
+#### Notice
+
+#### Shops
+
+### Missions
+
+### Items
+
+### Zombies
+
+### Strings
 
 @Serializable
 data class Item(
