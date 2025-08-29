@@ -18,7 +18,7 @@ The main objective is escaping the city.
 
 1. P spawns in a map.
 2. P moves through blocks in 8 directions (N, NE, E, SE, S, SW, W, NW).
-3. Within a block, P could interact with container to loot items; enter a building to open shop, meet particular NPC, or encounter specific events inside or outside the building;
+3. Within a block, P could interact with container to loot items; enter a building to open shop (called vendor), meet particular NPC, or encounter specific events inside or outside the building;
 4. During travel, P could encounter zombies, in which fight will be 1-vs-many turn-based manner.
 5. P obtain items, completes missions and events to gain EXP to level up and upgrade their skills, all to make them stronger.
 6. The stronger P is, they could progress to harder areas.
@@ -45,8 +45,7 @@ data/
 ├── dialogues.json
 ├── event_rewards.json
 ├── event_hazards.json
-├── notice.json
-├── shops.json
+├── vendors.json
 ├── missions.json
 ├── items.json
 ├── zombies.json
@@ -98,7 +97,7 @@ As an example, the container “broken-trunk” may be present in some blocks. T
 
 Building will be place where P could create a safe zone for resting and defending against the zombies.
 
-They may also encounter shops, NPC that gives them mission, and random events.
+They may also encounter vendors (shop), NPC that gives them mission, and random events.
 
 #### Misc
 
@@ -477,18 +476,20 @@ enum class BuildingRequirementType {
 
 ### Events
 
+`events.json`
+
 ```json
 [
   {
-    "eventId": "shop-gun-store-01",
+    "eventId": "vendor-gun-store-01",
     "name": "Gun Store",
-    "type": "Shop",
+    "type": "Vendor",
     "trigger": {
       "condition": "OnEnterBuilding",
       "value": "gun-store-01"
     },
     "dialogueId": "gun-store-01",
-    "contentRefId": "shop-gun-store-01"
+    "contentRefId": "vendor-gun-store-01"
   }
 ]
 ```
@@ -499,9 +500,9 @@ enum class BuildingRequirementType {
   - reward: `downtown-reward-cache-11`, `downtown-reward-ammo-01`
   - hazard: `uptown-survivor-trap`, `uptown-bat-waste`
   - notice: `zombie-spawn-increase`, `night-has-come`
-  - shop: `shop-gun-store-01`.
-- Event may or may not have dialogue.
-- `contentRefId` refers to event's content, such as shop to `shops.json`, reward and hazard to `event_rewards.json` and `event_hazards.json`.
+  - vendor: `vendor-gun-store-01`.
+- Event may or may not have dialogue. If it does, it refers to dialogue by `dialogueId`.
+- `contentRefId` refers to event's content, such as vendor to `vendors.json`, reward and hazard to `event_rewards.json` and `event_hazards.json`.
 
 ```kt
 data class GameEvent(
@@ -510,13 +511,13 @@ data class GameEvent(
     val type: GameEventType,
     val trigger: EventTrigger,
     val dialogueId: String?,
-    val contentRefId: String
+    val contentRefId: String?
 )
 ```
 
 ```kt
 enum class GameEventType {
-    Dialogue, Zombie, Reward, Hazard, Notice, Shop
+    Dialogue, Zombie, Reward, Hazard, Notice, Vendor
 }
 ```
 
@@ -535,13 +536,263 @@ enum class EventTriggerCondition {
 
 #### Dialogues
 
+`dialogues.json`
+
+```json
+[
+  {
+    "dialogueId": "npc-thief-demands-food-01",
+    "nodes": [
+      {
+        "nodeId": "start",
+        "stringId": "npc-thief-01-intro",
+        "choices": [
+          {
+            "stringId": "choice-give-item",
+            "outcome": { "type": "Reward", "value": "bandage" },
+            "nextNode": "end-reward"
+          },
+          {
+            "stringId": "choice-refuse",
+            "outcome": { "type": "Zombie", "value": "zombie-thief-fight" },
+            "nextNode": "end-fight"
+          }
+        ],
+        "nextNode": null
+      },
+      {
+        "nodeId": "end-reward",
+        "stringId": "npc-thief-01-thanks",
+        "choices": [],
+        "nextNode": "end"
+      },
+      {
+        "nodeId": "end-fight",
+        "stringId": "npc-thief-01-attack",
+        "choices": [],
+        "nextNode": "end"
+      },
+      {
+        "nodeId": "end",
+        "stringId": "npc-thief-01-leaves",
+        "choices": [],
+        "nextNode": null
+      }
+    ]
+  },
+  {
+    "dialogueId": "notice-found-bandage-01",
+    "nodes": [
+      {
+        "nodeId": "single",
+        "stringId": "notice-found-bandage",
+        "choices": []
+      }
+    ]
+  }
+]
+```
+
+- `dialogueId` should describe context, short description, and number if there are multiple variants. For example:
+  - `npc-thief-01` for a generic thief dialogue (which in the case ask an item).
+  - `thief-ambushes-player` for dialogue where a thief ambushes the player.
+  - `injured-survivor-asking-meds` survivor needing meds, choice to help or not.
+  - `main-quest-05-intro` the intro dialogue for main quest 5.
+  - `main-boss-hideout-postbattle-01` dialogue after a boss battle.
+  - `ambient-rumor-survivor-warning-zombies-uptown-01` a notice for atmosphere.
+- The dialogue is represented as graph connection. `nodes` being the graph of nodes, `nodeId` as the unique step, `nextNode` where the story goes.
+- For convention, use `nodeId` “start” and “end” for entry and closing point. “single” is used when complex branching is not needed and only one simple notice.
+- `stringId` refer to `strings.json`.
+- `choices` are selectable option that result in `outcome`, which can be positive or negative.
+- A valid node always have a non-empty choices or non-null `nextNode`, unless it is the `end` node.
+
+```kt
+data class Dialogue(
+    val dialogueId: String,
+    val nodes: List<DialogueNode>
+)
+```
+
+```kt
+data class DialogueNode(
+    val nodeId: String,
+    val stringId: String,
+    val choices: List<DialogueChoice>,
+    val nextNode: String?
+)
+```
+
+```kt
+data class DialogueChoice(
+    val stringId: String,
+    val outcome: ChoiceOutcome,
+    val nextNode: String
+)
+```
+
+```kt
+data class ChoiceOutcome(
+    val type: ChoiceOutcomeType,
+    val value: String
+)
+```
+
+```kt
+enum class ChoiceOutcomeType {
+    Reward, Hazard, Zombie
+}
+```
+
 #### Event Rewards
+
+`event_rewards.json`
+
+```json
+[
+  {
+    "rewardId": "loot-bandage-ground-01",
+    "items": [{ "itemId": "item-bandage", "quantity": 1 }],
+    "xp": 10,
+    "cash": 0
+  },
+  {
+    "rewardId": "reward-cash-01",
+    "items": [],
+    "xp": 0,
+    "cash": 100
+  }
+]
+```
+
+- `rewardId` should be descriptive.
+- `items`, `xp`, and `cash` are rewards which is expandable.
+- Description of rewards is included on each event that refers to its dialogue by `dialogueId`.
+
+```kt
+data class EventReward(
+    val rewardId: String,
+    val items: List<EventItemReward>,
+    val xp: Int,
+    val cash: Int
+)
+```
+
+```
+data class EventItemReward(
+    val itemId: String,
+    val quantity: Int
+)
+```
 
 #### Event Hazards
 
+`event_hazards.json`
+
+```json
+[
+  {
+    "hazardId": "hazard-damage-01",
+    "damage": 15,
+    "itemLossRules": null
+  },
+  {
+    "hazardId": "hazard-steal-random-any",
+    "damage": 0,
+    "itemLossRules": {
+      "type": "RandomFromInventory",
+      "filter": "food",
+      "quantity": 1
+    }
+  },
+  {
+    "hazardId": "hazard-bleeding-01",
+    "damage": 5,
+    "itemLossRules": null
+  }
+]
+```
+
+- `hazardId` should be descriptive.
+- `damage`, `statusEffect`, and `itemLossRules` are hazard which is expandable.
+- `itemLossRules` describe how an item can be loss dynamically. In reality, it shouldn't be any rare, high-level, or essential items. Basic supplies or currency are best.
+
+```kt
+data class EventHazard(
+    val hazardId: String,
+    val damage: Int,
+    val itemLossRules: ItemLossRules?
+)
+```
+
+```
+data class ItemLossRules(
+    val type: ItemLossType,
+    val filter: String?,
+    val quantity: Int?
+)
+```
+
+```
+enum class ItemLossType {
+    SpecificItem, AnyItemFromCategory, AnyItem
+}
+```
+
+- Filter for `ItemLossRules`:
+  - `SpecificItem`: “stale-bread” loses exactly the stale bread item (or none if player doesn't have it).
+  - `AnyItemFromCategory`: lose a random item from a category (e.g., “armor”).
+  - `AnyItem`: lose any item.
+
 #### Notice
 
-#### Shops
+Notices are 1-node dialogue, without choice and only text (i.e., typically used for gameplay bridge or atmosphere). It doesn't need `contentRefId` on the event, hence the absence of `notices.json`.
+
+Example of a notice in `dialogues.json`:
+
+```json
+{
+  "dialogueId": "notice-found-bandage-01",
+  "nodes": [
+    {
+      "nodeId": "single",
+      "stringId": "notice-found-bandage",
+      "choices": []
+    }
+  ]
+}
+```
+
+#### Vendors
+
+Vendor (shop) event is on inside building. It shows a 1-node dialogue, which is the shopkeeper greeting; then open the shop UI (`contentRefId` links to `shops.json`).
+
+`vendors.json`
+
+```json
+{
+  "vendorId": "shop-gunstore-01",
+  "name": "Max's Gun Store",
+  "catalog": [
+    { "itemId": "talon-pistol", "price": 100 },
+    { "itemId": "32-ammo", "price": 10 }
+  ]
+}
+```
+
+```kt
+data class Vendor(
+    val vendorId: String,
+    val name: String,
+    val catalog: List<VendorItem>
+)
+```
+
+```kt
+data class VendorItem(
+    val itemId: String,
+    val price: Int
+)
+```
 
 ### Missions
 
