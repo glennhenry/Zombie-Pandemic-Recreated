@@ -41,12 +41,14 @@ data/
 ├── zones.json
 ├── containers.json
 ├── buildings.json
+├── npcs.json
 ├── events.json
 ├── dialogues.json
 ├── event_rewards.json
 ├── event_hazards.json
 ├── vendors.json
 ├── missions.json
+├── objectives.json
 ├── items.json
 ├── zombies.json
 ├── strings.json
@@ -95,9 +97,11 @@ As an example, the container “broken-trunk” may be present in some blocks. T
 
 #### Building
 
-Building will be place where P could create a safe zone for resting and defending against the zombies.
+Buildings are safe-zone candidates where the P can rest, defend, and encounter story/gameplay elements. They may also NPCs or random events.
 
-They may also encounter vendors (shop), NPC that gives them mission, and random events.
+##### NPCs
+
+NPCs are found in a specific building (it's possible that they are in multiple places). They serve as the entry point to shops, missions, or story conversation.
 
 #### Misc
 
@@ -119,7 +123,9 @@ It consists of lines with the speaker and text, which could serve as bridge betw
 
 ### Missions
 
-Missions are objectives for player to complete.
+Missions are objectives for player to complete. They are assigned by NPC which is seen inside a building.
+
+A mission consist of a set of stages, which is the flow players follow to finish the mission. Each stage has some number of objectives the player must complete to progress.
 
 Types of missions:
 
@@ -127,7 +133,9 @@ Types of missions:
 2. Sub missions: optional objectives to earn rewards for game progression or lore purposes.
 3. Daily missions: sub missions which are available daily.
 
-Objectives types:
+#### Objectives
+
+Types of objectives:
 
 1. Reach: reach a particular block, zone, or building.
 2. Defeat: defeat some amount of a particular zombie.
@@ -149,7 +157,7 @@ Item will be categorized based on type, which can be:
 2. **Equippable**: items like weapon, armors, and clothing.
 3. **Material**: such as player's resources and crafting materials.
 4. **Junk**: unmeaningful items usually for cosmetic. Maybe, they could be recycled or used as generic crafting requirement.
-5. **Quest**: items necessary to progress quests.
+5. **Mission**: items necessary to progress missions (quests).
 6. **Misc**: uncategorized items.
 
 Each type is then further classified:
@@ -188,7 +196,14 @@ It can be thought like this:
 
 ## Technical Data Structure
 
-JSON contains all game data. The schema is identical to the game runtime data model. This allows for direct transformation of deserialized JSON data into data models. However, this results in a significant amount of redundant data in the JSON, which can be minimized using GZIP compression.
+The design of game data aims to be modular. Each data instance represents a limited aspect, with additional information referenced from other data instances.
+
+- For example, a mission only includes the stages, objectives within those stages, and the rewards. Objectives are stored separately.
+- Buildings only represent the requirements for entry, along with any associated events or NPCs, which are referenced elsewhere.
+
+This approach allows each data instance to contain a small amount of information. Another key benefit is that each piece of data is highly reusable; the same event can be used in multiple locations, and the same objectives can apply to various missions, etc.
+
+JSON files contains all game data. The schema is identical to the game runtime data model. This allows for direct transformation of deserialized JSON data into data models. However, it can result in a significant amount of redundant data in the JSON, which can be minimized using GZIP compression.
 
 Below are examples of the JSON data along with the corresponding data model definitions in Kotlin and TypeScript.
 
@@ -372,6 +387,8 @@ enum class ZoneDanger {
 
 #### Entities
 
+##### Containers
+
 `containers.json`
 
 ```json
@@ -425,6 +442,8 @@ data class ContainerEntry(
 )
 ```
 
+##### Buildings
+
 `buildings.json`
 
 ```json
@@ -436,28 +455,34 @@ data class ContainerEntry(
       "type": "Level",
       "value": "10"
     },
-    "eventId": "gym-zombie-01"
+    "eventId": "gym-zombie-01",
+    "npcId": null
   },
   {
     "buildingId": "store-01",
     "name": "Max's Store",
     "requirement": {
-      "type": "CompleteQuest",
-      "value": "main-quest-04"
+      "type": "CompleteMission",
+      "value": "main-mission-04"
     },
-    "eventId": "main-quest-05-intro"
+    "eventId": "sneak-zombie",
+    "npcId": "max-the-store-owner"
   }
 ]
 ```
 
 - `buildingId` naming scheme is building name with a number as variant identifier.
+- `eventId` if there is an event when entering a building.
+- `npcId` if the building has NPC, which could open up a shop or give mission.
+- When entering building, event will pop up first. Then, NPC giving mission or opening shop.
 
 ```kt
 data class Building(
     val buildingId: String,
     val name: String,
     val requirement: BuildingRequirement,
-    val eventId: String,
+    val eventId: String?,
+    val npcId: String?
 )
 ```
 
@@ -470,9 +495,67 @@ data class BuildingRequirement(
 
 ```kt
 enum class BuildingRequirementType {
-    None, Level, ItemNeeded, CompleteQuest
+    None, Level, ItemNeeded, CompleteMission
 }
 ```
+
+###### NPCs
+
+`npcs.json`
+
+```json
+[
+  {
+    "npcId": "max-the-store-owner",
+    "name": "Max the Gun Store Owner",
+    "dialogues": [
+      {
+        "dialogueId": "gunsmith-first-meet-01",
+        "trigger": "FirstMeet",
+        "value": null
+      },
+      {
+        "dialogueId": "gunsmith-generic-welcome-01",
+        "trigger": "Repeat",
+        "value": null
+      },
+      {
+        "dialogueId": "gunsmith-demand-mission-completion",
+        "trigger": "MissionOnProgress",
+        "value": "sub-mission-bring-food"
+      }
+    ],
+    "shopId": "shop-gunstore-01",
+    "missionId": null
+  }
+]
+```
+
+- NPC can refer to shops or missions if needed.
+- `dialogues` contains the possible dialogue when meeting the NPC. They have mechanism to trigger, such as first time meet, repeat, or during mission.
+
+```kt
+data class NPC(
+    val npcId: String,
+    val name: String,
+    val dialogues: List<NPCDialogue>,
+    val shopId: String?,
+    val missionId: String?
+)
+```
+
+```kt
+data class NPCDialogue(
+    val dialogueId: String,
+    val trigger: NPCTriggerType,
+    val value: String?
+)
+```
+
+````kt
+enum class NPCTriggerType {
+    FirstMeet, Repeat, MissionOnProgress, CompleteMission
+}
 
 ### Events
 
@@ -492,7 +575,7 @@ enum class BuildingRequirementType {
     "contentRefId": "vendor-gun-store-01"
   }
 ]
-```
+````
 
 - `eventId` should describe location or context, the trigger condition, short description, and number as variant or sequence identifier. For example:
   - dialogue: `orchard-street-rescue-npc`
@@ -500,7 +583,6 @@ enum class BuildingRequirementType {
   - reward: `downtown-reward-cache-11`, `downtown-reward-ammo-01`
   - hazard: `uptown-survivor-trap`, `uptown-bat-waste`
   - notice: `zombie-spawn-increase`, `night-has-come`
-  - vendor: `vendor-gun-store-01`.
 - Event may or may not have dialogue. If it does, it refers to dialogue by `dialogueId`.
 - `contentRefId` refers to event's content, such as vendor to `vendors.json`, reward and hazard to `event_rewards.json` and `event_hazards.json`.
 
@@ -597,7 +679,7 @@ enum class EventTriggerCondition {
   - `npc-thief-01` for a generic thief dialogue (which in the case ask an item).
   - `thief-ambushes-player` for dialogue where a thief ambushes the player.
   - `injured-survivor-asking-meds` survivor needing meds, choice to help or not.
-  - `main-quest-05-intro` the intro dialogue for main quest 5.
+  - `main-mission-05-intro` the intro dialogue for main mission 5.
   - `main-boss-hideout-postbattle-01` dialogue after a boss battle.
   - `ambient-rumor-survivor-warning-zombies-uptown-01` a notice for atmosphere.
 - The dialogue is represented as graph connection. `nodes` being the graph of nodes, `nodeId` as the unique step, `nextNode` where the story goes.
@@ -796,33 +878,316 @@ data class VendorItem(
 
 ### Missions
 
+`missions.json`
+
+```json
+[
+  {
+    "missionId": "mission.survivor-find-food-01",
+    "title": "mission.title.survivor-find-food-01",
+    "description": "mission.description.survivor-find-food-01",
+    "type": "Sub",
+    "requirement": {
+      "type": "CompleteMission",
+      "value": "mission-intro-01"
+    },
+    "stages": [
+      {
+        "stageId": "collect-food",
+        "description": "mission.subm.stage.collect-food-01",
+        "objectives": [
+          "objective.collect-water-01",
+          "objective.collect-bread-01"
+        ]
+      },
+      {
+        "stageId": "deliver-food",
+        "description": "mission.subm.stage.collect-food-02",
+        "objectives": [
+          "objective.deliver-bread-01",
+          "objective.deliver-water-01"
+        ]
+      }
+    ],
+    "reward": {
+      "items": [{ "itemId": "item-bandage", "quantity": 1 }],
+      "xp": 50,
+      "cash": 20
+    }
+  }
+]
+```
+
+- `title` and `description` refer to `strings.json`.
+- Missions can have prerequisites, described by `requirements`.
+- `stages` are the flow of mission, which players must complete to finish the mission.
+- `objectives` are list of objectives the player need to complete to finish the stage. They refer to `objectives.json` below.
+
+```kt
+data class Mission(
+    val missionId: String,
+    val title: String,
+    val description: String,
+    val type: MissionType,
+    val requirement: MissionRequirement,
+    val stages: List<MissionStage>
+)
+```
+
+```kt
+enum class MissionType {
+    Main, Sub, Daily
+}
+```
+
+```kt
+data class MissionRequirement(
+    val type: MissionRequirementType,
+    val value: String?
+)
+```
+
+```kt
+enum class MissionRequirementType {
+    None, CompleteMission
+}
+```
+
+```kt
+data class MissionStage(
+    val stageId: String,
+    val description: String,
+    val objectives: List<String>
+)
+```
+
+#### Objectives
+
+`objectives.json`
+
+```json
+[
+  {
+    "objectiveId": "objective.collect-water-01",
+    "type": "CollectItem",
+    "description": "mission.subm.obj.description.collect-water",
+    "targetId": "item-water-bottle",
+    "refId": null,
+    "value": 3
+  },
+  {
+    "objectiveId": "objective.collect-bread-01",
+    "type": "CollectItem",
+    "description": "mission.subm.obj.description.collect-bread",
+    "targetId": "item-stale-bread",
+    "refId": null,
+    "value": 3
+  },
+  {
+    "objectiveId": "objective.deliver-bread-01",
+    "type": "DeliverItem",
+    "description": "mission.subm.obj.description.deliver-bread",
+    "targetId": "npc-survivor-oldman-01",
+    "refId": "item-stale-bread",
+    "value": 3
+  },
+  {
+    "objectiveId": "objective.deliver-water-01",
+    "type": "DeliverItem",
+    "description": "mission.subm.obj.description.deliver-water",
+    "targetId": "npc-survivor-oldman-01",
+    "refId": "item-water-bottle",
+    "value": 2
+  }
+]
+```
+
+```kt
+data class Objective(
+    val objectiveId: String,
+    val type: ObjectiveType,
+    val description: String,
+    val targetId: String?,
+    val refId: String?,
+    val value: String?
+)
+```
+
+```kt
+enum class ObjectiveType {
+    ReachZone, ReachBlock, Defeat, Obtain, Deliver, Trigger
+}
+```
+
 ### Items
+
+`items.json`
+
+```json
+[
+  {
+    "itemId": "item-bread",
+    "name": "Stale Bread",
+    "lootable": true,
+    "type": "Consumable",
+    "subType": "Food",
+    "properties": {
+      "restoreHp": "5",
+      "restoreHunger": "10"
+    }
+  },
+  {
+    "itemId": "item-pistol-01",
+    "name": "Talon Pistol",
+    "lootable": true,
+    "type": "Equippable",
+    "subType": "Firearm",
+    "properties": {
+      "damage": "15",
+      "range": "25",
+      "ammoType": "9mm",
+      "durability": "100"
+    }
+  },
+  {
+    "itemId": "item-key-bunker",
+    "name": "Bunker Key",
+    "lootable": false,
+    "type": "QUEST",
+    "subType": "KEY",
+    "properties": {
+      "opensBuilding": "building-bunker-01"
+    }
+  }
+]
+```
+
+- `properties` is generic key-value map that allows item to be flexible in defining fields.
+- In the Kotlin code, we don't need to use complex serialization mechanism to define the specific data class for each type and subtype of the items. We could use single `Item` object with wrapper over different types. Resources are parsed once during server load, so error will be caught ahead.
+
+```kt
+data class Item(
+    val itemId: String,
+    val name: String,
+    val lootable: Boolean,
+    val type: ItemType,
+    val subtype: ItemSubtype,
+    val properties: Map<String, String>
+)
+```
+
+```kt
+enum class ItemType {
+    Consumable, Equippable, Material, Junk, Quest, Misc
+}
+```
+
+```kt
+enum class ItemSubType {
+    Food, Drink, Meds, Drugs, Ammo,
+    Melee, Firearm, Throwable,
+    ArmorHead, ArmorBody, ArmorLegs,
+    Tool,
+    Craft, Resource, Fuel,
+    Key, Document, SpecialObject,
+    Misc
+}
+```
+
+Example of wrappers:
+
+```kt
+class Weapon(private val item: Item) {
+    val damage: Int get() = item.properties["damage"]?.toInt() ?: 0
+    val ammoType: String? get() = item.properties["ammoType"]
+}
+
+class Consumable(private val item: Item) {
+    val healAmount: Int get() = item.properties["heal"]?.toInt() ?: 0
+    val duration: Int get() = item.properties["duration"]?.toInt() ?: 0
+}
+
+class QuestItem(private val item: Item) {
+    val questId: String get() = item.properties["questId"] ?: error("Missing questId")
+}
+```
 
 ### Zombies
 
+```json
+[
+  {
+    "zombieId": "zombie-walker-01",
+    "name": "Walker",
+    "type": "Infected",
+    "xp": 15,
+    "hp": 20,
+    "speed": 1,
+    "attackDamage": 5,
+    "attackRange": 1,
+    "behavior": "Melee",
+    "properties": null
+  },
+  {
+    "zombieId": "zombie-spitter-01",
+    "name": "Spitter",
+    "type": "Mutant",
+    "xp": 100,
+    "hp": 200,
+    "speed": 1,
+    "attackDamage": 3,
+    "attackRange": 5,
+    "behavior": "Ranged",
+    "properties": {
+      "spitDamage": 6
+    }
+  },
+  {
+    "zombieId": "zombie-boomer-01",
+    "name": "Boomer",
+    "type": "Infected",
+    "xp": 40,
+    "hp": 30,
+    "speed": 0,
+    "attackDamage": 1,
+    "attackRange": 1,
+    "behavior": "ExplodeOnDeath",
+    "properties": {
+      "explodeDamage": 15
+    }
+  }
+]
+```
+
+- Similar to items `properties` will be used to define specific fields.
+
+```kt
+data class Zombie(
+    val zombieId: String,
+    val name: String,
+    val type: ZombieType,
+    val xp: Int,
+    val hp: Int,
+    val speed: Int,
+    val attackDamage: Int,
+    val attackRange: Int,
+    val behavior: ZombieBehavior,
+    val properties: Map<String, String>?
+)
+```
+
+```kt
+enum class ZombieType {
+    Infected, Mutant
+}
+```
+
+```kt
+enum class ZombieBehavior {
+    Melee, Ranged, ExplodeOnDeath, Summoner, Support
+}
+```
+
 ### Strings
 
-@Serializable
-data class Item(
-val itemId: String,
-val name: String,
-val lootable: Boolean,
-val type: ItemType,
-val subType: String,
-)
-
-@Serializable
-enum class ItemType {
-CONSUMABLES, EQUIPPABLE, MATERIAL, JUNK, QUEST, MISC
-}
-
-@Serializable
-enum class ItemSubType {
-FOOD, DRINK, MEDS, DRUGS, AMMO,
-MELEE, FIREARM, THROWABLE,
-ARMOR_HEAD, ARMOR_BODY, ARMOR_LEGS,
-TOOL,
-CRAFT, RESOURCE, FUEL,
-KEY, DOCUMENT, SPECIAL_OBJECT,
-MISC
-}
+Dictionary containing all translatable text in the game. Display and description texts are always translatable, but titles and names are not. We aim to preserve the original titles and names for global reference.
