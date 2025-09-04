@@ -31,12 +31,12 @@ The main objective is escaping the city.
 ```
 data/
 ├── maps/
-│   └── main_city/
-│       ├── main_city.json
+│   └── main-city/
+│       ├── main-city.json
 │       └── blocks/
-│           ├── main_city-000_000.jpg
-│           ├── main_city-001_000.jpg
-│           ├── main_city-002_000.jpg
+│           ├── main-city-000_000.jpg
+│           ├── main-city-001_000.jpg
+│           ├── main-city-002_000.jpg
 │           └── ...
 ├── zones.json
 ├── containers.json
@@ -61,7 +61,7 @@ The game world, most of the things happen here.
 
 The “Main City” will be used as the main map. More maps could be made for focused or special areas (e.g., event map, sewer map).
 
-The `main_city.json` specifies content of map including its metadata like map's width, height, and block image size; and most importantly the list of blocks within the map.
+The `main-city.json` specifies content of map including its metadata like map's width, height, and block image size; and most importantly the list of blocks within the map.
 
 ### Blocks
 
@@ -205,6 +205,48 @@ This approach allows each data instance to contain a small amount of information
 
 JSON files contains all game data. The schema is identical to the game runtime data model. This allows for direct transformation of deserialized JSON data into data models. However, it can result in a significant amount of redundant data in the JSON, which can be minimized using GZIP compression.
 
+### Identifiers
+
+ID field for data has to be informative. It should describe relevant context such that operator knows what is it without looking up. Expect for those straight forward data or one that don't have many variants, the ID can be simple. It might be good practice to also prefix the ID with the data category and a `:` (semicolon).
+
+ID should be written in lowercase with `-` as the separator. To properly signify specific category or variant they can use `:`. Except for complex reference such as strings or dialogues, they use `.` (dot). Try not to include variant if there is only one. In contrast, it's better to not have variant at all by enforcing unique name over everything.
+
+If resource has URI (like block image or item icon) it should be same as the ID, except replacing special characters like dot and semicolon with `-`.
+
+- Map: `map:<mapname>` → `map:downtown-sewer`.
+- Block: `bl:<mapname>:<x>:<y>` → `b:downtown-sewer:003:009`.
+- Entity: `ent:<mapname>:<x>:<y>:<seq>` → `ent:main-city:000:000:1`.
+- Zone: `zone:<zonename>` → `zone-stadium`, `zone:west-orchard`.
+- Container: `cnt:<containername>:<optionalvariant>` → `cnt:broken-trunk`, `cnt:first-aid-box:03`.
+- Building: `bld:<buildingname>:<optionalvariant>` → `bld:grimwall-school`, `bld:skyline-station:02`.
+- NPC: `npc:<npcname>-<occupation>` → `npc:max-store-owner`, `npc:ted-grimwall-school-principal`, `npc:jim-dying-survivor`. Preferably unique name over NPCs.
+- Event: `ev:<eventname+context>:<optionalvariant>` → `ev:search-trash-can-found-nothing`, `ev:shout-attract-zombie`, `ev:ambient-scary:02`.
+- Dialogue: `dlg:<speaker+context>:<optionalseq>`
+  - `dlg:max-welcome:01` → NPC Max greets the player.
+  - `dlg:ted-explain-main-quest-03:02` → Ted gives third main quest-related line (sequence 2).
+  - `dlg:jim-self-lore:01` → Jim’s backstory, first line.
+  - `dlg:radio-warning-radioactive:01` → A radio message warns of danger.
+  - `dlg:tutorial-intro:01` → System tutorial line.
+  - `dlg:choice-quest-finding-bread:1a` → Player’s dialogue choice (branch A).
+- Event reward: `rwd:<rewardname>-<context>:<optionalvariant>` → `rwd:bandage-ground:03`, `rwd:broken-pipe-system`.
+- Event hazard: `haz:<hazardname>:<optionalvariant>` → `haz:effect-bleeding`, `haz:steal-bandage`.
+- Notice: `not:<type>-<context>:<optionalvariant>` → `not:alert-radioactive`, `not:danger-bandit-attack`, `not:usual-player-hungry:01`.
+- Vendor: `shop:<shopname>:<optionalvariant>` → `shop:gun-store:02`, `shop:convenience:06`, `shop:bliss-hotel`.
+- Mission: `mis:<missionname>:<optionalvariant>` → `mis:find-supplies`, `mis:help-survivor:02`, `mis:main-quest:07`. Mission has stage, where each has objectives. Objectives themselves are independent of mission, generic, and reusable.
+- Mission stage: `stg:<stagenumber>:<missionname+optionalvariant>:<stagename>` → `stg:01:help-survivor-02:kill-bandits`.
+- Mission objective: `obj:<objectivename>:<optionalvariant>` → `obj:find-bandage`.
+- Items: `itm:<itemname>` → `itm:bandage`, `itm:cowboy-pistol`.
+- Zombies: `z:<typeifboss>-<zombiename>` → `z:strong-walker`, `z:riot-police`, `z:boss-spitter`.
+- Strings: `str:<datacategory>:<subcategory>:<name+context>`. The structure is flexible but should have leading alphabet.
+  - `str:ui:button:start`
+  - `str:ui:tooltip:stamina`
+  - `str:mis:clear-stadium-stage-01:title`
+  - `str:mis:clear-stadium-stage-01:desc`
+  - `str:npc:ted:lore-01`
+  - `str:bld:grimwall-school:desc`.
+
+Some data also have “title”, “name” or “description” field which correspond to display name. They may refer to `strings.json` if they are intended to be translated. Likewise, they usually don't differ much from ID.
+
 Below are examples of the JSON data along with the corresponding data model definitions in Kotlin and TypeScript.
 
 ### Map
@@ -213,7 +255,7 @@ Below are examples of the JSON data along with the corresponding data model defi
 
 ```json
 {
-  "mapId": "main_city",
+  "mapId": "map:main-city",
   "name": "Main City",
   "width": 6,
   "height": 6,
@@ -221,27 +263,25 @@ Below are examples of the JSON data along with the corresponding data model defi
   "blocks": [
     [
       {
-        "blockId": "main_city:000:000",
+        "blockId": "bl:main-city:000:000",
         "name": "Orchard Street",
         "x": 0,
         "y": 0,
-        "uri": "main_city-000_000.jpg",
+        "uri": "bl-main-city-000-000.jpg",
         "entities": [
           {
-            "entId": "main_city:000:000#1",
-            "name": "Car",
+            "entId": "ent:main-city:000:000:1",
             "bbox": {
               "x": 100,
               "y": 400,
               "width": 40,
               "height": 20
             },
-            "type": "loot",
-            "refId": "car"
+            "type": "Loot",
+            "refId": "cnt:abandoned-sedan"
           },
           {
-            "entId": "main_city:000:000#2",
-            "name": "Crate",
+            "entId": "ent:main-city:000:000:2",
             "bbox": {
               "x": 400,
               "y": 200,
@@ -249,11 +289,10 @@ Below are examples of the JSON data along with the corresponding data model defi
               "height": 90
             },
             "type": "Loot",
-            "refId": "crate"
+            "refId": "cnt:rectangle-crate"
           },
           {
-            "entId": "main_city:000:000#3",
-            "name": "Autumn School",
+            "entId": "ent:main-city:000:000:3",
             "bbox": {
               "x": 240,
               "y": 240,
@@ -261,11 +300,11 @@ Below are examples of the JSON data along with the corresponding data model defi
               "height": 20
             },
             "type": "Building",
-            "refId": "autumn_school"
+            "refId": "bld:autumn-school"
           }
         ],
         "exits": ["nw", "n", "ne", "w", "e", "sw", "s", "se"],
-        "zoneId": "stadium"
+        "zoneId": "zone:stadium"
       }
     ],
     []
@@ -286,9 +325,6 @@ data class GameMap(
 )
 ```
 
-- `mapId`: the naming scheme is `map_name` (e.g., `main_city`).
-- `name`: similar to `mapId` but in capital case (e.g., `Main City`).
-
 ```kt
 data class Block(
     val blockId: String,
@@ -302,8 +338,6 @@ data class Block(
 )
 ```
 
-- `blockId`: the naming scheme is `map_name:x:y` (e.g., `main_city:002:003` for block in `main_city` at x=2, y=3).
-- `name`: cosmetic purpose such as `Orchard Street`.
 - `uri`: same as `blockId`, but added `.jpg` suffix.
 - `Direction` is an enum of compass direction:
 
@@ -316,15 +350,12 @@ enum class Direction {
 ```kt
 data class Entity(
     val entId: String,
-    val name: String,
     val bbox: BBox,
     val type: EntityType,
     val refId: String
 )
 ```
 
-- `entId`: entity identifier within the block, usually `blockId` appended with number. It's `map_name:x:y#z`, such as `main_city:003:002#2` for second entity of block within `main_city` under coordinate x=3, y=2.
-- `name`: display name for the entity.
 - `bbox`: bounding box to map interactable window:
 
 ```kt
@@ -344,7 +375,7 @@ enum class EntityType {
 }
 ```
 
-- `refId`: reference to specific entity table. There isn't universal naming scheme, each follows their own entity table. For container, the ID is just snake cased container name.
+- `refId`: ID reference to specific entity table. The name of entity can be derived from here.
 
 #### Zones
 
@@ -353,13 +384,13 @@ enum class EntityType {
 ```json
 [
   {
-    "zoneId": "goldfish-residence",
+    "zoneId": "zone:goldfish-residence",
     "name": "Goldfish Residence",
     "dangerLevel": "Safe",
     "level": 6
   },
   {
-    "zoneId": "stadium",
+    "zoneId": "zone:stadium",
     "name": "Stadium",
     "dangerLevel": "Risky",
     "level": 17
@@ -394,32 +425,31 @@ enum class ZoneDanger {
 ```json
 [
   {
-    "containerId": "broken-trunk-01",
+    "containerId": "cnt:broken-trunk:01",
     "name": "Broken Trunk",
     "cooldown": 8,
     "findChance": 0.97,
     "entries": [
       {
-        "itemId": "pipe",
+        "itemId": "itm:pipe",
         "rarity": 25,
-        "lootableInZones": ["stadium", "newtown"]
+        "lootableInZones": ["zone:stadium", "zone:newtown"]
       },
       {
-        "itemId": "stale-bread",
+        "itemId": "itm:stale-bread",
         "rarity": 5,
-        "lootableInZones": ["stadium", "uptown"]
+        "lootableInZones": ["zone:stadium", "zone:uptown"]
       },
       {
-        "itemId": "bandage",
+        "itemId": "itm:bandage",
         "rarity": 20,
-        "lootableInZones": ["stadium", "uptown", "military"]
+        "lootableInZones": ["zone:stadium", "zone:uptown", "zone:military"]
       }
     ]
   }
 ]
 ```
 
-- `containerId` naming scheme is the container name in snake-case with optional number as variant identifier.
 - `cooldown` to loot in hours.
 - `rarity` is weight attribute of a loot.
 - `lootableInZones` is a set of zones where the loot can be obtained. This means that even if a container is found in lower-level zones, players won't be able to loot high-end items.
@@ -449,29 +479,28 @@ data class ContainerEntry(
 ```json
 [
   {
-    "buildingId": "gym-01",
+    "buildingId": "bld:gym:01",
     "name": "Training Gym",
     "requirement": {
       "type": "Level",
       "value": "10"
     },
-    "eventId": "gym-zombie-01",
+    "eventId": "ev:building-zombie:07",
     "npcId": null
   },
   {
-    "buildingId": "store-01",
+    "buildingId": "bld:store:09",
     "name": "Max's Store",
     "requirement": {
       "type": "CompleteMission",
-      "value": "main-mission-04"
+      "value": "mis:main-quest:07"
     },
-    "eventId": "sneak-zombie",
-    "npcId": "max-the-store-owner"
+    "eventId": "ev:sneak-zombie",
+    "npcId": "npc:max-store-owner"
   }
 ]
 ```
 
-- `buildingId` naming scheme is building name with a number as variant identifier.
 - `eventId` if there is an event when entering a building.
 - `npcId` if the building has NPC, which could open up a shop or give mission.
 - When entering building, event will pop up first. Then, NPC giving mission or opening shop.
@@ -506,26 +535,26 @@ enum class BuildingRequirementType {
 ```json
 [
   {
-    "npcId": "max-the-store-owner",
+    "npcId": "npc:max-store-owner",
     "name": "Max the Gun Store Owner",
     "dialogues": [
       {
-        "dialogueId": "gunsmith-first-meet-01",
+        "dialogueId": "dlg:gunsmith-intro",
         "trigger": "FirstMeet",
         "value": null
       },
       {
-        "dialogueId": "gunsmith-generic-welcome-01",
+        "dialogueId": "dlg:gunsmith-generic-welcome",
         "trigger": "Repeat",
         "value": null
       },
       {
-        "dialogueId": "gunsmith-demand-mission-completion",
+        "dialogueId": "dlg:gunsmith-demand-mission-completion",
         "trigger": "MissionOnProgress",
-        "value": "sub-mission-bring-food"
+        "value": "mis:bring-food"
       }
     ],
-    "shopId": "shop-gunstore-01",
+    "shopId": "shop:gunstore:01",
     "missionId": null
   }
 ]
@@ -552,10 +581,11 @@ data class NPCDialogue(
 )
 ```
 
-````kt
+```kt
 enum class NPCTriggerType {
     FirstMeet, Repeat, MissionOnProgress, CompleteMission
 }
+```
 
 ### Events
 
@@ -564,25 +594,31 @@ enum class NPCTriggerType {
 ```json
 [
   {
-    "eventId": "vendor-gun-store-01",
-    "name": "Gun Store",
-    "type": "Vendor",
+    "eventId": "ev:bandit-ambush",
+    "name": "Bandit Ambush",
+    "type": "Hazard",
     "trigger": {
       "condition": "OnEnterBuilding",
-      "value": "gun-store-01"
+      "value": "bld:gun-store:01"
     },
-    "dialogueId": "gun-store-01",
-    "contentRefId": "vendor-gun-store-01"
+    "dialogueId": "dlg:gun-store-01-bandit-ambush",
+    "contentRefId": null
+  },
+  {
+    "eventId": "ev:reward-bandage",
+    "name": "Bandage Reward",
+    "type": "Reward",
+    "trigger": {
+      "condition": "AfterDialogue",
+      "value": null
+    },
+    "dialogueId": null,
+    "contentRefId": "rwd:bandage"
   }
 ]
-````
+```
 
-- `eventId` should describe location or context, the trigger condition, short description, and number as variant or sequence identifier. For example:
-  - dialogue: `orchard-street-rescue-npc`
-  - zombie: `stadium-zombiewave-01`, `stadium-spitter-boss-04`
-  - reward: `downtown-reward-cache-11`, `downtown-reward-ammo-01`
-  - hazard: `uptown-survivor-trap`, `uptown-bat-waste`
-  - notice: `zombie-spawn-increase`, `night-has-come`
+- Trigger value may be null if not needed.
 - Event may or may not have dialogue. If it does, it refers to dialogue by `dialogueId`.
 - `contentRefId` refers to event's content, such as vendor to `vendors.json`, reward and hazard to `event_rewards.json` and `event_hazards.json`.
 
@@ -606,13 +642,13 @@ enum class GameEventType {
 ```kt
 data class EventTrigger(
     val condition: EventTriggerCondition,
-    val value: String
+    val value: String?
 )
 ```
 
 ```kt
 enum class EventTriggerCondition {
-    OnEnterBlock, OnEnterBuilding, OnLootContainer, OnMissionProgress, Always
+    OnEnterBlock, OnEnterBuilding, OnLootContainer, OnMissionProgress, AfterDialogue, Always
 }
 ```
 
@@ -623,20 +659,20 @@ enum class EventTriggerCondition {
 ```json
 [
   {
-    "dialogueId": "npc-thief-demands-food-01",
+    "dialogueId": "dlg:thief-tim-demands-food",
     "nodes": [
       {
         "nodeId": "start",
-        "stringId": "npc-thief-01-intro",
+        "stringId": "str:dlg:thief-tim-intro",
         "choices": [
           {
-            "stringId": "choice-give-item",
-            "outcome": { "type": "Reward", "value": "bandage" },
+            "stringId": "str:dlg:generic-give-item-choice",
+            "outcome": { "type": "Reward", "value": "ev:reward-bandage" },
             "nextNode": "end-reward"
           },
           {
-            "stringId": "choice-refuse",
-            "outcome": { "type": "Zombie", "value": "zombie-thief-fight" },
+            "stringId": "str:dlg:generic-refuse-choice",
+            "outcome": { "type": "Zombie", "value": "ev:zombie-thief-fight" },
             "nextNode": "end-fight"
           }
         ],
@@ -644,30 +680,30 @@ enum class EventTriggerCondition {
       },
       {
         "nodeId": "end-reward",
-        "stringId": "npc-thief-01-thanks",
+        "stringId": "str:dlg:thief-tim-thanks",
         "choices": [],
         "nextNode": "end"
       },
       {
         "nodeId": "end-fight",
-        "stringId": "npc-thief-01-attack",
+        "stringId": "str:dlg:thief-tim-angry",
         "choices": [],
         "nextNode": "end"
       },
       {
         "nodeId": "end",
-        "stringId": "npc-thief-01-leaves",
+        "stringId": "str:dlg:thief-tim-leaves",
         "choices": [],
         "nextNode": null
       }
     ]
   },
   {
-    "dialogueId": "notice-found-bandage-01",
+    "dialogueId": "not:found-bandage:01",
     "nodes": [
       {
         "nodeId": "single",
-        "stringId": "notice-found-bandage",
+        "stringId": "str:not:found-bandage:01",
         "choices": []
       }
     ]
@@ -675,17 +711,10 @@ enum class EventTriggerCondition {
 ]
 ```
 
-- `dialogueId` should describe context, short description, and number if there are multiple variants. For example:
-  - `npc-thief-01` for a generic thief dialogue (which in the case ask an item).
-  - `thief-ambushes-player` for dialogue where a thief ambushes the player.
-  - `injured-survivor-asking-meds` survivor needing meds, choice to help or not.
-  - `main-mission-05-intro` the intro dialogue for main mission 5.
-  - `main-boss-hideout-postbattle-01` dialogue after a boss battle.
-  - `ambient-rumor-survivor-warning-zombies-uptown-01` a notice for atmosphere.
 - The dialogue is represented as graph connection. `nodes` being the graph of nodes, `nodeId` as the unique step, `nextNode` where the story goes.
 - For convention, use `nodeId` “start” and “end” for entry and closing point. “single” is used when complex branching is not needed and only one simple notice.
 - `stringId` refer to `strings.json`.
-- `choices` are selectable option that result in `outcome`, which can be positive or negative.
+- `choices` are selectable option that result in `outcome`, which can be positive or negative. Outcome is always an event of either type `Reward`, `Hazard`, and `Zombie`.
 - A valid node always have a non-empty choices or non-null `nextNode`, unless it is the `end` node.
 
 ```kt
@@ -732,13 +761,13 @@ enum class ChoiceOutcomeType {
 ```json
 [
   {
-    "rewardId": "loot-bandage-ground-01",
+    "rewardId": "rwd:bandage",
     "items": [{ "itemId": "item-bandage", "quantity": 1 }],
     "xp": 10,
     "cash": 0
   },
   {
-    "rewardId": "reward-cash-01",
+    "rewardId": "rwd:loot-cash",
     "items": [],
     "xp": 0,
     "cash": 100
@@ -746,7 +775,6 @@ enum class ChoiceOutcomeType {
 ]
 ```
 
-- `rewardId` should be descriptive.
 - `items`, `xp`, and `cash` are rewards which is expandable.
 - Description of rewards is included on each event that refers to its dialogue by `dialogueId`.
 
@@ -773,12 +801,12 @@ data class EventItemReward(
 ```json
 [
   {
-    "hazardId": "hazard-damage-01",
+    "hazardId": "haz:damage:01",
     "damage": 15,
     "itemLossRules": null
   },
   {
-    "hazardId": "hazard-steal-random-any",
+    "hazardId": "haz:loss-random-food",
     "damage": 0,
     "itemLossRules": {
       "type": "RandomFromInventory",
@@ -787,14 +815,13 @@ data class EventItemReward(
     }
   },
   {
-    "hazardId": "hazard-bleeding-01",
+    "hazardId": "haz:effect-bleeding",
     "damage": 5,
     "itemLossRules": null
   }
 ]
 ```
 
-- `hazardId` should be descriptive.
 - `damage`, `statusEffect`, and `itemLossRules` are hazard which is expandable.
 - `itemLossRules` describe how an item can be loss dynamically. In reality, it shouldn't be any rare, high-level, or essential items. Basic supplies or currency are best.
 
@@ -833,11 +860,11 @@ Example of a notice in `dialogues.json`:
 
 ```json
 {
-  "dialogueId": "notice-found-bandage-01",
+  "dialogueId": "not:found-bandage",
   "nodes": [
     {
       "nodeId": "single",
-      "stringId": "notice-found-bandage",
+      "stringId": "str:not:found-bandage",
       "choices": []
     }
   ]
@@ -852,14 +879,16 @@ Vendor (shop) event is on inside building. It shows a 1-node dialogue, which is 
 
 ```json
 {
-  "vendorId": "shop-gunstore-01",
+  "vendorId": "shop:gunstore:01",
   "name": "Max's Gun Store",
   "catalog": [
-    { "itemId": "talon-pistol", "price": 100 },
-    { "itemId": "32-ammo", "price": 10 }
+    { "itemId": "itm:talon-pistol", "price": 100 },
+    { "itemId": "itm:32-ammo", "price": 2 }
   ]
 }
 ```
+
+- Item sold is always one. The amount of stock of an item depend on each item, where it is requested to server.
 
 ```kt
 data class Vendor(
@@ -883,34 +912,30 @@ data class VendorItem(
 ```json
 [
   {
-    "missionId": "mission.survivor-find-food-01",
-    "title": "mission.title.survivor-find-food-01",
-    "description": "mission.description.survivor-find-food-01",
+    "missionId": "mis:survivor-ask-supplies",
+    "title": "str:mis:survivor-ask-supplies:title",
+    "description": "str:mis:survivor-ask-supplies:desc",
     "type": "Sub",
     "requirement": {
       "type": "CompleteMission",
-      "value": "mission-intro-01"
+      "value": "mis:tutorial-01"
     },
     "stages": [
       {
-        "stageId": "collect-food",
-        "description": "mission.subm.stage.collect-food-01",
-        "objectives": [
-          "objective.collect-water-01",
-          "objective.collect-bread-01"
-        ]
+        "stageId": "stg:01:survivor-ask-supplies:collect-supplies",
+        "title": "str:mis:survivor-ask-supplies-stage-01:title",
+        "description": "str:mis:survivor-ask-supplies-stage-01:desc",
+        "objectives": ["obj:collect-water:01", "obj:collect-food:01"]
       },
       {
-        "stageId": "deliver-food",
-        "description": "mission.subm.stage.collect-food-02",
-        "objectives": [
-          "objective.deliver-bread-01",
-          "objective.deliver-water-01"
-        ]
+        "stageId": "stg:02:survivor-ask-supplies:deliver-supplies",
+        "title": "str:mis:survivor-ask-supplies-stage-02:title",
+        "description": "str:mis:survivor-ask-supplies-stage-02:desc",
+        "objectives": ["obj:deliver-bread:01", "obj:deliver-water:01"]
       }
     ],
     "reward": {
-      "items": [{ "itemId": "item-bandage", "quantity": 1 }],
+      "items": [{ "itemId": "itm:bandage", "quantity": 1 }],
       "xp": 50,
       "cash": 20
     }
@@ -956,6 +981,7 @@ enum class MissionRequirementType {
 ```kt
 data class MissionStage(
     val stageId: String,
+    val title: String,
     val description: String,
     val objectives: List<String>
 )
@@ -968,39 +994,41 @@ data class MissionStage(
 ```json
 [
   {
-    "objectiveId": "objective.collect-water-01",
+    "objectiveId": "obj:collect-water:01",
     "type": "CollectItem",
-    "description": "mission.subm.obj.description.collect-water",
-    "targetId": "item-water-bottle",
+    "description": "str:obj:collect-water-01:desc",
+    "targetId": "itm:water-bottle",
     "refId": null,
     "value": 3
   },
   {
-    "objectiveId": "objective.collect-bread-01",
+    "objectiveId": "obj:collect-bread:01",
     "type": "CollectItem",
-    "description": "mission.subm.obj.description.collect-bread",
-    "targetId": "item-stale-bread",
+    "description": "str:obj:collect-bread-01:desc",
+    "targetId": "itm:stale-bread",
     "refId": null,
     "value": 3
   },
   {
-    "objectiveId": "objective.deliver-bread-01",
+    "objectiveId": "obj:deliver-bread:01",
     "type": "DeliverItem",
-    "description": "mission.subm.obj.description.deliver-bread",
-    "targetId": "npc-survivor-oldman-01",
-    "refId": "item-stale-bread",
+    "description": "str:obj:deliver-bread-01:desc",
+    "targetId": "npc:survivor-oldman",
+    "refId": "itm:stale-bread",
     "value": 3
   },
   {
-    "objectiveId": "objective.deliver-water-01",
+    "objectiveId": "obj:deliver-water:01",
     "type": "DeliverItem",
-    "description": "mission.subm.obj.description.deliver-water",
-    "targetId": "npc-survivor-oldman-01",
-    "refId": "item-water-bottle",
+    "description": "str:obj:deliver-water-01:desc",
+    "targetId": "npc:survivor-oldman",
+    "refId": "itm:water-bottle",
     "value": 2
   }
 ]
 ```
+
+- `refId` being a generic, an extra ID container.
 
 ```kt
 data class Objective(
@@ -1026,7 +1054,7 @@ enum class ObjectiveType {
 ```json
 [
   {
-    "itemId": "item-bread",
+    "itemId": "itm:bread",
     "name": "Stale Bread",
     "lootable": true,
     "type": "Consumable",
@@ -1037,7 +1065,7 @@ enum class ObjectiveType {
     }
   },
   {
-    "itemId": "item-pistol-01",
+    "itemId": "itm:pistol-01",
     "name": "Talon Pistol",
     "lootable": true,
     "type": "Equippable",
@@ -1050,13 +1078,13 @@ enum class ObjectiveType {
     }
   },
   {
-    "itemId": "item-key-bunker",
+    "itemId": "itm:key-bunker",
     "name": "Bunker Key",
     "lootable": false,
-    "type": "QUEST",
-    "subType": "KEY",
+    "type": "Quest",
+    "subType": "Key",
     "properties": {
-      "opensBuilding": "building-bunker-01"
+      "opensBuilding": "bld:military-bunker"
     }
   }
 ]
@@ -1117,7 +1145,7 @@ class QuestItem(private val item: Item) {
 ```json
 [
   {
-    "zombieId": "zombie-walker-01",
+    "zombieId": "z:walker",
     "name": "Walker",
     "type": "Infected",
     "xp": 15,
@@ -1129,7 +1157,7 @@ class QuestItem(private val item: Item) {
     "properties": null
   },
   {
-    "zombieId": "zombie-spitter-01",
+    "zombieId": "z:boss-spitter",
     "name": "Spitter",
     "type": "Mutant",
     "xp": 100,
@@ -1143,7 +1171,7 @@ class QuestItem(private val item: Item) {
     }
   },
   {
-    "zombieId": "zombie-boomer-01",
+    "zombieId": "z:boomer",
     "name": "Boomer",
     "type": "Infected",
     "xp": 40,
@@ -1191,3 +1219,37 @@ enum class ZombieBehavior {
 ### Strings
 
 Dictionary containing all translatable text in the game. Display and description texts are always translatable, but titles and names are not. We aim to preserve the original titles and names for global reference.
+
+`strings-en.json`
+
+```json
+[
+  "mis": [
+    "survivor-ask-supplies-title": "Survivor needs supply",
+    "survivor-ask-supplies-desc": "A lonely survivor hasn't eaten for days. It's a good idea for you to help him. He will need water and bread."
+  ],
+  "dlg": [
+    "thief-tim-intro": "Hey! I'm gonna give you a minute to decide whether to hand that supply over to me or something bad will happen to you.",
+    "thief-tim-angry": "Alright, you're gonna enjoy running from these",
+    "thief-tim-thanks": "I didn't expect it's going to be easy, Ha-Ha.",
+    "generic-give-item-choice": "Give {0} your {1}.",
+    "generic-refuse-choice": "Refuse {0} offer."
+  ]
+]
+```
+
+- Strings are nested based on data category (e.g., mission, items), where the field is just like how each category is referenced.
+- Structure is flat, but sorted manually.
+- `{x}` represent a positional, placeholder variable. It can be place, amount, anything.
+- For example, `generic-give-item-choice` can be substituted like: “Give Thief Tim your bandage”.
+
+The parsed string in code:
+
+```kt
+data class StringRes(
+    val text: String,
+    val amount: Int
+)
+```
+
+`amount` describe the amount of variables that needed to be substituted. We can create `format` method which enforces that amount and substitute to it.
