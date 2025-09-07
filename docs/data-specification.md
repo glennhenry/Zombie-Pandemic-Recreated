@@ -1,30 +1,6 @@
-# Specification
+# Data Specification
 
-This document explains the design and data flow for the game, technically.
-
-## Terminology
-
-- P is shorthand for Player.
-- Map is the location of the game. It has a particular width and height.
-- Block is the unit within a map. Block consist of entities.
-- Entity is interactable object within a block. Entity has type, which could be:
-  - Container: a lootable place.
-  - Building: entrance that takes P to specific area.
-  - Misc.: fallback for uncategorized type of entities.
-
-## Gameplay Flow
-
-The main objective is escaping the city.
-
-1. P spawns in a map.
-2. P moves through blocks in 8 directions (N, NE, E, SE, S, SW, W, NW).
-3. Within a block, P could interact with container to loot items; enter a building to open shop (called vendor), meet particular NPC, or encounter specific events inside or outside the building;
-4. During travel, P could encounter zombies, in which fight will be 1-vs-many turn-based manner.
-5. P obtain items, completes missions and events to gain EXP to level up and upgrade their skills, all to make them stronger.
-6. The stronger P is, they could progress to harder areas.
-7. The main quests consist of chain of tasks, which ends in the said harder areas.
-8. The final objective involves crafting specific vehicle to plan escape from the city.
-9. When a player dies, they will be able to recover after a particular time, while losing some of their stuff.
+This document outlines the game's data design, including example JSON and Kotlin data classes.
 
 ## Data Structure
 
