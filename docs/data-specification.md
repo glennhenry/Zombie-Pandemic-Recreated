@@ -288,7 +288,7 @@ Below are examples of the JSON data along with the corresponding data model defi
 }
 ```
 
-The blocks are organized in 2D arrays for simple access by coordinates.
+- The blocks are organized in 2D arrays for simple access by coordinates.
 
 ```kt
 data class GameMap(
