@@ -1,18 +1,10 @@
 package dev.zprecreated.ui.component
 
-import dev.zprecreated.Account
+import dev.zprecreated.model.account.PlayerAccount
 import dev.zprecreated.ui.Styles
-import kotlinx.html.FlowContent
-import kotlinx.html.a
-import kotlinx.html.button
-import kotlinx.html.div
-import kotlinx.html.i
-import kotlinx.html.id
-import kotlinx.html.p
-import kotlinx.html.span
-import kotlinx.html.title
+import kotlinx.html.*
 
-fun FlowContent.TopAppBar(account: Account?, topbarClosed: Boolean) {
+fun FlowContent.TopAppBar(account: PlayerAccount?, topbarClosed: Boolean) {
     if (!topbarClosed) {
         div(classes = "flex items-center justify-between ${Styles.bg(Styles.colorAppBar)} px-4 text-right text-xs") {
             id = "topbar"
