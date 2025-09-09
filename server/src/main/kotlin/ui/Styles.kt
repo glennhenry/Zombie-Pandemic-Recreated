@@ -1,5 +1,58 @@
 package dev.zprecreated.ui
 
+import kotlinx.html.STYLE
+import kotlinx.html.unsafe
+
+/**
+ * Important CSS styles
+ */
+fun STYLE.GlobalStyle() {
+    unsafe {
+        raw(
+            """
+                @layer base {
+                  * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                  }
+                }
+
+                html, body {
+                  overflow-x: auto;
+                  min-width: 800px;
+                }
+
+                .container {
+                  width: 92%;
+                  max-width: 1200px;
+                  height: 100%;
+                  margin: 0 auto;
+                }
+
+                @media (max-width: 799px) {
+                  .container {
+                    width: 100% !important;
+                  }
+                }
+
+                h1, h2, h3, h4, h5, h6 {
+                  text-wrap: balance;
+                }
+
+                code {
+                  font-family: var(--font-mono);
+                }
+
+                body {
+                  color: white;
+                  font-family: var(--font-paragraph);
+                }
+                """.trimIndent()
+        )
+    }
+}
+
 object Styles {
     // Fonts
     const val fontHeading = "font-['Rum_Raisin']"
