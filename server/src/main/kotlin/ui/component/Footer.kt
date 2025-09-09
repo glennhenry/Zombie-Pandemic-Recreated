@@ -1,6 +1,6 @@
 package dev.zprecreated.ui.component
 
-import dev.zprecreated.Styles
+import dev.zprecreated.ui.Styles
 import kotlinx.html.FlowContent
 import kotlinx.html.a
 import kotlinx.html.div
