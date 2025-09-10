@@ -1,4 +1,4 @@
-package dev.zprecreated.ui.component
+package dev.zprecreated.ui.layout
 
 import dev.zprecreated.ui.Styles
 import kotlinx.html.FlowContent

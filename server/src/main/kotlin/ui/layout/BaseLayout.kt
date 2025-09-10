@@ -1,11 +1,9 @@
 package dev.zprecreated.ui.layout
 
 import dev.zprecreated.model.account.PlayerAccount
-import dev.zprecreated.ui.component.CloseTopBarButton
-import dev.zprecreated.ui.component.Footer
-import dev.zprecreated.ui.component.TopAppBar
 import kotlinx.html.FlowContent
 import kotlinx.html.div
+import kotlinx.html.id
 import kotlinx.html.main
 
 fun FlowContent.BaseLayout(account: PlayerAccount?, topbarClosed: Boolean, mainContent: FlowContent.() -> Unit) {
@@ -13,6 +11,7 @@ fun FlowContent.BaseLayout(account: PlayerAccount?, topbarClosed: Boolean, mainC
         TopAppBar(account = account, topbarClosed = topbarClosed)
         CloseTopBarButton(topbarClosed = topbarClosed)
         main(classes = "container min-h-[100vh] pb-20") {
+            id = "main-content"
             mainContent()
         }
         Footer()

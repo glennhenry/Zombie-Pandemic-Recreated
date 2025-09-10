@@ -1,4 +1,4 @@
-package dev.zprecreated.ui.component
+package dev.zprecreated.ui.layout
 
 import dev.zprecreated.model.account.PlayerAccount
 import dev.zprecreated.ui.Styles
