@@ -81,19 +81,27 @@ object Styles {
     const val colorStatusBad = "#c74e4e"
     const val colorStatusNeutral = "#d9b93a"
 
-    // Gradients
-    const val gradientStart = "#ffffff"
-    const val gradientEnd = "#424242"
-    const val colorTopbarGradientStart = "#545451"
-    const val colorTopbarGradientEnd = "#444444"
+    // Logo
+    const val homeGameLogoGradientStart = "#ffffff"
+    const val homeGameLogoGradientEnd = "#424242"
+
+    // Home play button
+    const val playBgGradientStart = "#d9d9d9"
+    const val playBgGradientEnd = "#737373"
     const val playBtnGradientStart = "#642020"
     const val playBtnGradientEnd = "#911c1c"
+
+    // Game
+    const val colorTopGameBarGradientStart = "#545451"
+    const val colorTopGameBarGradientEnd = "#444444"
 
     // Others
     // For text styled like a link (non-emphasized)
     const val linkText = "cursor-pointer hover:text-white"
+
     // For emphasized text (highlighted but not clickable)
     const val emphasizedText = "text-[${colorEmphasized}] underline hover:text-[${colorEmphasizedHover}]"
+
     // For emphasized text that is also interactive (clickable like a link)
     const val emphasizedLinkText = "cursor-pointer $emphasizedText"
 
