@@ -1,44 +1,55 @@
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll("[data-carousel]").forEach(carousel => {
+  document.querySelectorAll("[data-carousel]").forEach((carousel) => {
     const carouselId = carousel.id;
-    const scrollEl = document.getElementById(`${carouselId}-scroll`);
-    const mainImg = document.getElementById(`${carouselId}-main`);
+    const thumbnailContainer = document.querySelector(`#${carouselId}-scroll`);
+    const selectedThumbnail = document.querySelector(`#${carouselId}-main`);
 
     function updateSelected(newIdx) {
-      const thumbs = scrollEl.querySelectorAll("img[data-idx]");
+      if (!thumbnailContainer) return;
+      const thumbs = thumbnailContainer.querySelectorAll("[data-idx]");
       if (newIdx < 0 || newIdx >= thumbs.length) return;
 
       carousel.dataset.selected = newIdx;
 
       // Toggle overlay state via data-selected
       thumbs.forEach((img, i) => {
+        // Check if image has overlay
+        const overlay = img.parentElement.querySelector("[data-overlay]");
+        if (!overlay) return;
+
         if (i === newIdx) {
-          img.parentElement.setAttribute("data-selected", "true");
+          overlay.setAttribute("data-selected", "true");
         } else {
-          img.parentElement.removeAttribute("data-selected");
+          overlay.removeAttribute("data-selected");
         }
       });
 
-      // Update main image
-      mainImg.src = thumbs[newIdx].src;
-      mainImg.alt = thumbs[newIdx].alt;
+      const mainImg = thumbs[newIdx].querySelector("img:not([data-overlay])");
+      if (!mainImg) {
+        console.error("No img found inside thumbnail", thumbs[newIdx]);
+        return;
+      }
+      selectedThumbnail.src = mainImg.src;
+      selectedThumbnail.alt = mainImg.alt;
 
       thumbs[newIdx].scrollIntoView({
         behavior: "smooth",
         inline: "center",
-        block: "nearest"
+        block: "nearest",
       });
     }
 
     // Click on thumbnail
-    scrollEl.addEventListener("click", e => {
-      const target = e.target.closest("img[data-idx]");
-      if (!target) return;
-      updateSelected(parseInt(target.dataset.idx));
-    });
+    if (thumbnailContainer) {
+      thumbnailContainer.addEventListener("click", (e) => {
+        let target = e.target.closest("[data-idx]");
+        if (!target) return;
+        updateSelected(parseInt(target.dataset.idx));
+      });
+    }
 
     // Click on arrows
-    carousel.addEventListener("click", e => {
+    carousel.addEventListener("click", (e) => {
       const arrow = e.target.closest("[data-arrow]");
       if (!arrow) return;
 
@@ -47,40 +58,52 @@ document.addEventListener("DOMContentLoaded", () => {
       updateSelected(currentIdx + dir);
     });
 
-    // Drag scroll
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    const startDrag = e => {
-      isDown = true;
-      scrollEl.classList.add("cursor-grabbing");
-      startX = (e.pageX || e.touches[0].pageX) - scrollEl.offsetLeft;
-      scrollLeft = scrollEl.scrollLeft;
-      e.preventDefault();
-    };
-
-    const endDrag = () => {
-      isDown = false;
-      scrollEl.classList.remove("cursor-grabbing");
-    };
-
-    const moveDrag = e => {
-      if (!isDown) return;
-      const x = (e.pageX || e.touches[0].pageX) - scrollEl.offsetLeft;
-      const walk = (x - startX) * 1.5;
-      scrollEl.scrollLeft = scrollLeft - walk;
-    };
-
-    scrollEl.addEventListener("mousedown", startDrag);
-    scrollEl.addEventListener("touchstart", startDrag);
-    scrollEl.addEventListener("mouseleave", endDrag);
-    scrollEl.addEventListener("mouseup", endDrag);
-    scrollEl.addEventListener("touchend", endDrag);
-    scrollEl.addEventListener("mousemove", moveDrag);
-    scrollEl.addEventListener("touchmove", moveDrag);
+    enableDragScroll(thumbnailContainer);
 
     // Init
     updateSelected(parseInt(carousel.dataset.selected || "0"));
   });
 });
+
+function enableDragScroll(el) {
+  if (!el) return;
+
+  let isDown = false;
+  let startX = 0;
+  let scrollLeft = 0;
+  let moved = false;
+
+  el.addEventListener("mousedown", (e) => {
+    isDown = true;
+    moved = false;
+    startX = e.clientX;
+    scrollLeft = el.scrollLeft;
+  });
+
+  el.addEventListener("mousemove", (e) => {
+    if (!isDown) return;
+    const walk = (e.clientX - startX) * 1.2;
+    if (!moved && Math.abs(walk) > 5) moved = true;
+    if (moved) el.scrollLeft = scrollLeft - walk;
+  });
+
+  const stop = () => {
+    isDown = false;
+  };
+
+  el.addEventListener("mouseup", stop);
+  el.addEventListener("mouseleave", stop);
+
+  el.addEventListener(
+    "click",
+    (e) => {
+      if (moved) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        moved = false;
+      }
+    },
+    true
+  );
+}

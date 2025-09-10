@@ -10,31 +10,31 @@ import kotlinx.html.i
 import kotlinx.html.id
 import kotlinx.html.img
 
-const val CAROUSEL_ID = "carousel"
-const val CAROUSEL_THUMBNAIL_ID = "carousel-scroll"
-
 fun FlowContent.Carousel(
     images: List<ImagePreview>,
     selected: Int,
+    carouselId: String,
     classes: String = ""
 ) {
     div(classes = "flex h-25 w-full flex-row gap-2 $classes") {
-        id = CAROUSEL_ID
-        attributes["data-carousel"] = "true"
+        id = carouselId
+        attributes["data-carousel"] = "true" // mark the element as carousel
 
-        ArrowSwitch(left = true, CAROUSEL_ID)
+        ArrowSwitch(left = true, carouselId)
 
-        // Thumbnails container
-        div(classes = "flex flex-row gap-2 overflow-x-hidden cursor-grab") {
-            id = CAROUSEL_THUMBNAIL_ID
+        // Thumbnails and scroll container
+        div(classes = "flex flex-row gap-2 overflow-x-hidden cursor-pointer") {
+            id = "$carouselId-scroll"
 
             images.forEachIndexed { idx, image ->
                 div(classes = "flex-none") {
+                    draggable = Draggable.htmlFalse
                     Overlay(
                         props = OverlayProps(
                             enabled = idx == selected,
-                            hoverEnabled = idx != selected
-                        )
+                            hoverEnabled = true,
+                        ),
+                        dataIdx = idx // overlay covers the image, attach index here
                     ) {
                         img(
                             src = image.path,
@@ -42,14 +42,13 @@ fun FlowContent.Carousel(
                             classes = "select-none max-h-25 object-contain cursor-pointer"
                         ) {
                             draggable = Draggable.htmlFalse
-                            attributes["data-idx"] = idx.toString()
                         }
                     }
                 }
             }
         }
 
-        ArrowSwitch(left = false, CAROUSEL_ID)
+        ArrowSwitch(left = false, carouselId)
     }
 }
 
@@ -57,10 +56,14 @@ fun FlowContent.ArrowSwitch(left: Boolean, carouselId: String) {
     val iconClass = if (left) "fa-solid fa-arrow-left" else "fa-solid fa-arrow-right"
 
     div(
-        classes = "flex h-25 w-10 cursor-pointer items-center justify-center ${Styles.bg(Styles.colorHomeArrowContainer)} hover:${Styles.bg(Styles.colorHomeArrowContainerHovered)}"
+        classes = "flex h-25 w-10 cursor-pointer items-center justify-center ${Styles.bg(Styles.colorHomeArrowContainer)} hover:${
+            Styles.bg(
+                Styles.colorHomeArrowContainerHovered
+            )
+        }"
     ) {
-        attributes["data-arrow"] = if (left) "left" else "right"
-        attributes["data-carousel"] = carouselId
+        attributes["data-arrow"] = if (left) "left" else "right" // left or right arrow
+        attributes["data-carousel"] = carouselId // which carousel does the arrow belongs to
         i(classes = iconClass) {}
     }
 }

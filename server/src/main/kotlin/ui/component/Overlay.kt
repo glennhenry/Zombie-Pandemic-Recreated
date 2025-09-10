@@ -11,26 +11,28 @@ data class OverlayProps(
     val classes: String = ""
 )
 
+/**
+ * Overlay component
+ *
+ * To re-render or toggle overlay it must be done from JS
+ */
 fun FlowContent.Overlay(
     props: OverlayProps = OverlayProps(),
+    dataIdx: Int? = null,
     content: FlowContent.() -> Unit
 ) {
-    if (!props.enabled && props.overlayContent == null) {
-        // No overlay, just render content
-        content()
-    } else {
-        div(classes = "relative overflow-hidden ${if (props.hoverEnabled) "group" else ""} ${props.classes}") {
-            content()
+    div(classes = "relative overflow-hidden group ${props.classes}") {
+        // Attach data-idx to the Overlay container if provided
+        // This allows JS to detect click even if an overlay is covering it
+        if (dataIdx != null) attributes["data-idx"] = dataIdx.toString()
 
-            div(
-                classes = buildString {
-                    append("absolute inset-0 flex items-center justify-center")
-                    if (props.enabled && props.overlayContent == null) append(" ${props.color}")
-                    if (props.hoverEnabled) append(" opacity-0 transition-opacity group-hover:opacity-100")
-                }
-            ) {
-                props.overlayContent?.invoke(this)
-            }
+        content() // render inner content (e.g., img)
+
+        div(
+            classes = "absolute inset-0 flex items-center justify-center transition-opacity ${props.color}"
+        ) {
+            attributes["data-overlay"] = "true"
+            if (props.enabled) attributes["data-selected"] = "true"
         }
     }
 }
