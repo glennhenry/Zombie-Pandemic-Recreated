@@ -39,5 +39,6 @@ fun HEAD.CommonHead(play: Boolean) {
     script { src = "https://unpkg.com/@tailwindcss/browser@4" }
     script { src = "assets/resizer.js" }
     script { src = "assets/toggleAppBar.js" }
+    script { src = "assets/carousel.js" }
     style { GlobalStyle() }
 }
