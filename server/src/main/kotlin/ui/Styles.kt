@@ -52,6 +52,16 @@ fun STYLE.GlobalStyle() {
                 .playbtn-shadow {
                   box-shadow: 0px 3px 4px 3px rgba(0, 0, 0, 0.5);
                 }
+                
+                [data-overlay] {
+                  opacity: 0;
+                }
+                [data-overlay][data-selected] {
+                  opacity: 1; /* always visible on selected */
+                }
+                .group:hover [data-overlay]:not([data-selected]) {
+                  opacity: 1; /* visible on hover */
+                }
                 """.trimIndent()
         )
     }

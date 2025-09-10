@@ -37,6 +37,7 @@ fun Application.configureRouting() {
         }
 
         get("/play") {
+            println("Verify auth here")
             call.respondHtml {
                 head {
                     CommonHead(play = true)
