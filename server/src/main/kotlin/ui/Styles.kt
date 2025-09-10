@@ -48,6 +48,10 @@ fun STYLE.GlobalStyle() {
                   color: white;
                   font-family: ${Styles.fontParagraph};
                 }
+                
+                .playbtn-shadow {
+                  box-shadow: 0px 3px 4px 3px rgba(0, 0, 0, 0.5);
+                }
                 """.trimIndent()
         )
     }
@@ -86,11 +90,54 @@ object Styles {
     const val playBtnGradientEnd = "#911c1c"
 
     // Others
+    // For text styled like a link (non-emphasized)
+    const val linkText = "cursor-pointer hover:text-white"
+    // For emphasized text (highlighted but not clickable)
     const val emphasizedText = "text-[${colorEmphasized}] underline hover:text-[${colorEmphasizedHover}]"
-    const val emphasizedLinkText = "cursor-pointer transition-colors duration-300 hover:text-white"
+    // For emphasized text that is also interactive (clickable like a link)
+    const val emphasizedLinkText = "cursor-pointer $emphasizedText"
 
     // Tailwind styling utility
     fun bg(color: String) = "bg-[$color]"
     fun text(color: String) = "text-[$color]"
     fun font(font: String) = "font-[${font.replace(" ", "_").replace(",", "")}]"
+
+    // Text stroke (multiple shadows hack)
+    fun textStrokeStyle(strokeWidth: Int, color: String): String {
+        val shadows = buildList {
+            for (dx in -strokeWidth..strokeWidth) {
+                for (dy in -strokeWidth..strokeWidth) {
+                    if (dx == 0 && dy == 0) continue
+                    add("${dx}px ${dy}px 0 $color")
+                }
+            }
+        }
+        return "text-shadow: ${shadows.joinToString(", ")};"
+    }
+
+    fun textLinearGradientStyle(
+        direction: String = "right",
+        fromColor: String,
+        toColor: String,
+        fromPercent: Int = 0,
+        toPercent: Int = 100
+    ): String {
+        val gradient =
+            "linear-gradient(to $direction, $fromColor $fromPercent%, $toColor $toPercent%)"
+        return """
+            background-image: $gradient;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        """.trimIndent()
+    }
+
+    fun bgLinearGradientStyle(
+        direction: String = "right",
+        fromColor: String,
+        toColor: String,
+        fromPercent: Int = 0,
+        toPercent: Int = 100
+    ): String {
+        return "background-image: linear-gradient(to $direction, $fromColor $fromPercent%, $toColor $toPercent%);"
+    }
 }

@@ -37,7 +37,6 @@ fun HEAD.CommonHead(play: Boolean) {
 
     script { src = "https://unpkg.com/htmx.org@2.0.6" }
     script { src = "https://unpkg.com/@tailwindcss/browser@4" }
-    script { src = "https://unpkg.com/htmx-ext-class-tools@2.0.1/class-tools.js" }
     script { src = "assets/resizer.js" }
     script { src = "assets/toggleAppBar.js" }
     style { GlobalStyle() }
