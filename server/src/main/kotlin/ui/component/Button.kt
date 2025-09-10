@@ -6,9 +6,9 @@ import kotlinx.html.button
 import kotlinx.html.onClick
 
 data class ButtonProps(
-    val baseColor: String? = null,
-    val hoverColor: String? = null,
-    val activeColor: String? = null,
+    val baseColor: String = Styles.bg(Styles.colorPrimary),
+    val hoverColor: String = "hover:${Styles.bg(Styles.colorPrimary)}/80",
+    val activeColor: String = "active:${Styles.bg(Styles.colorPrimary)}/70",
     val type: ButtonType = ButtonType.Button,
     val classes: String = "",
     val style: String? = null,
@@ -35,11 +35,7 @@ fun FlowContent.Button(
     props: ButtonProps = ButtonProps(),
     content: FlowContent.() -> Unit
 ) {
-    val base = props.baseColor ?: Styles.bg(Styles.colorPrimary)
-    val hover = props.hoverColor ?: "hover:${Styles.bg(Styles.colorPrimary)}/80"
-    val active = props.activeColor ?: "active:${Styles.bg(Styles.colorPrimary)}/70"
-
-    button(classes = "cursor-pointer $base $hover $active ${props.classes}") {
+    button(classes = "cursor-pointer ${props.baseColor} ${props.hoverColor} ${props.activeColor} ${props.classes}") {
         attributes["type"] = props.type.name
         props.style?.let { attributes["style"] = it }
         props.jsOnClick?.let { onClick = it }
