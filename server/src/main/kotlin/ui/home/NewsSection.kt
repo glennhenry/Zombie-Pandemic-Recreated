@@ -16,9 +16,9 @@ fun FlowContent.NewsSection(news: Pair<List<String>, Boolean>) {
     val blocks = transformNews(lines)
 
     div(classes = "flex flex-col gap-2") {
-        h1(classes = "${Styles.font(Styles.fontParagraph)} text-xl") { +"News" }
+        h1(classes = "${Styles.fontFamily(Styles.fontSerif)} text-xl") { +"News" }
 
-        div(classes = "max-h-96 overflow-y-auto p-1 text-sm ${Styles.font(Styles.fontParagraph)}") {
+        div(classes = "max-h-96 overflow-y-auto p-1 text-sm ${Styles.textColor(Styles.colorParagraph)}") {
             blocks.forEachIndexed { idx, block ->
                 when (block) {
                     is NewsBlock.Heading -> {
@@ -47,7 +47,7 @@ fun FlowContent.NewsSection(news: Pair<List<String>, Boolean>) {
             a(
                 href = "https://github.com/glennhenry/Zombie-Pandemic-Recreated/blob/main/release-notes.md",
                 target = "_blank",
-                classes = "mt-4 ${Styles.font(Styles.fontParagraph)} underline"
+                classes = "mt-4 ${Styles.textColor(Styles.colorParagraph)} underline"
             ) {
                 +"See full →"
             }

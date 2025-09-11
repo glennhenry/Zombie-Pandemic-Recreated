@@ -56,8 +56,8 @@ fun FlowContent.ArrowSwitch(left: Boolean, carouselId: String) {
     val iconClass = if (left) "fa-solid fa-arrow-left" else "fa-solid fa-arrow-right"
 
     div(
-        classes = "flex h-25 w-10 cursor-pointer items-center justify-center ${Styles.bg(Styles.colorHomeArrowContainer)} hover:${
-            Styles.bg(
+        classes = "flex h-25 w-10 cursor-pointer items-center justify-center ${Styles.bgColor(Styles.colorHomeArrowContainer)} hover:${
+            Styles.bgColor(
                 Styles.colorHomeArrowContainerHovered
             )
         }"

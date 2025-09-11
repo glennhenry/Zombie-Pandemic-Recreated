@@ -6,10 +6,10 @@ import kotlinx.html.*
 
 fun FlowContent.TopAppBar(account: PlayerAccount?, topbarClosed: Boolean) {
     if (!topbarClosed) {
-        div(classes = "flex items-center justify-between ${Styles.bg(Styles.colorAppBar)} px-4 text-right text-xs") {
+        div(classes = "flex items-center justify-between ${Styles.bgColor(Styles.colorAppBar)} px-4 text-right text-xs") {
             id = "topbar"
 
-            a(classes = "${Styles.font(Styles.fontGameLogo)} text-2xl") {
+            a(classes = "${Styles.fontFamily(Styles.fontGameLogo)} text-2xl") {
                 href = "/"
                 title = "Home"
                 +"ZP"

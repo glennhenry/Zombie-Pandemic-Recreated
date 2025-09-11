@@ -8,13 +8,13 @@ import kotlinx.html.*
 fun FlowContent.HomePage(news: Pair<List<String>, Boolean>) {
     div(classes = "flex flex-col gap-2") {
         div(classes = "select-none p-3 text-center") {
-            h1(classes = "${Styles.font(Styles.fontGameLogo)} text-7xl") {
+            h1(classes = "${Styles.fontFamily(Styles.fontGameLogo)} text-7xl") {
                 style = Styles.textLinearGradientStyle(
                     "bottom", Styles.homeGameLogoGradientStart, Styles.homeGameLogoGradientEnd, 0, 100
                 )
                 +"ZOMBIE PANDEMIC"
             }
-            h1(classes = "${Styles.font(Styles.fontGameLogo)} text-7xl") {
+            h1(classes = "${Styles.fontFamily(Styles.fontGameLogo)} text-7xl") {
                 style = Styles.textStrokeStyle(5, Styles.colorPrimary)
                 +"RECREATED"
             }
@@ -33,13 +33,13 @@ fun FlowContent.HomePage(news: Pair<List<String>, Boolean>) {
                     hxTarget = "main-content"
                 )
             ) {
-                p(classes = "${Styles.font(Styles.fontRusso)} text-lg ${Styles.textStrokeStyle(2, "black")}") {
+                p(classes = "${Styles.fontFamily(Styles.fontRusso)} text-lg ${Styles.textStrokeStyle(2, "black")}") {
                     +"PLAY"
                 }
             }
         }
         div(classes = "flex justify-center") {
-            div(classes = "grid grid-cols-1 gap-2 ${Styles.font(Styles.fontSerif)} md:grid-cols-2") {
+            div(classes = "grid grid-cols-1 gap-2 ${Styles.fontFamily(Styles.fontSerif)} md:grid-cols-2") {
                 div(classes = "flex flex-col gap-2") {
                     HomeCard {
                         PreviewSection()

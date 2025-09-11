@@ -10,7 +10,7 @@ import kotlinx.html.strong
 import java.time.Year
 
 fun FlowContent.Footer() {
-    div(classes = "${Styles.bg(Styles.colorAppBar)} py-4 ${Styles.text(Styles.colorParagraph)}") {
+    div(classes = "${Styles.bgColor(Styles.colorAppBar)} py-4 ${Styles.textColor(Styles.colorParagraph)}") {
         footer(classes = "container flex flex-col items-center justify-between gap-2 px-4 text-sm md:flex-row md:gap-0") {
             p(classes = "text-center") {
                 strong {

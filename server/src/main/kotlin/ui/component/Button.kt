@@ -6,9 +6,9 @@ import kotlinx.html.button
 import kotlinx.html.onClick
 
 data class ButtonProps(
-    val baseColor: String = Styles.bg(Styles.colorPrimary),
-    val hoverColor: String = "hover:${Styles.bg(Styles.colorPrimary)}/80",
-    val activeColor: String = "active:${Styles.bg(Styles.colorPrimary)}/70",
+    val baseColor: String = Styles.bgColor(Styles.colorPrimary),
+    val hoverColor: String = "hover:${Styles.bgColor(Styles.colorPrimary)}/80",
+    val activeColor: String = "active:${Styles.bgColor(Styles.colorPrimary)}/70",
     val type: ButtonType = ButtonType.Button,
     val classes: String = "",
     val style: String? = null,

@@ -38,6 +38,7 @@ fun STYLE.GlobalStyle() {
 
                 h1, h2, h3, h4, h5, h6 {
                   text-wrap: balance;
+                  color: ${Styles.colorHeading};
                 }
 
                 code {
@@ -74,7 +75,7 @@ object Styles {
     const val fontSerif = "Noto Serif"
     const val fontGameLogo = "Just Another Hand"
     const val fontRusso = "Russo One"
-    const val fontParagraph = "sans-serif"
+    const val fontParagraph = "Inter"
 
     // Colors
     const val colorAppBar = "#131313"
@@ -116,9 +117,9 @@ object Styles {
     const val emphasizedLinkText = "cursor-pointer $emphasizedText"
 
     // Tailwind styling utility
-    fun bg(color: String) = "bg-[$color]"
-    fun text(color: String) = "text-[$color]"
-    fun font(font: String) = "font-[${font.replace(" ", "_").replace(",", "")}]"
+    fun bgColor(color: String) = "bg-[$color]"
+    fun textColor(color: String) = "text-[$color]"
+    fun fontFamily(font: String) = "font-[${font.replace(" ", "_").replace(",", "")}]"
 
     // Text stroke (multiple shadows hack)
     fun textStrokeStyle(strokeWidth: Int, color: String): String {

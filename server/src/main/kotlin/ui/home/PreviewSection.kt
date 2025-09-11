@@ -1,10 +1,12 @@
 package dev.zprecreated.ui.home
 
+import dev.zprecreated.ui.Styles
 import dev.zprecreated.ui.component.Carousel
 import kotlinx.html.Draggable
 import kotlinx.html.FlowContent
 import kotlinx.html.div
 import kotlinx.html.draggable
+import kotlinx.html.h1
 import kotlinx.html.id
 import kotlinx.html.img
 
@@ -44,6 +46,8 @@ fun FlowContent.PreviewSection() {
     val carouselId = "carousel-preview"
     val image = previewImages[0] // default to 0, selection is done in client-side
     div(classes = "flex w-120 max-w-full flex-col gap-2") {
+        h1(classes = "${Styles.fontFamily(Styles.fontSerif)} text-xl") { +"Preview" }
+
         img(classes = "object-contain select-none") {
             id = "$carouselId-main"
             draggable = Draggable.htmlFalse

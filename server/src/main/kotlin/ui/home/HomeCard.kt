@@ -9,7 +9,7 @@ data class HomeCardProps(
 )
 
 fun FlowContent.HomeCard(props: HomeCardProps = HomeCardProps(), content: FlowContent.() -> Unit) {
-    div(classes = "${Styles.bg(Styles.colorBaseContainer)} p-4 border-2 border-[#A1A1A1] ${props.classes}") {
+    div(classes = "${Styles.bgColor(Styles.colorBaseContainer)} p-4 border-2 border-[#A1A1A1] ${props.classes}") {
         content()
     }
 }
