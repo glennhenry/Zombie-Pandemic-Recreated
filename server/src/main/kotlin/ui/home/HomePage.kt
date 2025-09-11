@@ -6,8 +6,6 @@ import dev.zprecreated.ui.component.ButtonProps
 import kotlinx.html.*
 
 fun FlowContent.HomePage() {
-    var selected = 0
-
     div(classes = "flex flex-col gap-2") {
         div(classes = "select-none p-3 text-center") {
             h1(classes = "${Styles.font(Styles.fontGameLogo)} text-7xl") {
@@ -44,7 +42,7 @@ fun FlowContent.HomePage() {
             div(classes = "grid grid-cols-1 gap-2 ${Styles.font(Styles.fontSerif)} md:grid-cols-2") {
                 div(classes = "flex flex-col gap-2") {
                     HomeCard {
-                        PreviewSection(selected)
+                        PreviewSection()
                     }
                     HomeCard(HomeCardProps(classes = "mb-4 break-inside-avoid")) {
 

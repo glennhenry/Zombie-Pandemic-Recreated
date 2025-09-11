@@ -40,9 +40,9 @@ val previewImages = listOf(
     ),
 )
 
-fun FlowContent.PreviewSection(selected: Int) {
+fun FlowContent.PreviewSection() {
     val carouselId = "carousel-preview"
-    val image = previewImages[selected]
+    val image = previewImages[0] // default to 0, selection is done in client-side
     div(classes = "flex w-120 max-w-full flex-col gap-2") {
         img(classes = "object-contain select-none") {
             id = "$carouselId-main"
@@ -52,7 +52,7 @@ fun FlowContent.PreviewSection(selected: Int) {
         }
         Carousel(
             images = previewImages,
-            selected = selected,
+            selected = 0,
             carouselId = carouselId
         )
     }
