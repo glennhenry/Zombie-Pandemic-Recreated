@@ -5,7 +5,7 @@ import dev.zprecreated.ui.component.Button
 import dev.zprecreated.ui.component.ButtonProps
 import kotlinx.html.*
 
-fun FlowContent.HomePage() {
+fun FlowContent.HomePage(news: Pair<List<String>, Boolean>) {
     div(classes = "flex flex-col gap-2") {
         div(classes = "select-none p-3 text-center") {
             h1(classes = "${Styles.font(Styles.fontGameLogo)} text-7xl") {
@@ -45,7 +45,7 @@ fun FlowContent.HomePage() {
                         PreviewSection()
                     }
                     HomeCard(HomeCardProps(classes = "mb-4 break-inside-avoid")) {
-
+                        NewsSection(news)
                     }
                 }
                 div(classes = "mx-auto flex w-full max-w-[25rem] flex-col gap-2 md:mx-0") {

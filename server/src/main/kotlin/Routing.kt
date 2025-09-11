@@ -3,6 +3,7 @@ package dev.zprecreated
 import dev.zprecreated.model.account.PlayerAccount
 import dev.zprecreated.ui.CommonHead
 import dev.zprecreated.ui.home.HomePage
+import dev.zprecreated.ui.home.fetchPatchNotes
 import dev.zprecreated.ui.layout.BaseLayout
 import dev.zprecreated.ui.play.PlayPage
 import io.ktor.server.application.*
@@ -24,13 +25,15 @@ fun Application.configureRouting() {
         staticFiles("game", File("server/static/game-assets"))
 
         get("/") {
+            val news = fetchPatchNotes()
+
             call.respondHtml {
                 head {
                     CommonHead(play = false)
                 }
                 body {
                     BaseLayout(account, topbarClosed = false) {
-                        HomePage()
+                        HomePage(news)
                     }
                 }
             }
