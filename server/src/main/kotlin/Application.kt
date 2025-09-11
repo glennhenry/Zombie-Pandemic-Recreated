@@ -6,7 +6,6 @@ import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respondFile
 import io.ktor.server.response.respondText
@@ -24,11 +23,6 @@ fun Application.module() {
             prettyPrint = true
             isLenient = true
         })
-    }
-    install(CORS) {
-        allowHost("localhost:5173", schemes = listOf("http")) // Vite dev server
-        allowHeader(HttpHeaders.ContentType)
-        allowMethod(HttpMethod.Get)
     }
     install(StatusPages) {
         status(HttpStatusCode.NotFound) { call, status ->
