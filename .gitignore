@@ -30,12 +30,9 @@ server/build/
 !gradle/wrapper/gradle-wrapper.jar
 server/.kotlin
 
-# node
-client/node_modules/
-client/dist/
-client/build/
-client/.vite/
-client/.next/
+# kobweb
+site/.kobweb/*
+site/!.kobweb/conf.yaml
 
 # logs
 logs/
