@@ -21,7 +21,7 @@ ktor {
 }
 
 tasks.withType<ShadowJar> {
-    destinationDirectory.set(file("../buildx"))
+    destinationDirectory.set(file("../deploy"))
     manifest {
         attributes["Main-Class"] = "io.ktor.server.netty.EngineMain"
     }
