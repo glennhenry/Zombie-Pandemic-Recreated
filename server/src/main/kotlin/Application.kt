@@ -23,7 +23,8 @@ fun Application.module() {
         })
     }
     install(CORS) {
-        allowHost("localhost:8081", schemes = listOf("http")) // kobweb dev server
+        allowHost("localhost:8080", schemes = listOf("http")) // source from kobweb dev server
+        allowHost("127.0.0.1:8080", schemes = listOf("http")) // source from kobweb dev server
         allowHeader(HttpHeaders.ContentType)
         allowMethod(HttpMethod.Get)
     }

@@ -34,6 +34,9 @@ server/.kotlin
 site/.kobweb/*
 site/!.kobweb/conf.yaml
 
+# kotlin
+.kotlin
+
 # logs
 logs/
 npm-debug.log*
