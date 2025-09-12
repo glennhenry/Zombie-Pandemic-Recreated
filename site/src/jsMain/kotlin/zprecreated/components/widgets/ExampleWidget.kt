@@ -9,7 +9,7 @@ import org.jetbrains.compose.web.dom.Text
 
 @Composable
 fun ExampleWidget() {
-    Row(modifier = Modifier.color(Colors.AliceBlue)) {
-        Text("aliceblue")
+    Row(modifier = Modifier.color(Colors.Red)) {
+        Text("red color")
     }
 }
