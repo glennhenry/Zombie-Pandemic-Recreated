@@ -40,5 +40,6 @@ fun HEAD.CommonHead(play: Boolean) {
     script { src = "assets/resizer.js" }
     script { src = "assets/toggleAppBar.js" }
     script { src = "assets/carousel.js" }
+    script { src = "assets/toggleAuth.js" }
     style { GlobalStyle() }
 }

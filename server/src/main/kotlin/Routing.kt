@@ -15,7 +15,8 @@ import kotlinx.html.head
 import java.io.File
 
 fun Application.configureRouting() {
-    val account = PlayerAccount.guest()
+//    val account = PlayerAccount.guest()
+    val account = null
 
     routing {
         // assets directory is on static/
@@ -33,7 +34,7 @@ fun Application.configureRouting() {
                 }
                 body {
                     BaseLayout(account, topbarClosed = false) {
-                        HomePage(news)
+                        HomePage(account, news)
                     }
                 }
             }

@@ -1,11 +1,12 @@
 package dev.zprecreated.ui.home
 
+import dev.zprecreated.model.account.PlayerAccount
 import dev.zprecreated.ui.Styles
 import dev.zprecreated.ui.component.Button
 import dev.zprecreated.ui.component.ButtonProps
 import kotlinx.html.*
 
-fun FlowContent.HomePage(news: Pair<List<String>, Boolean>) {
+fun FlowContent.HomePage(account: PlayerAccount?, news: Pair<List<String>, Boolean>) {
     div(classes = "flex flex-col gap-2") {
         div(classes = "select-none p-3 text-center") {
             h1(classes = "${Styles.fontFamily(Styles.fontGameLogo)} text-7xl") {
@@ -50,7 +51,7 @@ fun FlowContent.HomePage(news: Pair<List<String>, Boolean>) {
                 }
                 div(classes = "mx-auto flex w-full max-w-[25rem] flex-col gap-2 md:mx-0") {
                     HomeCard(HomeCardProps(classes = "w-full break-inside-avoid")) {
-
+                        AuthSection(account)
                     }
                     HomeCard(HomeCardProps(classes = "w-full break-inside-avoid")) {
 
