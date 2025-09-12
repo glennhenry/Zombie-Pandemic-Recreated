@@ -10,6 +10,7 @@ import com.varabyte.kobweb.browser.http.http
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.silk.components.graphics.Image
+import dev.zprecreated.model.ExampleModel
 import kotlinx.browser.window
 import org.jetbrains.compose.web.dom.Text
 import zprecreated.components.widgets.ExampleWidget
@@ -33,7 +34,7 @@ fun HomePage() {
     }
 
     Column {
-        Text("ping")
+        Text("ping" + ExampleModel("example common model"))
         ExampleWidget()
         Text("response API from server: $apiResponse")
         Image(src = "${AppConfig.baseUrl}/assets/bg.jpg")

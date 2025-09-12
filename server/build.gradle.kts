@@ -32,6 +32,7 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":common"))
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
