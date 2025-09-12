@@ -11,7 +11,6 @@ version = "2025.09.12"
 
 application {
     mainClass = "io.ktor.server.netty.EngineMain"
-    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=true")
 }
 
 ktor {

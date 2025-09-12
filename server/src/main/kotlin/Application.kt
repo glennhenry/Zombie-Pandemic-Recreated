@@ -9,6 +9,7 @@ import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.CORS
 import kotlinx.serialization.json.Json
+import java.io.File
 
 fun main(args: Array<String>) {
     EngineMain.main(args)
@@ -16,6 +17,7 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     configureRouting()
+
     install(ContentNegotiation) {
         json(Json {
             prettyPrint = true

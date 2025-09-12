@@ -37,6 +37,9 @@ site/!.kobweb/conf.yaml
 # kotlin
 .kotlin
 
+# deploy
+deploy/
+
 # logs
 logs/
 npm-debug.log*
