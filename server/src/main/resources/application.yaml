@@ -1,5 +1,5 @@
 ktor:
-    development: true
+    development: "$DEV_MODE:true"
     application:
         modules:
             - dev.zprecreated.ApplicationKt.module
