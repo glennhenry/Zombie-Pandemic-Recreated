@@ -61,6 +61,12 @@ jobs:
           ../kobweb-${{ env.KOBWEB_CLI_VERSION }}/bin/kobweb export --notty --layout static
           cd ..
 
+      # Copy exported site into deploy folder
+      - name: Copy site to deploy
+        run: |
+          mkdir -p deploy/site
+          cp -r site/.kobweb/site/* deploy/site/
+
       # Build server using shadowJar
       - name: Build server with shadowJar
         run: ./gradlew clean shadowJar
@@ -69,15 +75,6 @@ jobs:
       - name: Copy assets to deploy folder
         run: |
           cp -r assets deploy/
-
-      # D
-      - name: Upload site
-        uses: actions/upload-artifact@v4
-        with:
-          name: site
-          path: site/.kobweb/site/
-          if-no-files-found: error
-          retention-days: 1
 
       # Zip deploy folder for release
       - name: Zip deploy folder
