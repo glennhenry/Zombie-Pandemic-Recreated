@@ -24,22 +24,23 @@ This is purely a fan-made project created for hobby and learning purposes. ZPRec
 
 The game is separated into client and server component. The client component is the web application that you run to play the game, while the server component serves the web page (in production), game assets, and handles game requests.
 
-The original game involve massive multiplayer play. Currently, we are not planning to set up a central server for everyone to connect to. The game server will self-hosted by each player. In other word, although the game has multiplayer playability, people would play it as if it is a single player game. We may simulate multiplayer experience (like bots) for this purpose.
+The original game involve massive multiplayer play. Currently, we are not planning to set up a central server for everyone to connect to. The game server will self-hosted by each player. In other word, although the game may have some multiplayer capability, people would play it as if it is a single player game. We may simulate multiplayer experience (like bots) for this purpose.
 
-### Client (Frontend)
+### Client & Server
 
-- [React](https://react.dev/) with [Typescript](https://www.typescriptlang.org/) as the UI library.
-- [TailwindCSS](https://tailwindcss.com/) for UI utilities.
-- [Vite](https://vite.dev/) as the build tool.
+This project is built entirely with [Kotlin](https://kotlinlang.org/) and organized as a multi-module setup, containing a client, a server, and a shared module for common data models.
 
-### Server (Backend)
-
-- [Kotlin](https://kotlinlang.org/) with [Ktor](https://ktor.io/) for server.
+- `site`: the client-side module, built with the [Kobweb](https://kobweb.varabyte.com/) framework (Kotlin/JS) for the web front-end.
+- `server`: the server-side module, implemented with [Ktor](https://ktor.io/) as the backend library.
+- `common`: a multiplatform module that provides shared code and models used by both the Kotlin/JS and Kotlin/JVM parts of the project.
 
 ## Development Guide
 
-- Client requirement: Node.js (v20+)
-- Server requirement: Java 21, Gradle 8.5
+To develop, please install the following:
+
+- Java 24 (also add to PATH).
+- [Kobweb](https://kobweb.varabyte.com/docs/getting-started/getting-kobweb).
+- [MongoDB community edition](https://www.mongodb.com/try/download/community).
 
 ### Dev Mode
 
@@ -50,50 +51,64 @@ git clone https://github.com/glennhenry/Zombie-Pandemic-Recreated.git
 cd Zombie-Pandemic-Recreated
 ```
 
-#### 2. Start the Client in Dev Mode
+#### 2. Start the Kobweb server
 
 ```bash
-cd client
-npm install
-npm run dev
+cd site
+kobweb run
 ```
 
-Client runs at `http://localhost:5173`.
+Site runs at `http://localhost:8080`.
 
-#### 3. Start the Server in Dev Mode
+#### 3. Start the MongoDB server
+
+Double click on `runmongo.bat` or `runmongo.sh`. Consult the [official docs](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/#run-mongodb-community-edition-from-the-command-interpreter) for details.
+
+MongoDB runs at `localhost:27017`.
+
+#### 4. Start the Server
 
 ```bash
-cd server
 ./gradlew run
 ```
 
-Server runs at `http://localhost:8080`.
+Server runs at `http://localhost:8081`. You can also do it via Intellij IDE by pressing run on `server/src/main/kotlin/Application.kt`
 
-### Build & Deployment
+### Build & Run
+
+There is a GitHub workflow which automatically build everything and create a GitHub release, though this isn't meant for anyone except myself.
+
+To build the project locally:
 
 #### 1. Build the Client and Server
 
-Run `build.bat` (Windows) or `build.sh` (Unix). Output will be in `build/` directory.
+Run `build.bat` (Windows) or `build.sh` (Unix). Output will be in `deploy/` directory.
 
 #### 2. Run the Game Server
 
-Install [Java](https://www.java.com/en/download/) and add it to system PATH.
-
-In the build directory:
+In the deploy directory:
 
 ```bash
-java -jar server/build/libs/zpr-server.jar
+java -jar zpr-server.jar
 ```
 
-Frontend + API served on http://localhost:8080.
-The default port `8080` and host `0.0.0.0` can be overridden by:
+Frontend + API served on http://localhost:8081.
+
+The default port `8080` and host `0.0.0.0` can be overridden by making environment variable `PORT` and `HOST`, respectively. You should also turn off development mode in production environment by setting the environment variable `DEV_MODE` to false.
+
+For example, in Powershell (set variables temporarily):
 
 ```bash
-java -jar server/build/libs/zpr-server.jar -port=1234 -host=1.2.3.4
+$env:PORT = "8089"
+$env:HOST = "127.0.0.1"
+$env:DEV_MODE = "false"
+java -jar zpr-server.jar
 ```
 
 ### Contributing
 
-As of now, we don't have a standard on how to contribute. We also don't own a wiki or documentation on the project. Best way to contribute is by making question, feedback, suggestion on [issues](https://github.com/glennhenry/Zombie-Pandemic-Recreated/issues), or directly make a change in code and apply a pull request.
+As of now, we don't have a standard on how to contribute. Best way to contribute is by making question, feedback, suggestion on [issues](https://github.com/glennhenry/Zombie-Pandemic-Recreated/issues), or directly make a change in code and apply a pull request.
 
 For simplicity, we will be developing on main branch directly.
+
+Since this is an open-source fan project, we have specification about the game at `docs/` directory. It is a guide and describe how we develop the game.
