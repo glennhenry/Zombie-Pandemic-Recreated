@@ -94,7 +94,9 @@ java -jar zpr-server.jar
 
 Frontend + API served on http://localhost:8081.
 
-The default port `8080` and host `0.0.0.0` can be overridden by making environment variable `PORT` and `HOST`, respectively. You should also turn off development mode in production environment by setting the environment variable `DEV_MODE` to false.
+The default port `8080` and host `0.0.0.0` can be overridden by making environment variable `PORT` and `HOST`, respectively.
+
+IMPORTANT!! You must turn off development mode in production environment by setting the environment variable `DEV_MODE` to false. This is necessary to tell Ktor server to serve the website.
 
 For example, in Powershell (set variables temporarily):
 
