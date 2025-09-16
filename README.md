@@ -1,3 +1,7 @@
+NOTE: This project is discontinued and the repo is no longer maintained. Feel free to continue or port the project.
+
+Game is barely done, only homepage, simple map traversal, and mostly drafting plans at `docs`.
+
 # Zombie Pandemic Recreated
 
 Zombie Pandemic is a browser-based (PBBG) zombie survival MMORPG made by Pixel Pandemic (2009-2015) [(fb page)](https://www.facebook.com/zombiepandemicgame). The game features a survivor exploring the abandoned urban with the endgoal of escaping the city.
@@ -39,7 +43,7 @@ The original game involve massive multiplayer play. Currently, we are not planni
 ## Development Guide
 
 - Client requirement: Node.js (v20+)
-- Server requirement: Java 21, Gradle 8.5
+- Server requirement: Java 24 (uses Gradle 9.0)
 
 ### Dev Mode
 
@@ -86,11 +90,6 @@ java -jar server/build/libs/zpr-server.jar
 ```
 
 Frontend + API served on http://localhost:8080.
-The default port `8080` and host `0.0.0.0` can be overridden by:
-
-```bash
-java -jar server/build/libs/zpr-server.jar -port=1234 -host=1.2.3.4
-```
 
 ### Contributing
 
